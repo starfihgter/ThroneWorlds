@@ -5,10 +5,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.enchantments.Enchantment;
 
-public class TntBow implements Listener {
+public class TntBow{
 
-    ItemStack tntbow = new ItemStack(Material.BOW);
-    tntbow.addEnchant
-
-
+    public ItemStack getTntBow(){
+        ItemStack tntBow = new ItemStack(Material.BOW);
+        return tntBow;
+    }
 }
