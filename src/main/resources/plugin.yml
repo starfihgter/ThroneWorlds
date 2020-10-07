@@ -1,0 +1,13 @@
+name: ThroneWorlds
+version: ${project.version}
+main: net.stardevelopments.throneworlds.Main
+api-version: 1.16
+depend: [MultiverseCore, FastAsyncWorldEdit]
+description: its pretty epic
+commands:
+  startgame:
+    description: Starts the Throne Worlds game!
+    usage: /startgame
+  teams:
+    description: Allows you to choose a team!
+    usage: /taems [list|join|leave] [team]
