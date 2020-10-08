@@ -34,7 +34,7 @@ public class GameStart implements CommandExecutor {
                     out("Unable to create Throne " + i, sender);
                     return false;
                 }
-                teamsDB.set("team." + i + ".WorldName", "Throne" + i);
+                teamsDB.set("team" + i + ".WorldName", "Throne" + i);
                 out("Created Throne World " + i, sender);
             }
             // Send players to thrones
