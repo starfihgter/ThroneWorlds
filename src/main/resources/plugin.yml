@@ -2,8 +2,8 @@ name: ThroneWorlds
 version: ${project.version}
 main: net.stardevelopments.throneworlds.Main
 api-version: 1.16
-depend: [MultiverseCore, FastAsyncWorldEdit]
 description: its pretty epic
+depend: [Multiverse-Core]
 commands:
   startgame:
     description: Starts the Throne Worlds game!
