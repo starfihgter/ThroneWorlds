@@ -2,6 +2,7 @@ package net.stardevelopments.throneworlds;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
+import net.stardevelopments.throneworlds.Bow.TntBow;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -34,8 +35,10 @@ public final class Main extends JavaPlugin {
         getCommand("startgame").setExecutor(new GameStart(this));
         getCommand("teams").setExecutor(new TeamsCommand());
 
-        int gameState = worldState.getUserRecord().getInt("GameState", 0)
-;       System.out.println("Throne worlds has started in state " + gameState);
+        int gameState = worldState.getUserRecord().getInt("GameState", 0);
+        System.out.println("Throne worlds has started in state " + gameState);
+
+        getServer().getPluginManager().registerEvents(new TntBow(), this);
     }
 
     @Override

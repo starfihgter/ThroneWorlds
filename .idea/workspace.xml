@@ -20,16 +20,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3720d92d-cb98-46f0-b3fe-9f6eef8d955c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/RAM0004.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ThroneWorlds.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ThroneWorlds.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/stardevelopments/throneworlds/Bow/TntBow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/stardevelopments/throneworlds/Bow/TntBow.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/stardevelopments/throneworlds/Essence/EssenceItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/stardevelopments/throneworlds/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/stardevelopments/throneworlds/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -46,6 +51,12 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../GibblesBows" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -57,7 +68,9 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1602137563796</updated>
-      <workItem from="1602137569214" duration="322000" />
+      <workItem from="1602137569214" duration="445000" />
+      <workItem from="1602139208560" duration="8000" />
+      <workItem from="1602153709225" duration="1885000" />
     </task>
     <servers />
   </component>
@@ -74,11 +87,16 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="740" y="280" key="FileChooserDialogImpl" timestamp="1602137689936">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="740" y="280" key="FileChooserDialogImpl/0.0.1920.1050/-1080.-271.1080.1920@0.0.1920.1050" timestamp="1602137689936" />
+    <state x="-1018" y="-283" width="1096" height="1037" maximized="true" key="dock-window-1" timestamp="1602155161093">
+      <screen x="-1080" y="-271" width="1080" height="1920" />
+    </state>
+    <state x="-1018" y="-283" width="1096" height="1037" maximized="true" key="dock-window-1/0.0.1920.1050/-1080.-271.1080.1920@0.0.1920.1050" timestamp="1602155161093" />
   </component>
 </project>
