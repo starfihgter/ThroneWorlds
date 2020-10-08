@@ -22,15 +22,9 @@ public class Essence implements Listener {
 
     @EventHandler
     public void onDrop(EntityDeathEvent event){
-        Entity enemy = (Entity) event.getEntity();
-        Player player = (Player) event.getEntity().getKiller();
-
-        if(player instanceof Player){
-
+        if (event.getEntity().getKiller() != null) {
             event.getDrops().add(getEssence());
-
         }
-
     }
 
 }
