@@ -1,7 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f0bd8d6-355b-4f5c-9875-f230204fdee0" name="Default Changelist" comment="" />
+    <list default="true" id="3720d92d-cb98-46f0-b3fe-9f6eef8d955c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/stardevelopments/throneworlds/Essence/EssenceItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/stardevelopments/throneworlds/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/stardevelopments/throneworlds/Main.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,89 +39,64 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="MavenImportPreferences">
-    <option name="importingSettings">
-      <MavenImportingSettings>
-        <option name="downloadDocsAutomatically" value="true" />
-        <option name="downloadSourcesAutomatically" value="true" />
-        <option name="importAutomatically" value="true" />
-      </MavenImportingSettings>
-    </option>
-  </component>
-  <component name="ProjectId" id="1iWXSMmEdwAcKcDGMRTrmkajDa3" />
+  <component name="ProjectId" id="1iaEzPnND8rZgtyKatZU0UTx9i6" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-  </component>
-  <component name="RecentsManager">
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="net.stardevelopments.throneworlds" />
-    </key>
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="net.stardevelopments.throneworlds" />
-    </key>
-  </component>
-  <component name="RunManager">
-    <configuration name="ThroneWorlds build" type="MavenRunConfiguration" factoryName="Maven">
-      <MavenSettings>
-        <option name="myGeneralSettings" />
-        <option name="myRunnerSettings" />
-        <option name="myRunnerParameters">
-          <MavenRunnerParameters>
-            <option name="profiles">
-              <set />
-            </option>
-            <option name="goals">
-              <list>
-                <option value="clean" />
-                <option value="package" />
-              </list>
-            </option>
-            <option name="pomFileName" />
-            <option name="profilesMap">
-              <map />
-            </option>
-            <option name="resolveToWorkspace" value="false" />
-            <option name="workingDirPath" value="$PROJECT_DIR$" />
-          </MavenRunnerParameters>
-        </option>
-      </MavenSettings>
-      <method v="2" />
-    </configuration>
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../GibblesBows" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="3f0bd8d6-355b-4f5c-9875-f230204fdee0" name="Default Changelist" comment="" />
-      <created>1602024320900</created>
+      <changelist id="3720d92d-cb98-46f0-b3fe-9f6eef8d955c" name="Default Changelist" comment="" />
+      <created>1602137563796</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1602024320900</updated>
+      <updated>1602137563796</updated>
+      <workItem from="1602137569214" duration="445000" />
+      <workItem from="1602139208560" duration="8000" />
+      <workItem from="1602153709225" duration="1885000" />
     </task>
     <servers />
   </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
   <component name="WindowStateProjectService">
-    <state x="444" y="175" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1602049679066">
-      <screen x="0" y="0" width="1366" height="728" />
+    <state x="740" y="280" key="FileChooserDialogImpl" timestamp="1602137689936">
+      <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state x="444" y="175" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1366.728@0.0.1366.728" timestamp="1602049679066" />
-    <state x="488" y="74" key="#com.intellij.ide.util.MemberChooser" timestamp="1602040629259">
-      <screen x="0" y="0" width="1366" height="728" />
+    <state x="740" y="280" key="FileChooserDialogImpl/0.0.1920.1050/-1080.-271.1080.1920@0.0.1920.1050" timestamp="1602137689936" />
+    <state x="-1018" y="-283" width="1096" height="1037" maximized="true" key="dock-window-1" timestamp="1602155161093">
+      <screen x="-1080" y="-271" width="1080" height="1920" />
     </state>
-    <state x="488" y="74" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1602040629259" />
-    <state x="213" y="23" key="Maven.ArtifactSearchDialog" timestamp="1602025311597">
-      <screen x="0" y="0" width="1366" height="728" />
-    </state>
-    <state x="213" y="23" key="Maven.ArtifactSearchDialog/0.0.1366.728@0.0.1366.728" timestamp="1602025311597" />
-    <state x="339" y="162" key="run.anything.popup" timestamp="1602052866333">
-      <screen x="0" y="0" width="1366" height="728" />
-    </state>
-    <state x="339" y="162" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1602052866333" />
+    <state x="-1018" y="-283" width="1096" height="1037" maximized="true" key="dock-window-1/0.0.1920.1050/-1080.-271.1080.1920@0.0.1920.1050" timestamp="1602155161093" />
   </component>
 </project>
