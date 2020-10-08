@@ -1,5 +1,6 @@
 package net.stardevelopments.throneworlds.Bow;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,6 +24,8 @@ public class TntBow implements Listener {
         lore.add("Arrows detonate on impact");
         tntBowMeta.setLore(lore);
 
+        tntBow.setItemMeta(tntBowMeta);
+
         return tntBow;
     }
 
@@ -33,6 +36,16 @@ public class TntBow implements Listener {
 
             Player player = (Player) e.getEntity().getShooter();
 
+            ArrayList<String> tntBowLore = new ArrayList<>();
+            tntBowLore.add("Arrows detonate on impact");
+
+            if(player.getInventory().getItemInMainHand().getItemMeta().equals(tntBowLore)){
+
+                Location location = e.getEntity().getLocation();
+                location.getWorld().createExplosion(location, 3);
+                e.getEntity().remove();
+
+            }
 
 
         }
