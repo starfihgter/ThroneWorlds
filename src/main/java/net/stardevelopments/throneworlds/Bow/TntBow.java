@@ -32,7 +32,7 @@ public class TntBow implements Listener {
     @EventHandler
     public void onShot(ProjectileHitEvent e){
 
-        if(e.getEntity() instanceof Player){
+        if(e.getEntity().getShooter() instanceof Player){
 
             Player player = (Player) e.getEntity().getShooter();
 
