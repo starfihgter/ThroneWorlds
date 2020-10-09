@@ -3,6 +3,7 @@ package net.stardevelopments.throneworlds;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import net.stardevelopments.throneworlds.Bow.TntBow;
+import net.stardevelopments.throneworlds.Essence.Essence;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -24,7 +25,7 @@ public final class Main extends JavaPlugin {
         teamsDB.reloadUserRecord();
         worldState.reloadUserRecord();
 
-        MultiverseCore mvc = (MultiverseCore) Bukkit.getPluginManager().getPlugin("MultiverseCore");
+        MultiverseCore mvc = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
         if (mvc == null){
             System.out.println("MultiverseCore was not detected. Disabling Throneworlds.");
             getServer().getPluginManager().disablePlugin(this);
@@ -39,6 +40,7 @@ public final class Main extends JavaPlugin {
         System.out.println("Throne worlds has started in state " + gameState);
 
         getServer().getPluginManager().registerEvents(new TntBow(), this);
+        getServer().getPluginManager().registerEvents(new Essence(), this);
     }
 
     @Override
