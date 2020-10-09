@@ -33,7 +33,7 @@ public final class Main extends JavaPlugin {
         }
         wm = mvc.getMVWorldManager();
 
-        getCommand("startgame").setExecutor(new GameStart(this));
+        getCommand("startgame").setExecutor(new GameThread(this));
         getCommand("teams").setExecutor(new TeamsCommand());
 
         int gameState = worldState.getUserRecord().getInt("GameState", 0);
