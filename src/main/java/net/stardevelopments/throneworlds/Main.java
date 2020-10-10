@@ -2,6 +2,8 @@ package net.stardevelopments.throneworlds;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
+import com.onarandombox.MultiversePortals.MVPortal;
+import com.onarandombox.MultiversePortals.MultiversePortals;
 import net.stardevelopments.throneworlds.Bow.TntBow;
 import net.stardevelopments.throneworlds.Essence.Essence;
 import org.bukkit.Bukkit;
@@ -15,6 +17,7 @@ public final class Main extends JavaPlugin {
     public static FileLoader teamsDB;
     public static FileLoader worldState;
     public MVWorldManager wm;
+    public MultiversePortals pm;
 
     @Override
     public void onEnable() {
@@ -26,6 +29,7 @@ public final class Main extends JavaPlugin {
         worldState.reloadUserRecord();
 
         MultiverseCore mvc = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
+        pm = (MultiversePortals) Bukkit.getPluginManager().getPlugin("Mutiverse-Portals");
         if (mvc == null){
             System.out.println("MultiverseCore was not detected. Disabling Throneworlds.");
             getServer().getPluginManager().disablePlugin(this);

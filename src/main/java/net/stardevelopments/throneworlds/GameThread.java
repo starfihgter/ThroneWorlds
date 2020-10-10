@@ -2,6 +2,9 @@ package net.stardevelopments.throneworlds;
 
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
+import com.onarandombox.MultiversePortals.MultiversePortals;
+import com.onarandombox.MultiversePortals.PortalLocation;
+import com.onarandombox.MultiversePortals.utils.PortalManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,6 +15,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -58,6 +62,7 @@ public class GameThread implements CommandExecutor {
                 block = overWorld.getBlockAt(x, y + b, z);
                 block.setType(obsidian);
             }
+            //Thought that was bad? oooooh boy.
             block = overWorld.getBlockAt(x + 1, y, z);
             block.setType(obsidian);
             block = overWorld.getBlockAt(x + 1, y, z);
@@ -74,6 +79,20 @@ public class GameThread implements CommandExecutor {
                 block = overWorld.getBlockAt(x, y + b, z);
                 block.setType(obsidian);
             }
+            //*cries*
+
+            //MVC portal linking
+            MVWorldManager wm = plugin.wm;
+            PortalManager pm = plugin.pm.getPortalManager();
+            MultiverseWorld world = wm.getMVWorld(teamsDB.getString("Overworld"));
+            if (pm.isPortal("team" + i + "out")){
+                pm.removePortal("team" + i + "out", true);
+            }
+            PortalLocation pl = new PortalLocation();
+            pl.setLocation(yBlock.getLocation().toVector(), block.getLocation().toVector(), world);
+            pm.addPortal(world, "team" + i + "out", "starfihgter", pl);
+            pm.getPortal("team" + i + "out").setDestination("p:team" + i + "home");
+            pm.getPortal("team" + i + "home").setDestination("p:team" + i + "out");
         }
     }
 
@@ -86,6 +105,7 @@ public class GameThread implements CommandExecutor {
 
         //Check Gamestate
         MVWorldManager wm = plugin.wm;
+        PortalManager pm = plugin.pm.getPortalManager();
         if (worldState.getInt("GameState", 0) != 0) {
             out("Unable to start game, game state currently " + worldState.getInt("GameState", 0), sender);
             return false;
@@ -109,13 +129,23 @@ public class GameThread implements CommandExecutor {
                 out("Created Throne World " + i, sender);
             }
 
-            // Send players to thrones (set spawn points and kill all players)
+            // Send players to thrones (set spawn points and kill all players). Setup portals
             for (int i = 0; i < totalTeams; i++){
                 List<String> teamPlayers = teamsDB.getStringList("team" + i +".members");
+
+                //Set home portal
+                MultiverseWorld world = wm.getMVWorld(teamsDB.getString("team" + i + ".WorldName"));
+                PortalLocation pl = new PortalLocation();
+                Vector bottomLeft = new Vector(0, 0, 0);
+                Vector topRight = new Vector(3, 4, 0);
+                pl.setLocation(bottomLeft, topRight, world);
+                pm.addPortal(world, "team" + i + "home", "starfihgter", pl);
+
+                //Kill players and send to throne world
                 for (String playerName : teamPlayers){
                     Player player = Bukkit.getPlayer(playerName);
                     if (player != null){
-                        Location spawn = wm.getMVWorld("Throne" + i).getSpawnLocation();
+                        Location spawn = wm.getMVWorld(teamsDB.getString("team" + i + ".WorldName")).getSpawnLocation();
                         player.setBedSpawnLocation(spawn, true);
                         player.setHealth(0);
                     }
