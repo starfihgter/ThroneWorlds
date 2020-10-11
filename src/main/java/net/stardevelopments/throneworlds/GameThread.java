@@ -53,7 +53,10 @@ public class GameThread implements CommandExecutor {
             Block yBlock = overWorld.getHighestBlockAt(x ,z);
             int y = yBlock.getY();
             teamsDB.set("team" + i + ".portal.y", y);
-
+            System.out.println("Creating portal at ");
+            System.out.println("x " + x );
+            System.out.println("y " + y );
+            System.out.println("z " + z );
             //Generate portal. I could not think of a better way to do this. Please feel free to change if I'm a moron
             Material obsidian = Material.OBSIDIAN;
             yBlock.setType(obsidian);
@@ -93,6 +96,7 @@ public class GameThread implements CommandExecutor {
             pm.addPortal(world, "team" + i + "out", "starfihgter", pl);
             pm.getPortal("team" + i + "out").setDestination("p:team" + i + "home");
             pm.getPortal("team" + i + "home").setDestination("p:team" + i + "out");
+            Bukkit.getServer().broadcastMessage("Portals scattered!");
         }
     }
 
@@ -153,6 +157,7 @@ public class GameThread implements CommandExecutor {
             }
             Bukkit.getServer().broadcastMessage("Throne Worlds created!");
             portalScatter();
+            worldState.set("GameState:", 2);
             return true;
         }else{
         out("Unable to find Overworld Template!", sender);

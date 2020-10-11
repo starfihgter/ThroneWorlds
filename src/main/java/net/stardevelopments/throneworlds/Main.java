@@ -30,8 +30,8 @@ public final class Main extends JavaPlugin {
 
         MultiverseCore mvc = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
         pm = (MultiversePortals) Bukkit.getPluginManager().getPlugin("Mutiverse-Portals");
-        if (mvc == null){
-            System.out.println("MultiverseCore was not detected. Disabling Throneworlds.");
+        if (mvc == null || pm == null){
+            System.out.println("Multiverse-Core and Multiverse-Portals were not detected. Both are required to run this plugin. Disabling Throneworlds.");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
