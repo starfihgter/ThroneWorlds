@@ -2,6 +2,8 @@ package net.stardevelopments.throneworlds;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
+import com.onarandombox.MultiversePortals.MVPortal;
+import com.onarandombox.MultiversePortals.MultiversePortals;
 import net.stardevelopments.throneworlds.Bow.TntBow;
 import net.stardevelopments.throneworlds.Essence.Essence;
 import org.bukkit.Bukkit;
@@ -15,6 +17,7 @@ public final class Main extends JavaPlugin {
     public static FileLoader teamsDB;
     public static FileLoader worldState;
     public MVWorldManager wm;
+    public MultiversePortals pm;
 
     @Override
     public void onEnable() {
@@ -26,14 +29,15 @@ public final class Main extends JavaPlugin {
         worldState.reloadUserRecord();
 
         MultiverseCore mvc = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
-        if (mvc == null){
-            System.out.println("MultiverseCore was not detected. Disabling Throneworlds.");
+        pm = (MultiversePortals) Bukkit.getPluginManager().getPlugin("Multiverse-Portals");
+        if (mvc == null || pm == null){
+            System.out.println("Multiverse-Core and Multiverse-Portals were not detected. Both are required to run this plugin. Disabling Throneworlds.");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
         wm = mvc.getMVWorldManager();
 
-        getCommand("startgame").setExecutor(new GameStart(this));
+        getCommand("startgame").setExecutor(new GameThread(this));
         getCommand("teams").setExecutor(new TeamsCommand());
 
         int gameState = worldState.getUserRecord().getInt("GameState", 0);
@@ -45,7 +49,10 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        teamsDB.saveCustomConfig();
+        plugin.saveConfig();
+        worldState.saveCustomConfig();
+        System.out.println("Saved files!");
     }
 
 }

@@ -1,9 +1,9 @@
 name: ThroneWorlds
-version: 1.0-SNAPSHOT-7102020
+version: 1.0-SNAPSHOT-20.10.2020.7
 main: net.stardevelopments.throneworlds.Main
 api-version: 1.16
 description: its pretty epic
-depend: [Multiverse-Core]
+depend: [Multiverse-Core, Multiverse-Portals]
 commands:
   startgame:
     description: Starts the Throne Worlds game!

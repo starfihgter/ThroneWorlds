@@ -6,7 +6,7 @@
 
     <groupId>net.stardevelopments</groupId>
     <artifactId>ThroneWorlds</artifactId>
-    <version>1.0-SNAPSHOT-7102020</version>
+    <version>1.0-SNAPSHOT-20.10.2020.7</version>
     <packaging>jar</packaging>
 
     <name>ThroneWorlds</name>
@@ -79,6 +79,18 @@
         <dependency>
             <groupId>com.onarandombox.multiversecore</groupId>
             <artifactId>Multiverse-Core</artifactId>
+            <version>4.2.0</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>craftbukkit</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.onarandombox.multiverseportals</groupId>
+            <artifactId>Multiverse-Portals</artifactId>
             <version>4.2.0</version>
             <scope>provided</scope>
             <exclusions>
