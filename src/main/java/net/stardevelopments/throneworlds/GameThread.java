@@ -1,5 +1,6 @@
 package net.stardevelopments.throneworlds;
 
+import com.onarandombox.MultiverseCore.MVWorld;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import com.onarandombox.MultiversePortals.MultiversePortals;
@@ -35,11 +36,14 @@ public class GameThread implements CommandExecutor {
 
     //Relocate Portals
     public void portalScatter(){
+        System.out.println("Check 8");
         FileConfiguration teamsDB = Main.teamsDB.getUserRecord();
         FileConfiguration worldState = Main.worldState.getUserRecord();
+        MVWorldManager wm = plugin.wm;
 
         int totalTeams = plugin.getConfig().getInt("Teams", 4);
         for (int i = 0; i < totalTeams; i++){
+            System.out.println("Check 9");
 
             //Randomly generate x and z within play area
             int radius = plugin.getConfig().getInt("border-radius");
@@ -47,10 +51,12 @@ public class GameThread implements CommandExecutor {
             int z = ThreadLocalRandom.current().nextInt(-radius, radius);
             teamsDB.set("team" + i + ".portal.x", x);
             teamsDB.set("team" + i + ".portal.z", z);
+            System.out.println("Check 10");
 
             //get y value of random coord
-            World overWorld = Bukkit.getWorld("Overworld");
-            Block yBlock = overWorld.getHighestBlockAt(x ,z);
+            MultiverseWorld overWorld = wm.getMVWorld("Overworld");
+            Block yBlock = overWorld.getCBWorld().getHighestBlockAt(x ,z);
+            System.out.println("Check 11");
             int y = yBlock.getY();
             teamsDB.set("team" + i + ".portal.y", y);
             System.out.println("Creating portal at ");
@@ -62,38 +68,37 @@ public class GameThread implements CommandExecutor {
             yBlock.setType(obsidian);
             Block block;
             for (int b = 1; b < 5; b++){
-                block = overWorld.getBlockAt(x, y + b, z);
+                block = overWorld.getCBWorld().getBlockAt(x, y + b, z);
                 block.setType(obsidian);
             }
             //Thought that was bad? oooooh boy.
-            block = overWorld.getBlockAt(x + 1, y, z);
+            block = overWorld.getCBWorld().getBlockAt(x + 1, y + 4, z);
             block.setType(obsidian);
-            block = overWorld.getBlockAt(x + 1, y, z);
+            block = overWorld.getCBWorld().getBlockAt(x + 2, y + 4, z);
             block.setType(obsidian);
-            x = yBlock.getX();
-            y = yBlock.getX();
-            block = overWorld.getBlockAt(x + 1, y, z);
+            block = overWorld.getCBWorld().getBlockAt(x + 1, y, z);
             block.setType(obsidian);
-            block = overWorld.getBlockAt(x + 1, y, z);
+            block = overWorld.getCBWorld().getBlockAt(x + 2, y, z);
             block.setType(obsidian);
-            block = overWorld.getBlockAt(x + 1, y, z);
+            block = overWorld.getCBWorld().getBlockAt(x + 3, y, z);
             block.setType(obsidian);
             for (int b = 1; b < 5; b++){
-                block = overWorld.getBlockAt(x, y + b, z);
+                block = overWorld.getCBWorld().getBlockAt(x + 3, y + b, z);
                 block.setType(obsidian);
             }
             //*cries*
-
+            System.out.println("Check 12");
             //MVC portal linking
-            MVWorldManager wm = plugin.wm;
             PortalManager pm = plugin.pm.getPortalManager();
-            MultiverseWorld world = wm.getMVWorld(teamsDB.getString("Overworld"));
             if (pm.isPortal("team" + i + "out")){
                 pm.removePortal("team" + i + "out", true);
             }
+            System.out.println("Check 13");
             PortalLocation pl = new PortalLocation();
-            pl.setLocation(yBlock.getLocation().toVector(), block.getLocation().toVector(), world);
-            pm.addPortal(world, "team" + i + "out", "starfihgter", pl);
+            Vector bottomLeft = new Vector(x, y, z);
+            Vector topRight = new Vector(x + 3, y + 4, z);
+            pl.setLocation(bottomLeft, topRight, overWorld);
+            pm.addPortal(overWorld, "team" + i + "out", "starfihgter", pl);
             pm.getPortal("team" + i + "out").setDestination("p:team" + i + "home");
             pm.getPortal("team" + i + "home").setDestination("p:team" + i + "out");
             Bukkit.getServer().broadcastMessage("Portals scattered!");
@@ -103,7 +108,7 @@ public class GameThread implements CommandExecutor {
     //Game Start
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
+        System.out.println("Check 1");
         FileConfiguration teamsDB = Main.teamsDB.getUserRecord();
         FileConfiguration worldState = Main.worldState.getUserRecord();
 
@@ -114,14 +119,14 @@ public class GameThread implements CommandExecutor {
             out("Unable to start game, game state currently " + worldState.getInt("GameState", 0), sender);
             return false;
         }
-
+        System.out.println("Check 2");
         //Create overworld
         if(wm.cloneWorld("OverworldTemplate", "Overworld")){
             World overWorld = Bukkit.getWorld("Overworld");
             overWorld.getWorldBorder().setCenter(0,0);
-            overWorld.getWorldBorder().setSize(plugin.getConfig().getInt("border-radius"));
+            overWorld.getWorldBorder().setSize(plugin.getConfig().getInt("border-radius", 10000));
             out("Overworld created", sender);
-
+            System.out.println("Check 3");
             //Create Throne Worlds
             int totalTeams = plugin.getConfig().getInt("Teams", 4);
             for (int i = 0; i < totalTeams; i++){
@@ -132,7 +137,7 @@ public class GameThread implements CommandExecutor {
                 teamsDB.set("team" + i + ".WorldName", "Throne" + i);
                 out("Created Throne World " + i, sender);
             }
-
+            System.out.println("Check 4");
             // Send players to thrones (set spawn points and kill all players). Setup portals
             for (int i = 0; i < totalTeams; i++){
                 List<String> teamPlayers = teamsDB.getStringList("team" + i +".members");
@@ -140,18 +145,20 @@ public class GameThread implements CommandExecutor {
                 //Set home portal
                 MultiverseWorld world = wm.getMVWorld(teamsDB.getString("team" + i + ".WorldName"));
                 PortalLocation pl = new PortalLocation();
-                Vector bottomLeft = new Vector(0, 0, 0);
-                Vector topRight = new Vector(3, 4, 0);
+                Vector bottomLeft = new Vector(26, 52, -2);
+                Vector topRight = new Vector(26, 57, 2);
                 pl.setLocation(bottomLeft, topRight, world);
                 pm.addPortal(world, "team" + i + "home", "starfihgter", pl);
-
+                System.out.println("Check 5");
                 //Kill players and send to throne world
                 for (String playerName : teamPlayers){
+                    System.out.println("Check 6");
                     Player player = Bukkit.getPlayer(playerName);
                     if (player != null){
                         Location spawn = wm.getMVWorld(teamsDB.getString("team" + i + ".WorldName")).getSpawnLocation();
                         player.setBedSpawnLocation(spawn, true);
                         player.setHealth(0);
+                        System.out.println("Check 7");
                     }
                 }
             }

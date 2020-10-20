@@ -33,7 +33,7 @@ public final class Main extends JavaPlugin {
         worldState.reloadUserRecord();
 
         MultiverseCore mvc = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
-        pm = (MultiversePortals) Bukkit.getPluginManager().getPlugin("Mutiverse-Portals");
+        pm = (MultiversePortals) Bukkit.getPluginManager().getPlugin("Multiverse-Portals");
         if (mvc == null || pm == null){
             System.out.println("Multiverse-Core and Multiverse-Portals were not detected. Both are required to run this plugin. Disabling Throneworlds.");
             getServer().getPluginManager().disablePlugin(this);
@@ -57,7 +57,10 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        teamsDB.saveCustomConfig();
+        plugin.saveConfig();
+        worldState.saveCustomConfig();
+        System.out.println("Saved files!");
     }
 
     public static ItemStack setItemName(ItemStack item, String name){

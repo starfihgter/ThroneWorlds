@@ -25,7 +25,7 @@ public class TeamsCommand implements CommandExecutor {
             return false;
         }
             if (sender instanceof Player) {
-                if (args[1] != null) {
+                if (args.length == 2) {
                     switch (args[0]) {
                         case "list": {
                             String team = args[1];
