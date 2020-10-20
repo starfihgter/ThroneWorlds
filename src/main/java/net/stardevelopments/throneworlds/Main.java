@@ -8,6 +8,8 @@ import net.stardevelopments.throneworlds.Bow.TntBow;
 import net.stardevelopments.throneworlds.Essence.Essence;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,6 +20,8 @@ public final class Main extends JavaPlugin {
     public static FileLoader worldState;
     public MVWorldManager wm;
     public MultiversePortals pm;
+    GameThread gt;
+    QueenManager qm;
 
     @Override
     public void onEnable() {
@@ -37,7 +41,10 @@ public final class Main extends JavaPlugin {
         }
         wm = mvc.getMVWorldManager();
 
-        getCommand("startgame").setExecutor(new GameThread(this));
+        gt = new GameThread(this);
+        qm = new QueenManager();
+
+        getCommand("startgame").setExecutor(gt);
         getCommand("teams").setExecutor(new TeamsCommand());
 
         int gameState = worldState.getUserRecord().getInt("GameState", 0);
@@ -45,11 +52,19 @@ public final class Main extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new TntBow(), this);
         getServer().getPluginManager().registerEvents(new Essence(), this);
+        getServer().getPluginManager().registerEvents(qm, this);
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+
+    public static ItemStack setItemName(ItemStack item, String name){
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(name);
+        item.setItemMeta(meta);
+        return item;
     }
 
 }
