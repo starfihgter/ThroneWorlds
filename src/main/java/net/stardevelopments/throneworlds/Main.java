@@ -41,8 +41,9 @@ public final class Main extends JavaPlugin {
         }
         wm = mvc.getMVWorldManager();
 
-        gt = new GameThread(this);
+
         qm = new QueenManager();
+        gt = new GameThread(this);
 
         getCommand("startgame").setExecutor(gt);
         getCommand("teams").setExecutor(new TeamsCommand());
@@ -52,7 +53,7 @@ public final class Main extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new TntBow(), this);
         getServer().getPluginManager().registerEvents(new Essence(), this);
-        getServer().getPluginManager().registerEvents(qm, this);
+        getServer().getPluginManager().registerEvents(new QueenManager(), this);
     }
 
     @Override

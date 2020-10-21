@@ -27,7 +27,7 @@ public class QueenManager implements Listener {
         int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
         for (int i = 0; i < totalTeams; i++){
             World world = Bukkit.getWorld(Objects.requireNonNull(teamsDB.getString("team" + i + ".WorldName")));
-            Location queenLoc = new Location(world, 10, 10, 10); // Those are placeholder values. Waiting to build world
+            Location queenLoc = new Location(world, 14, 51, -4); // Those are placeholder values. Waiting to build world
             Entity queen = world.spawnEntity(queenLoc, EntityType.VILLAGER);
             queen.setCustomName("Queen " + i);
             LivingEntity livingQueen = (LivingEntity) queen;
@@ -51,6 +51,7 @@ public class QueenManager implements Listener {
             gui.setItem(11, abilities);
             gui.setItem(13, upgrade);
             gui.setItem(15, power);
+            player.openInventory(gui);
         }
     }
 

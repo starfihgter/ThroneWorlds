@@ -23,7 +23,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class GameThread implements CommandExecutor {
     Main plugin;
-
     public GameThread(Main mPlugin){
         this.plugin = mPlugin;
     }
@@ -163,6 +162,7 @@ public class GameThread implements CommandExecutor {
                 }
             }
             Bukkit.getServer().broadcastMessage("Throne Worlds created!");
+            new QueenManager().CreateQueens();
             portalScatter();
             worldState.set("GameState:", 2);
             return true;
