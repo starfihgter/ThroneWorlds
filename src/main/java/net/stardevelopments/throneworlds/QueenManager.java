@@ -41,6 +41,7 @@ public class QueenManager implements Listener {
             queen.setCustomName("Queen " + i);
             LivingEntity livingQueen = (LivingEntity) queen;
             livingQueen.setAI(false);
+            livingQueen.setHealth(100);
             //queens[0] = queen;
         }
     }

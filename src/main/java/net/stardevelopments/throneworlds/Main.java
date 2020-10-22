@@ -28,6 +28,9 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
+        plugin.saveResource("config.yml", false);
+        plugin.saveResource("teamsDB.yml", false);
+        plugin.saveResource("WorldState.yml", false);
         config = this.getConfig();
         teamsDB = new FileLoader("teamsDB.yml");
         worldState = new FileLoader("WorldState.yml");
@@ -56,6 +59,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new TntBow(), this);
         getServer().getPluginManager().registerEvents(new Essence(this), this);
         getServer().getPluginManager().registerEvents(qm, this);
+        getServer().getPluginManager().registerEvents(new BuildingCheck(this), this);
     }
 
     @Override

@@ -64,6 +64,9 @@ public class GameThread implements CommandExecutor {
             System.out.println("x " + x );
             System.out.println("y " + y );
             System.out.println("z " + z );
+
+            worldState.set("BuildZones.team" + i + ".z0.x", x);
+            worldState.set("BuildZones.team" + i + ".z0.z", z);
             //Generate portal. I could not think of a better way to do this. Please feel free to change if I'm a moron
             Material obsidian = Material.OBSIDIAN;
             yBlock.setType(obsidian);
