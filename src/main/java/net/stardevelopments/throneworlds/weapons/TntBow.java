@@ -39,7 +39,7 @@ public class TntBow implements Listener {
             ArrayList<String> tntBowLore = new ArrayList<>();
             tntBowLore.add("Arrows detonate on impact");
 
-            if(player.getInventory().getItemInMainHand().getItemMeta().equals(tntBowLore)){
+            if(player.getInventory().getItemInMainHand().getItemMeta().getLore().equals(tntBowLore)){
 
                 Location location = e.getEntity().getLocation();
                 location.getWorld().createExplosion(location, 3);
