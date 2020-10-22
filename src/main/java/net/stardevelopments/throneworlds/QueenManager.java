@@ -17,10 +17,16 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class QueenManager implements Listener {
     public Entity[] queens;
+    Main plugin;
+
+    public QueenManager(Main pp){
+        this.plugin = pp;
+    }
     FileConfiguration teamsDB = Main.teamsDB.getUserRecord();
     FileConfiguration worldState = Main.worldState.getUserRecord();
 
@@ -44,9 +50,11 @@ public class QueenManager implements Listener {
         ItemStack abilities = new ItemStack(Material.HONEY_BOTTLE, 1);
         ItemStack upgrade = new ItemStack(Material.ENDER_CHEST, 1);
         ItemStack power = new ItemStack(Material.EMERALD, 1);
-        Main.setItemName(abilities, "Weapon and Ability Store");
-        Main.setItemName(upgrade, "Upgrade shit!");
-        Main.setItemName(power, "All the power you could want.");
+
+        char team = plugin.wm.getMVWorld(player.getWorld()).getName().charAt(6);
+        Main.setItemName(abilities, "Weapon and Ability Store", null);
+        Main.setItemName(upgrade, "Upgrade shit!", null);
+        Main.setItemName(power, "All the power you could want.", Arrays.asList("Current Power: " + teamsDB.getInt("team" + team + ".power", 0)));
         gui.setItem(11, abilities);
         gui.setItem(13, upgrade);
         gui.setItem(15, power);
@@ -61,7 +69,7 @@ public class QueenManager implements Listener {
         Inventory gui = Bukkit.createInventory(player, 36, "Weapons and Ability Store");
 
         ItemStack back = new ItemStack(Material.ARROW, 1);
-        Main.setItemName(back, "Go Back");
+        Main.setItemName(back, "Go Back", null);
 
         gui.setItem(0, TntBow.getTntBow());
         gui.setItem(35, back);

@@ -3,6 +3,7 @@ package net.stardevelopments.throneworlds;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiversePortals.MultiversePortals;
+import jdk.internal.jline.internal.Nullable;
 import net.stardevelopments.throneworlds.weapons.TntBow;
 import net.stardevelopments.throneworlds.essence.Essence;
 import org.bukkit.Bukkit;
@@ -11,6 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.List;
 
 public final class Main extends JavaPlugin {
     public static FileConfiguration config;
@@ -41,7 +44,7 @@ public final class Main extends JavaPlugin {
         wm = mvc.getMVWorldManager();
 
 
-        qm = new QueenManager();
+        qm = new QueenManager(this);
         gt = new GameThread(this, qm);
 
         getCommand("startgame").setExecutor(gt);
@@ -51,7 +54,7 @@ public final class Main extends JavaPlugin {
         System.out.println("Throne worlds has started in state " + gameState);
 
         getServer().getPluginManager().registerEvents(new TntBow(), this);
-        getServer().getPluginManager().registerEvents(new Essence(), this);
+        getServer().getPluginManager().registerEvents(new Essence(this), this);
         getServer().getPluginManager().registerEvents(qm, this);
     }
 
@@ -63,9 +66,14 @@ public final class Main extends JavaPlugin {
         System.out.println("Saved files!");
     }
 
-    public static ItemStack setItemName(ItemStack item, String name){
+    public static ItemStack setItemName(ItemStack item, String name, @Nullable List<String> lore){
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(name);
+
+        if (lore != null) {
+            meta.setLore(lore);
+        }
+
         item.setItemMeta(meta);
         return item;
     }
