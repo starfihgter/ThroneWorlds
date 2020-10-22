@@ -5,7 +5,7 @@ import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiversePortals.MVPortal;
 import com.onarandombox.MultiversePortals.MultiversePortals;
 import net.stardevelopments.throneworlds.Bow.TntBow;
-import net.stardevelopments.throneworlds.Essence.Essence;
+import net.stardevelopments.throneworlds.essence.Essence;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -44,7 +44,7 @@ public final class Main extends JavaPlugin {
         System.out.println("Throne worlds has started in state " + gameState);
 
         getServer().getPluginManager().registerEvents(new TntBow(), this);
-        getServer().getPluginManager().registerEvents(new Essence(), this);
+        getServer().getPluginManager().registerEvents(new Essence(this), this);
     }
 
     @Override
