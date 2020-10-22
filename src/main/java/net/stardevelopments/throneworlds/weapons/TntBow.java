@@ -1,4 +1,4 @@
-package net.stardevelopments.throneworlds.Bow;
+package net.stardevelopments.throneworlds.weapons;
 
 import org.bukkit.Location;
 import org.bukkit.Material;

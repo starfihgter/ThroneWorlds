@@ -2,10 +2,9 @@ package net.stardevelopments.throneworlds;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
-import com.onarandombox.MultiversePortals.MVPortal;
 import com.onarandombox.MultiversePortals.MultiversePortals;
-import net.stardevelopments.throneworlds.Bow.TntBow;
-import net.stardevelopments.throneworlds.Essence.Essence;
+import net.stardevelopments.throneworlds.weapons.TntBow;
+import net.stardevelopments.throneworlds.essence.Essence;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -43,7 +42,7 @@ public final class Main extends JavaPlugin {
 
 
         qm = new QueenManager();
-        gt = new GameThread(this);
+        gt = new GameThread(this, qm);
 
         getCommand("startgame").setExecutor(gt);
         getCommand("teams").setExecutor(new TeamsCommand());
@@ -53,7 +52,7 @@ public final class Main extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new TntBow(), this);
         getServer().getPluginManager().registerEvents(new Essence(), this);
-        getServer().getPluginManager().registerEvents(new QueenManager(), this);
+        getServer().getPluginManager().registerEvents(qm, this);
     }
 
     @Override
