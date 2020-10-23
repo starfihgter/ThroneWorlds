@@ -72,6 +72,7 @@ public class QueenManager implements Listener {
         Main.setItemName(back, "Go Back", null);
 
         gui.setItem(0, TntBow.getTntBow());
+        gui.setItem(1, BuildingCheck.getZonePlacer());
         gui.setItem(35, back);
 
         player.openInventory(gui);
@@ -102,6 +103,8 @@ public class QueenManager implements Listener {
                 }
             }
         }
+
+        //Yeah I really gotta think of a better way to do this... Kinda wanna do it like tokens, except idk how I'd do internal methods in config...
         if (e.getView().getTitle().equals("Weapons and Ability Store")){
             if (e.getCurrentItem().getItemMeta() != null) {
                 switch (e.getCurrentItem().getItemMeta().getDisplayName()) {
@@ -111,6 +114,10 @@ public class QueenManager implements Listener {
                     }
                     case "Go Back": {
                         generateMainScreen(player);
+                    }
+                    case "Power Funnel - Build Zone": {
+                        player.getInventory().addItem(BuildingCheck.getZonePlacer());
+                        player.sendMessage("You bought a " + e.getCurrentItem().getItemMeta().getDisplayName());
                     }
                 }
                 }
