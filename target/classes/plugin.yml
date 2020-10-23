@@ -1,5 +1,5 @@
 name: ThroneWorlds
-version: 1.0-SNAPSHOT-20.10.2020.12
+version: 1.0-SNAPSHOT-23.10.2020.2
 main: net.stardevelopments.throneworlds.Main
 api-version: 1.16
 description: its pretty epic
@@ -10,4 +10,7 @@ commands:
     usage: /startgame
   teams:
     description: Allows you to choose a team!
-    usage: /taems [list|join|leave] [team]
+    usage: /teams [list|join|leave] [team]
+  scatter:
+    description: Re-scatters portals!
+    usage: /scatter

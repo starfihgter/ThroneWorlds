@@ -4,6 +4,8 @@ import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiversePortals.MultiversePortals;
 import jdk.internal.jline.internal.Nullable;
+import net.stardevelopments.throneworlds.commands.ScatterCommand;
+import net.stardevelopments.throneworlds.commands.TeamsCommand;
 import net.stardevelopments.throneworlds.weapons.TntBow;
 import net.stardevelopments.throneworlds.essence.Essence;
 import org.bukkit.Bukkit;
@@ -52,6 +54,7 @@ public final class Main extends JavaPlugin {
 
         getCommand("startgame").setExecutor(gt);
         getCommand("teams").setExecutor(new TeamsCommand());
+        getCommand("scatter").setExecutor(new ScatterCommand(gt));
 
         int gameState = worldState.getUserRecord().getInt("GameState", 0);
         System.out.println("Throne worlds has started in state " + gameState);

@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.util.Vector;
 
 import java.util.List;
@@ -35,12 +36,11 @@ public class BuildingCheck implements Listener {
             if (members.contains(player.getName())){
                 Set<String> zoneList = WorldState.getConfigurationSection("BuildZones.team" + i).getKeys(false);
                 for (String key : zoneList){
-                    System.out.println(key);
                     int x = WorldState.getInt("BuildZones.team" + i + "." + key + ".x");
                     int z = WorldState.getInt("BuildZones.team" + i + "." + key + ".z");
 
                     double distance = Math.sqrt(Math.pow(playerX - x, 2) + Math.pow(playerZ - z, 2));
-                    return distance < 10;
+                    return (distance < 10);
                 }
             }
         }
@@ -55,6 +55,19 @@ public class BuildingCheck implements Listener {
         if (worldName.equals("Overworld")){
             if (!checkValid(player)){
                 event.setCancelled(true);
+                player.sendMessage("You are not in a building zone!");
+            }
+        }
+    }
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event){
+        MVWorldManager wm = plugin.wm;
+        Player player = event.getPlayer();
+        String worldName = wm.getMVWorld(player.getWorld()).getName();
+        if (worldName.equals("Overworld")){
+            if (!checkValid(player)){
+                event.setCancelled(true);
+                player.sendMessage("You are not in a building zone!");
             }
         }
     }
