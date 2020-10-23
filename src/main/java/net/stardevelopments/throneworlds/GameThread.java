@@ -43,7 +43,38 @@ public class GameThread implements CommandExecutor {
 
         int totalTeams = plugin.getConfig().getInt("Teams", 4);
         for (int i = 0; i < totalTeams; i++){
-
+            //Check and delete portals
+            if (teamsDB.isInt("team" + i + ".portal.x")){
+                int x = teamsDB.getInt("team" + i + ".portal.x");
+                int y = teamsDB.getInt("team" + i + ".portal.y");
+                int z = teamsDB.getInt("team" + i + ".portal.z");
+                MultiverseWorld overWorld = wm.getMVWorld("Overworld");
+                Block yBlock = overWorld.getCBWorld().getBlockAt(x,y,z);
+                //Delete portal. I could not think of a better way to do this. Please feel free to change if I'm a moron
+                Material obsidian = Material.AIR;
+                yBlock.setType(obsidian);
+                Block block;
+                for (int b = 1; b < 5; b++){
+                    block = overWorld.getCBWorld().getBlockAt(x, y + b, z);
+                    block.setType(obsidian);
+                }
+                //Thought that was bad? oooooh boy.
+                block = overWorld.getCBWorld().getBlockAt(x + 1, y + 4, z);
+                block.setType(obsidian);
+                block = overWorld.getCBWorld().getBlockAt(x + 2, y + 4, z);
+                block.setType(obsidian);
+                block = overWorld.getCBWorld().getBlockAt(x + 1, y, z);
+                block.setType(obsidian);
+                block = overWorld.getCBWorld().getBlockAt(x + 2, y, z);
+                block.setType(obsidian);
+                block = overWorld.getCBWorld().getBlockAt(x + 3, y, z);
+                block.setType(obsidian);
+                for (int b = 1; b < 5; b++){
+                    block = overWorld.getCBWorld().getBlockAt(x + 3, y + b, z);
+                    block.setType(obsidian);
+                }
+                //*cries*
+            }
             //Randomly generate x and z within play area
             int radius = plugin.getConfig().getInt("border-radius");
             int x = ThreadLocalRandom.current().nextInt(-radius, radius);
