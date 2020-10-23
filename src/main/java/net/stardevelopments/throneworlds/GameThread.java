@@ -147,7 +147,7 @@ public class GameThread implements CommandExecutor {
         if(wm.cloneWorld("OverworldTemplate", "Overworld")){
             World overWorld = Bukkit.getWorld("Overworld");
             overWorld.getWorldBorder().setCenter(0,0);
-            overWorld.getWorldBorder().setSize(plugin.getConfig().getInt("border-radius", 10000));
+            overWorld.getWorldBorder().setSize((plugin.getConfig().getInt("border-radius", 2000))*2);
             out("Overworld created", sender);
 
             //Create Throne Worlds
