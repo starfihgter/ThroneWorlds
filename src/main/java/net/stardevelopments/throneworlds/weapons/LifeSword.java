@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class LifeSword implements Listener {
 
-    public static ItemStack getTntBow(){
+    public static ItemStack getLifeSword(){
 
         ItemStack lifeSword = new ItemStack(Material.IRON_SWORD);
 
