@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GameThread implements CommandExecutor {
@@ -42,6 +43,7 @@ public class GameThread implements CommandExecutor {
         MVWorldManager wm = plugin.wm;
 
         int totalTeams = plugin.getConfig().getInt("Teams", 4);
+        worldState.set("BuildZones", null);
         for (int i = 0; i < totalTeams; i++){
             //Check and delete portals
             if (teamsDB.isInt("team" + i + ".portal.x")){

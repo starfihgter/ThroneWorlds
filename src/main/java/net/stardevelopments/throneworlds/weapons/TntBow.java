@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 public class TntBow implements Listener {
 
+    static int cost = 10;
+
     public static ItemStack getTntBow(){
         ItemStack tntBow = new ItemStack(Material.BOW);
         tntBow.addUnsafeEnchantment(Enchantment.ARROW_INFINITE, 999);

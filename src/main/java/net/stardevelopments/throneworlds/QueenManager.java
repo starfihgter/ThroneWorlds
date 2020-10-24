@@ -54,7 +54,8 @@ public class QueenManager implements Listener {
         char team = plugin.wm.getMVWorld(player.getWorld()).getName().charAt(6);
         Main.setItemName(abilities, "Weapon and Ability Store", null);
         Main.setItemName(upgrade, "Upgrade shit!", null);
-        Main.setItemName(power, "All the power you could want.", Arrays.asList("Current Power: " + teamsDB.getInt("team" + team + ".power", 0)));
+        Main.setItemName(power, "All the power you could want.", Arrays.asList("Current Power: " + teamsDB.getInt("team" + team + ".power", 0)
+                ,"Power Funnels can create Build Zones with a radius of " + (10 + (Math.pow((teamsDB.getInt("team" + team + ".power", 0)), 2) /2))));
         gui.setItem(11, abilities);
         gui.setItem(13, upgrade);
         gui.setItem(15, power);
@@ -81,8 +82,10 @@ public class QueenManager implements Listener {
     public void onRightClick(PlayerInteractEntityEvent e){
         Entity queen = e.getRightClicked();
         Player player = e.getPlayer();
-        if (queen.getCustomName().contains("Queen ")){
-            generateMainScreen(player);
+        if (queen.getCustomName() != null) {
+            if (queen.getCustomName().contains("Queen ")) {
+                generateMainScreen(player);
+            }
         }
     }
 
@@ -107,6 +110,7 @@ public class QueenManager implements Listener {
         //Yeah I really gotta think of a better way to do this... Kinda wanna do it like tokens, except idk how I'd do internal methods in config...
         if (e.getView().getTitle().equals("Weapons and Ability Store")){
             if (e.getCurrentItem().getItemMeta() != null) {
+                e.setCancelled(true);
                 switch (e.getCurrentItem().getItemMeta().getDisplayName()) {
                     case "TNT Bow": {
                         player.getInventory().addItem(TntBow.getTntBow());
