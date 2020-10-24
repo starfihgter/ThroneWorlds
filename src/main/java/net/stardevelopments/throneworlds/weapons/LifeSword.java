@@ -5,6 +5,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -29,25 +30,18 @@ public class LifeSword implements Listener {
     }
 
     @EventHandler
-    public void onHit(EntityDamageEvent e){
+    public void onshot(EntityDamageByEntityEvent e){
 
-        if(e.getEntity().getLastDamageCause().getEntity() instanceof Player){
+        if(e.getDamager() instanceof Player){
 
-            Player player = (Player) e.getEntity().getLastDamageCause().getEntity();
-            Entity entity = (Entity) e.getEntity();
+            Player player = (Player) e.getDamager();
 
-            ArrayList<String> lore = new ArrayList<>();
-            lore.add("Steal life from your opponent");
+            if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("Life Stealer")){
 
-            player.setH
-
-            if(player.getInventory().getItemInMainHand().getItemMeta().getLore().equals(lore)){
-
-
+                player.setHealth(player.getHealth() + 2);
 
             }
         }
-
     }
 
 }
