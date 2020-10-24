@@ -74,6 +74,7 @@ public class QueenManager implements Listener {
 
         gui.setItem(0, TntBow.getTntBow());
         gui.setItem(1, BuildingCheck.getZonePlacer());
+        gui.setItem(2, BuildingCheck.getZoneBlocker());
         gui.setItem(35, back);
 
         player.openInventory(gui);
@@ -123,6 +124,9 @@ public class QueenManager implements Listener {
                         player.getInventory().addItem(BuildingCheck.getZonePlacer());
                         player.sendMessage("You bought a " + e.getCurrentItem().getItemMeta().getDisplayName());
                     }
+                    case "Power Funnel - Build Zone Blocker":
+                        player.getInventory().addItem(BuildingCheck.getZoneBlocker());
+                        player.sendMessage("You bought a " + e.getCurrentItem().getItemMeta().getDisplayName());
                 }
                 }
         }
