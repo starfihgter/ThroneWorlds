@@ -1,6 +1,7 @@
 package net.stardevelopments.throneworlds;
 
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
+import net.stardevelopments.throneworlds.weapons.KnockbackShield;
 import net.stardevelopments.throneworlds.weapons.TntBow;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -111,6 +112,10 @@ public class QueenManager implements Listener {
                     }
                     case "Go Back": {
                         generateMainScreen(player);
+                    }
+                    case "Knockback Shield": {
+                        player.getInventory().addItem(KnockbackShield.getKnockbackShield());
+                        player.sendMessage("You bought a " + e.getCurrentItem().getItemMeta().getDisplayName());
                     }
                 }
                 }

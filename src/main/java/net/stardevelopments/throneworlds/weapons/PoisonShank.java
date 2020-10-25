@@ -1,12 +1,11 @@
 package net.stardevelopments.throneworlds.weapons;
 
-import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
@@ -34,7 +33,8 @@ public class PoisonShank implements Listener {
 
     @EventHandler
     public void onHit(EntityDamageByEntityEvent e){
-        if(e instanceof Player) {
+        Entity entity = (Entity) e.getEntity();
+        if(entity instanceof Player) {
             Player player = (Player) e.getDamager();
             Player hit = (Player) e;
             if (e.getDamager() instanceof Player) {
