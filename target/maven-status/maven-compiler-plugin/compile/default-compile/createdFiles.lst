@@ -2,6 +2,7 @@ net\stardevelopments\throneworlds\FileLoader.class
 net\stardevelopments\throneworlds\GameThread.class
 net\stardevelopments\throneworlds\weapons\PortalCompass.class
 net\stardevelopments\throneworlds\Main.class
+net\stardevelopments\throneworlds\QueenManager$1.class
 net\stardevelopments\throneworlds\weapons\TntBow.class
 net\stardevelopments\throneworlds\essence\Essence.class
 net\stardevelopments\throneworlds\commands\ScatterCommand.class

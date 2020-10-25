@@ -162,6 +162,10 @@ public class GameThread implements CommandExecutor {
                 }
                 teamsDB.set("team" + i + ".WorldName", "Throne" + i);
                 out("Created Throne World " + i, sender);
+                MultiverseWorld world = plugin.wm.getMVWorld("Throne" + i);
+                World cbWorld = world.getCBWorld();
+                cbWorld.getWorldBorder().setCenter(14 ,-4);
+                cbWorld.getWorldBorder().setSize(100);
             }
             // Send players to thrones (set spawn points and kill all players). Setup portals
             for (int i = 0; i < totalTeams; i++){

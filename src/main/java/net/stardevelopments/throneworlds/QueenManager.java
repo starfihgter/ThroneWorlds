@@ -1,5 +1,6 @@
 package net.stardevelopments.throneworlds;
 
+import com.onarandombox.MultiverseCore.MVWorld;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import net.stardevelopments.throneworlds.weapons.PortalCompass;
 import net.stardevelopments.throneworlds.weapons.TntBow;
@@ -17,6 +18,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -151,6 +153,30 @@ public class QueenManager implements Listener {
     //Queen Death
     @EventHandler
     public void onEntityDeath(EntityDeathEvent e){
-        //play epic music
+        Entity queen = e.getEntity();
+        if (queen.getCustomName() != null) {
+            if (queen.getCustomName().contains("Queen ")) {
+                char team = plugin.wm.getMVWorld(queen.getWorld()).getName().charAt(6);
+                teamsDB.set("team" + team + ".State", 4);
+                Bukkit.getServer().broadcastMessage("Team " + team + "'s Queen has been slain! Their Throne world is collapsing!");
+                MultiverseWorld world = plugin.wm.getMVWorld(queen.getWorld());
+                World cbWorld = world.getCBWorld();
+                cbWorld.getWorldBorder().setSize(1, 60);
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        for (Player player : cbWorld.getPlayers()){
+                            player.setHealth(0);
+                        }
+                        plugin.wm.deleteWorld(world.getName(), true);
+                        Bukkit.getServer().broadcastMessage("Throne World " + team + "has collpased.");
+                        plugin.gt.portalScatter();
+                        cancel();
+                    }
+                }.runTaskLater(plugin, 1240);
+
+            }
+        }
     }
 }

@@ -2,6 +2,7 @@ package net.stardevelopments.throneworlds;
 
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.utils.WorldManager;
+import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -108,19 +109,19 @@ public class BuildingCheck implements Listener {
                 return;
             }
             if (item.getType().equals(Material.NETHER_STAR)) {
-
-                Set<String> blockZones = WorldState.getConfigurationSection("BlockZones").getKeys(false);
-                for (String key : blockZones){
-                    int blockX = WorldState.getInt("BlockZones." + key + ".x");
-                    int blockZ = WorldState.getInt("BlockZones." + key + ".z");
-                    double distance = Math.sqrt(Math.pow(player.getLocation().getBlockX() - blockX, 2) + Math.pow(player.getLocation().getBlockZ() - blockZ, 2));
-                    int radius = 30;
-                    if (distance < radius){
-                        player.sendMessage("This area is being blocked against build zones!");
-                        return;
+                try {
+                    Set<String> blockZones = WorldState.getConfigurationSection("BlockZones").getKeys(false);
+                    for (String key : blockZones){
+                        int blockX = WorldState.getInt("BlockZones." + key + ".x");
+                        int blockZ = WorldState.getInt("BlockZones." + key + ".z");
+                        double distance = Math.sqrt(Math.pow(player.getLocation().getBlockX() - blockX, 2) + Math.pow(player.getLocation().getBlockZ() - blockZ, 2));
+                        int radius = 30;
+                        if (distance < radius){
+                            player.sendMessage("This area is being blocked against build zones!");
+                            return;
+                        }
                     }
-                }
-
+                } catch (NullPointerException ignored){}
                 int totalTeams = config.getInt("Teams", 4);
                 for (int i = 0; i < totalTeams; i++) {
                     List<String> members = teamsDB.getStringList("team" + i + ".members");
@@ -133,9 +134,13 @@ public class BuildingCheck implements Listener {
                     }
                 }
             }else if (item.getType().equals(Material.BARRIER)){
-                Set<String> zoneList = WorldState.getConfigurationSection("BlockZones").getKeys(false);
-                WorldState.set("BlockZones.z" + zoneList.size() + ".x", player.getLocation().getBlockX());
-                WorldState.set("BlockZones.z" + zoneList.size() + ".z", player.getLocation().getBlockZ());
+                int size;
+                try { size = WorldState.getConfigurationSection("BlockZones").getKeys(false).size();}
+                catch (NullPointerException ignored){
+                    size = 0;
+                }
+                WorldState.set("BlockZones.z" + size + ".x", player.getLocation().getBlockX());
+                WorldState.set("BlockZones.z" + size + ".z", player.getLocation().getBlockZ());
                 player.getInventory().remove(item);
                 player.sendMessage("Blocking field created!");
             }
