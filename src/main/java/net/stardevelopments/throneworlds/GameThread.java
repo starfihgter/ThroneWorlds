@@ -44,6 +44,7 @@ public class GameThread implements CommandExecutor {
 
         int totalTeams = plugin.getConfig().getInt("Teams", 4);
         worldState.set("BuildZones", null);
+        worldState.set("BlockZones", null);
         for (int i = 0; i < totalTeams; i++){
             //Check and delete portals
             if (teamsDB.isInt("team" + i + ".portal.x")){

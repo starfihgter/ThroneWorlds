@@ -1,6 +1,7 @@
 package net.stardevelopments.throneworlds;
 
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
+import net.stardevelopments.throneworlds.weapons.PortalCompass;
 import net.stardevelopments.throneworlds.weapons.TntBow;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -77,6 +78,11 @@ public class QueenManager implements Listener {
         gui.setItem(2, BuildingCheck.getZoneBlocker());
         gui.setItem(35, back);
 
+        int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
+        for (int i = 0; i < totalTeams; i++){
+            gui.setItem(9 + i, PortalCompass.getPortalCompass(i));
+        }
+
         player.openInventory(gui);
     }
     @EventHandler
@@ -124,9 +130,19 @@ public class QueenManager implements Listener {
                         player.getInventory().addItem(BuildingCheck.getZonePlacer());
                         player.sendMessage("You bought a " + e.getCurrentItem().getItemMeta().getDisplayName());
                     }
-                    case "Power Funnel - Build Zone Blocker":
+                    case "Power Funnel - Build Zone Blocker": {
                         player.getInventory().addItem(BuildingCheck.getZoneBlocker());
                         player.sendMessage("You bought a " + e.getCurrentItem().getItemMeta().getDisplayName());
+                    }
+                    default: {
+                        int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
+                        for (int i = 0; i < totalTeams; i++){
+                            if(e.getCurrentItem().getItemMeta().getDisplayName().equals("Team " + i + " portal tracker")){
+                                player.getInventory().addItem(PortalCompass.getPortalCompass(i));
+                                player.sendMessage("You bought a " + e.getCurrentItem().getItemMeta().getDisplayName());
+                            }
+                        }
+                    }
                 }
                 }
         }
