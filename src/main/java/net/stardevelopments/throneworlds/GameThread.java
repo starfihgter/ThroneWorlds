@@ -37,7 +37,7 @@ public class GameThread implements CommandExecutor {
     }
 
     //Relocate Portals
-    public void portalScatter(){
+    public void portalScatter() {
         FileConfiguration teamsDB = Main.teamsDB.getUserRecord();
         FileConfiguration worldState = Main.worldState.getUserRecord();
         MVWorldManager wm = plugin.wm;
@@ -45,39 +45,40 @@ public class GameThread implements CommandExecutor {
         int totalTeams = plugin.getConfig().getInt("Teams", 4);
         worldState.set("BuildZones", null);
         worldState.set("BlockZones", null);
-        for (int i = 0; i < totalTeams; i++){
-            //Check and delete portals
-            if (teamsDB.isInt("team" + i + ".portal.x")){
-                int x = teamsDB.getInt("team" + i + ".portal.x");
-                int y = teamsDB.getInt("team" + i + ".portal.y");
-                int z = teamsDB.getInt("team" + i + ".portal.z");
-                MultiverseWorld overWorld = wm.getMVWorld("Overworld");
-                Block yBlock = overWorld.getCBWorld().getBlockAt(x,y,z);
-                //Delete portal. I could not think of a better way to do this. Please feel free to change if I'm a moron
-                Material obsidian = Material.AIR;
-                yBlock.setType(obsidian);
-                Block block;
-                for (int b = 1; b < 5; b++){
-                    block = overWorld.getCBWorld().getBlockAt(x, y + b, z);
+        for (int i = 0; i < totalTeams; i++) {
+            if (teamsDB.getInt("team" + i + ".State") != 4){
+                //Check and delete portals
+                if (teamsDB.isInt("team" + i + ".portal.x")) {
+                    int x = teamsDB.getInt("team" + i + ".portal.x");
+                    int y = teamsDB.getInt("team" + i + ".portal.y");
+                    int z = teamsDB.getInt("team" + i + ".portal.z");
+                    MultiverseWorld overWorld = wm.getMVWorld("Overworld");
+                    Block yBlock = overWorld.getCBWorld().getBlockAt(x, y, z);
+                    //Delete portal. I could not think of a better way to do this. Please feel free to change if I'm a moron
+                    Material obsidian = Material.AIR;
+                    yBlock.setType(obsidian);
+                    Block block;
+                    for (int b = 1; b < 5; b++) {
+                        block = overWorld.getCBWorld().getBlockAt(x, y + b, z);
+                        block.setType(obsidian);
+                    }
+                    //Thought that was bad? oooooh boy.
+                    block = overWorld.getCBWorld().getBlockAt(x + 1, y + 4, z);
                     block.setType(obsidian);
-                }
-                //Thought that was bad? oooooh boy.
-                block = overWorld.getCBWorld().getBlockAt(x + 1, y + 4, z);
-                block.setType(obsidian);
-                block = overWorld.getCBWorld().getBlockAt(x + 2, y + 4, z);
-                block.setType(obsidian);
-                block = overWorld.getCBWorld().getBlockAt(x + 1, y, z);
-                block.setType(obsidian);
-                block = overWorld.getCBWorld().getBlockAt(x + 2, y, z);
-                block.setType(obsidian);
-                block = overWorld.getCBWorld().getBlockAt(x + 3, y, z);
-                block.setType(obsidian);
-                for (int b = 1; b < 5; b++){
-                    block = overWorld.getCBWorld().getBlockAt(x + 3, y + b, z);
+                    block = overWorld.getCBWorld().getBlockAt(x + 2, y + 4, z);
                     block.setType(obsidian);
+                    block = overWorld.getCBWorld().getBlockAt(x + 1, y, z);
+                    block.setType(obsidian);
+                    block = overWorld.getCBWorld().getBlockAt(x + 2, y, z);
+                    block.setType(obsidian);
+                    block = overWorld.getCBWorld().getBlockAt(x + 3, y, z);
+                    block.setType(obsidian);
+                    for (int b = 1; b < 5; b++) {
+                        block = overWorld.getCBWorld().getBlockAt(x + 3, y + b, z);
+                        block.setType(obsidian);
+                    }
+                    //*cries*
                 }
-                //*cries*
-            }
             //Randomly generate x and z within play area
             int radius = plugin.getConfig().getInt("border-radius");
             int x = ThreadLocalRandom.current().nextInt(-radius, radius);
@@ -87,7 +88,7 @@ public class GameThread implements CommandExecutor {
 
             //get y value of random coord
             MultiverseWorld overWorld = wm.getMVWorld("Overworld");
-            Block yBlock = overWorld.getCBWorld().getHighestBlockAt(x ,z);
+            Block yBlock = overWorld.getCBWorld().getHighestBlockAt(x, z);
             int y = yBlock.getY();
             teamsDB.set("team" + i + ".portal.y", y);
 
@@ -97,7 +98,7 @@ public class GameThread implements CommandExecutor {
             Material obsidian = Material.OBSIDIAN;
             yBlock.setType(obsidian);
             Block block;
-            for (int b = 1; b < 5; b++){
+            for (int b = 1; b < 5; b++) {
                 block = overWorld.getCBWorld().getBlockAt(x, y + b, z);
                 block.setType(obsidian);
             }
@@ -112,14 +113,14 @@ public class GameThread implements CommandExecutor {
             block.setType(obsidian);
             block = overWorld.getCBWorld().getBlockAt(x + 3, y, z);
             block.setType(obsidian);
-            for (int b = 1; b < 5; b++){
+            for (int b = 1; b < 5; b++) {
                 block = overWorld.getCBWorld().getBlockAt(x + 3, y + b, z);
                 block.setType(obsidian);
             }
             //*cries*
             //MVC portal linking
             PortalManager pm = plugin.pm.getPortalManager();
-            if (pm.isPortal("team" + i + "out")){
+            if (pm.isPortal("team" + i + "out")) {
                 pm.removePortal("team" + i + "out", true);
             }
             PortalLocation pl = new PortalLocation();
@@ -131,6 +132,7 @@ public class GameThread implements CommandExecutor {
             pm.getPortal("team" + i + "home").setDestination("p:team" + i + "out");
             Bukkit.getServer().broadcastMessage("Portals scattered!");
         }
+    }
     }
 
     //Game Start

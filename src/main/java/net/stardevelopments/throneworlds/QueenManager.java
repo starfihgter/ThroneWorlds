@@ -4,10 +4,7 @@ import com.onarandombox.MultiverseCore.MVWorld;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import net.stardevelopments.throneworlds.weapons.PortalCompass;
 import net.stardevelopments.throneworlds.weapons.TntBow;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -15,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -82,7 +80,9 @@ public class QueenManager implements Listener {
 
         int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
         for (int i = 0; i < totalTeams; i++){
+            if (teamsDB.getInt("team" + i + ".State") != 4){
             gui.setItem(9 + i, PortalCompass.getPortalCompass(i));
+            }
         }
 
         player.openInventory(gui);
@@ -149,7 +149,22 @@ public class QueenManager implements Listener {
                 }
         }
     }
-
+    //Check Respawn validity
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent e){
+        Player player = e.getPlayer();
+        int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
+        for (int i = 0; i < totalTeams; i++){
+            for (String member : teamsDB.getStringList("team" + i + ".members")){
+                if (player.getName().equals(member)){
+                    if (teamsDB.getInt("team" + i + ".State") == 4){
+                        player.setGameMode(GameMode.SPECTATOR);
+                        player.sendMessage("You have been eliminated! Thanks for playing Starfihgter's Throne Worlds! You can still spectate.");
+                    }
+                }
+            }
+        }
+    }
     //Queen Death
     @EventHandler
     public void onEntityDeath(EntityDeathEvent e){
@@ -167,10 +182,13 @@ public class QueenManager implements Listener {
                     @Override
                     public void run() {
                         for (Player player : cbWorld.getPlayers()){
+                            Location tpDest = new Location(Bukkit.getWorld("world"), 0, 0, 0);
+                            player.teleport(tpDest);
+                            player.setBedSpawnLocation(plugin.wm.getMVWorld("Overworld").getSpawnLocation(), true);
                             player.setHealth(0);
                         }
                         plugin.wm.deleteWorld(world.getName(), true);
-                        Bukkit.getServer().broadcastMessage("Throne World " + team + "has collpased.");
+                        Bukkit.getServer().broadcastMessage("Throne World " + team + " has collapsed.");
                         plugin.gt.portalScatter();
                         cancel();
                     }
