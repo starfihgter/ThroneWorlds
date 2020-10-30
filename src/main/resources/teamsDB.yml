@@ -3,6 +3,10 @@ team0:
   members:
   State: 4
   power:
+  portal:
+    x:
+    y:
+    z:
 team1:
 team2:
 team3:

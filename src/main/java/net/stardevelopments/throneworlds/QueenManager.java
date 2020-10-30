@@ -3,6 +3,7 @@ package net.stardevelopments.throneworlds;
 import com.onarandombox.MultiverseCore.MVWorld;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import net.stardevelopments.throneworlds.weapons.PortalCompass;
+import net.stardevelopments.throneworlds.weapons.TWAbility;
 import net.stardevelopments.throneworlds.weapons.TntBow;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -30,6 +31,7 @@ public class QueenManager implements Listener {
     }
     FileConfiguration teamsDB = Main.teamsDB.getUserRecord();
     FileConfiguration worldState = Main.worldState.getUserRecord();
+    TWAbility[] itemsList = {new TntBow()};
 
     //Game start
     public void CreateQueens(){
@@ -66,22 +68,27 @@ public class QueenManager implements Listener {
     //Set array list on startup
     public static void findQueens(){}
 
-    //Abilites Screen
+    //Abilities Screen
     public void generateAbilityScreen(Player player){
         Inventory gui = Bukkit.createInventory(player, 36, "Weapons and Ability Store");
 
         ItemStack back = new ItemStack(Material.ARROW, 1);
         Main.setItemName(back, "Go Back", null);
 
-        gui.setItem(0, TntBow.getTntBow());
-        gui.setItem(1, BuildingCheck.getZonePlacer());
-        gui.setItem(2, BuildingCheck.getZoneBlocker());
+        gui.setItem(0, BuildingCheck.getZonePlacer());
+        gui.setItem(1, BuildingCheck.getZoneBlocker());
+
+        int slot = 2;
+        for (TWAbility item : itemsList){
+            gui.setItem(slot, item.getItem());
+            slot++;
+        }
         gui.setItem(35, back);
 
         int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
         for (int i = 0; i < totalTeams; i++){
             if (teamsDB.getInt("team" + i + ".State") != 4){
-            gui.setItem(9 + i, PortalCompass.getPortalCompass(i));
+            gui.setItem(27 + i, new PortalCompass(i).getItem());
             }
         }
 
@@ -100,7 +107,7 @@ public class QueenManager implements Listener {
 
     //Use Queen UI
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent e){
+    public void onInventoryClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
         if (e.getView().getTitle().equals("The Queen")) {
             e.setCancelled(true);
@@ -117,17 +124,10 @@ public class QueenManager implements Listener {
         }
 
         //Yeah I really gotta think of a better way to do this... Kinda wanna do it like tokens, except idk how I'd do internal methods in config...
-        if (e.getView().getTitle().equals("Weapons and Ability Store")){
+        if (e.getView().getTitle().equals("Weapons and Ability Store")) {
             if (e.getCurrentItem().getItemMeta() != null) {
                 e.setCancelled(true);
                 switch (e.getCurrentItem().getItemMeta().getDisplayName()) {
-                    case "TNT Bow": {
-                        player.getInventory().addItem(TntBow.getTntBow());
-                        player.sendMessage("You bought a " + e.getCurrentItem().getItemMeta().getDisplayName());
-                    }
-                    case "Go Back": {
-                        generateMainScreen(player);
-                    }
                     case "Power Funnel - Build Zone": {
                         player.getInventory().addItem(BuildingCheck.getZonePlacer());
                         player.sendMessage("You bought a " + e.getCurrentItem().getItemMeta().getDisplayName());
@@ -138,17 +138,24 @@ public class QueenManager implements Listener {
                     }
                     default: {
                         int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
-                        for (int i = 0; i < totalTeams; i++){
-                            if(e.getCurrentItem().getItemMeta().getDisplayName().equals("Team " + i + " portal tracker")){
-                                player.getInventory().addItem(PortalCompass.getPortalCompass(i));
+                        for (int i = 0; i < totalTeams; i++) {
+                            if (e.getCurrentItem().getItemMeta().getDisplayName().equals(new PortalCompass(i).getName())) {
+                                player.getInventory().addItem(new PortalCompass(i).getItem());
                                 player.sendMessage("You bought a " + e.getCurrentItem().getItemMeta().getDisplayName());
                             }
                         }
                     }
                 }
+                for (TWAbility item : itemsList){
+                    if (e.getCurrentItem().getItemMeta().getDisplayName().equals(item.getName())){
+                        player.getInventory().addItem(item.getItem());
+                        player.sendMessage("You bought a " + item.getName());
+                    }
                 }
+            }
         }
     }
+
     //Check Respawn validity
     @EventHandler
     public void onRespawn(PlayerRespawnEvent e){
