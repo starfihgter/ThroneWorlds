@@ -4,6 +4,7 @@ import com.onarandombox.MultiverseCore.MVWorld;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import net.stardevelopments.throneworlds.weapons.PortalCompass;
 import net.stardevelopments.throneworlds.weapons.TWAbility;
+import net.stardevelopments.throneworlds.weapons.KnockbackShield;
 import net.stardevelopments.throneworlds.weapons.TntBow;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -144,6 +145,10 @@ public class QueenManager implements Listener {
                                 player.sendMessage("You bought a " + e.getCurrentItem().getItemMeta().getDisplayName());
                             }
                         }
+                    }
+                    case "Knockback Shield": {
+                        player.getInventory().addItem(KnockbackShield.getKnockbackShield());
+                        player.sendMessage("You bought a " + e.getCurrentItem().getItemMeta().getDisplayName());
                     }
                 }
                 for (TWAbility item : itemsList){

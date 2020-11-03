@@ -68,5 +68,4 @@ public class Essence implements Listener {
             teamsDB.set("team" + team + ".power", power - 1);
         }
     }
-
 }
