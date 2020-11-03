@@ -1,5 +1,6 @@
-package net.stardevelopments.throneworlds;
+package net.stardevelopments.throneworlds.commands;
 
+import net.stardevelopments.throneworlds.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

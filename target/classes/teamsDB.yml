@@ -1,16 +1,14 @@
-team1:
-  WorldName: Throne1
+team0:
+  WorldName:
   members:
-    - Starfihgter
-    - SirGibbleFrits
-  State:
+  State: 4
   power:
+team1:
 team2:
 team3:
-team4:
 
 #State 0 - Game not started
 #State 1 - Set-up phase (portal inactive)
 #State 2 - Normal gameplay
-#State 3 - Collpasing (no Queen)
+#State 3 - Collapasing (no Queen)
 #State 4 - Throne World Destroyed (No respawn)

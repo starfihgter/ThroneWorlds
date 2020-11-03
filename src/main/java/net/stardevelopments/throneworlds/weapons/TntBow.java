@@ -11,14 +11,17 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 
-public class TntBow implements Listener {
+public class TntBow extends TWAbility implements Listener {
 
-    public static ItemStack getTntBow(){
+    String name = "TNT Bow";
+    int cost = 10;
+    @Override
+    public ItemStack getItem(){
         ItemStack tntBow = new ItemStack(Material.BOW);
         tntBow.addUnsafeEnchantment(Enchantment.ARROW_INFINITE, 999);
 
         ItemMeta tntBowMeta = tntBow.getItemMeta();
-        tntBowMeta.setDisplayName("TNT Bow");
+        tntBowMeta.setDisplayName(name);
 
         ArrayList<String> lore = new ArrayList<>();
         lore.add("Arrows detonate on impact");
@@ -27,6 +30,16 @@ public class TntBow implements Listener {
         tntBow.setItemMeta(tntBowMeta);
 
         return tntBow;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public int getCost() {
+        return cost;
     }
 
     @EventHandler
