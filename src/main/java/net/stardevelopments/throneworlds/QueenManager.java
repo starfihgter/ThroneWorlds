@@ -2,10 +2,7 @@ package net.stardevelopments.throneworlds;
 
 import com.onarandombox.MultiverseCore.MVWorld;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
-import net.stardevelopments.throneworlds.weapons.PortalCompass;
-import net.stardevelopments.throneworlds.weapons.TWAbility;
-import net.stardevelopments.throneworlds.weapons.KnockbackShield;
-import net.stardevelopments.throneworlds.weapons.TntBow;
+import net.stardevelopments.throneworlds.weapons.*;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
@@ -32,7 +29,7 @@ public class QueenManager implements Listener {
     }
     FileConfiguration teamsDB = Main.teamsDB.getUserRecord();
     FileConfiguration worldState = Main.worldState.getUserRecord();
-    TWAbility[] itemsList = {new TntBow()};
+    TWAbility[] itemsList = {new TntBow(), new WitherBow(), new PoisonShank(), new LifeSword(), new KnockbackShield(), new FireBallWand(), new ALHCrossbow()};
 
     //Game start
     public void CreateQueens(){
@@ -145,10 +142,6 @@ public class QueenManager implements Listener {
                                 player.sendMessage("You bought a " + e.getCurrentItem().getItemMeta().getDisplayName());
                             }
                         }
-                    }
-                    case "Knockback Shield": {
-                        player.getInventory().addItem(KnockbackShield.getKnockbackShield());
-                        player.sendMessage("You bought a " + e.getCurrentItem().getItemMeta().getDisplayName());
                     }
                 }
                 for (TWAbility item : itemsList){

@@ -13,14 +13,17 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 
-public class WitherBow implements Listener {
+public class WitherBow extends TWAbility implements Listener {
 
-    public static ItemStack getWitherBow(){
+    String name = "Wither Bow";
+    int cost = 10;
+
+    public ItemStack getItem(){
         ItemStack tntBow = new ItemStack(Material.BOW);
         tntBow.addUnsafeEnchantment(Enchantment.ARROW_INFINITE, 999);
 
         ItemMeta tntBowMeta = tntBow.getItemMeta();
-        tntBowMeta.setDisplayName("Wither Bow");
+        tntBowMeta.setDisplayName(name);
 
         ArrayList<String> lore = new ArrayList<>();
         lore.add("You're a terrible person.");
@@ -52,5 +55,15 @@ public class WitherBow implements Listener {
 
         }
 
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public int getCost() {
+        return cost;
     }
 }

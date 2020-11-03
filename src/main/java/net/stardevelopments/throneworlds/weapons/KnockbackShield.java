@@ -10,14 +10,18 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 
-public class KnockbackShield implements Listener {
+public class KnockbackShield extends TWAbility implements Listener {
 
-    public static ItemStack getKnockbackShield(){
+    String name = "Knockback Shield";
+    int cost = 10;
+
+    @Override
+    public ItemStack getItem(){
 
         ItemStack knockbackShield = new ItemStack(Material.SHIELD);
 
         ItemMeta knockbackShieldMeta = knockbackShield.getItemMeta();
-        knockbackShieldMeta.setDisplayName("Knockback Shield");
+        knockbackShieldMeta.setDisplayName(name);
 
         ArrayList<String> lore = new ArrayList<>();
         lore.add("Blocking damage knockbacks attacker");
@@ -44,5 +48,15 @@ public class KnockbackShield implements Listener {
             }
 
         }
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public int getCost() {
+        return cost;
     }
 }
