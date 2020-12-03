@@ -38,9 +38,9 @@ public class LifeSword extends TWAbility implements Listener {
 
             Player player = (Player) e.getDamager();
 
-            if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("Life Stealer")){
+                if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("Life Stealer")){
 
-                player.setHealth(player.getHealth() + 2);
+                    player.setHealth(player.getHealth() + 2);
 
             }
         }
