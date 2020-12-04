@@ -73,11 +73,13 @@ public class Essence implements Listener {
     }
 
     public void doEssenceForgeDrop(Location location){
+        System.out.println("Forge outputting");
         ItemStack item = getEssence();
         location.getWorld().dropItem(location, item);
     }
 
     public void toBeExecutedEvery5Ticks(){
+        System.out.println("Forge checking");
         int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
         for (int i = 0; i < totalTeams; i++){
             if (teamsDB.getInt("team" + i + ".State") != 4){

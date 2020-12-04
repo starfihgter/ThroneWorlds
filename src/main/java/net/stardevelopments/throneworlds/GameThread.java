@@ -6,6 +6,7 @@ import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import com.onarandombox.MultiversePortals.MultiversePortals;
 import com.onarandombox.MultiversePortals.PortalLocation;
 import com.onarandombox.MultiversePortals.utils.PortalManager;
+import net.stardevelopments.throneworlds.essence.Essence;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,6 +17,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.List;
@@ -36,6 +38,19 @@ public class GameThread implements CommandExecutor {
         sender.sendMessage(message);
     }
 
+    //Get Player Team
+    public static int getPlayerTeam(Player player) {
+        int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
+        FileConfiguration teamsDB = Main.teamsDB.getUserRecord();
+        for (int i = 0; i < totalTeams; i++) {
+            for (String member : teamsDB.getStringList("team" + i + ".members")) {
+                if (player.getName().equals(member)) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
     //Relocate Portals
     public void portalScatter() {
         FileConfiguration teamsDB = Main.teamsDB.getUserRecord();
@@ -190,6 +205,13 @@ public class GameThread implements CommandExecutor {
                     }
                 }
             }
+            //Start Forges
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    new Essence(plugin).toBeExecutedEvery5Ticks();
+                }
+            }.runTaskTimer(plugin, 40, 40);
             Bukkit.getServer().broadcastMessage("Throne Worlds created!");
             qm.CreateQueens();
             portalScatter();

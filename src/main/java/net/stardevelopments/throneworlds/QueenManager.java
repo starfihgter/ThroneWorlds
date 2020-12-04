@@ -144,13 +144,52 @@ public class QueenManager implements Listener {
         Player player = (Player) e.getWhoClicked();
         if (e.getView().getTitle().equals("The Queen")) {
             e.setCancelled(true);
-            if (e.getCurrentItem().getItemMeta() != null) {
+            if (e.getCurrentItem().hasItemMeta()) {
                 switch (e.getCurrentItem().getItemMeta().getDisplayName()) {
                     case "Go Back": {
                         player.closeInventory();
+                        break;
                     }
                     case "Weapon and Ability Store": {
                         generateAbilityScreen(player);
+                        break;
+                    }
+                    case "Upgrade shit!": {
+                        generateUpgradeScreen(player);
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (e.getView().getTitle().equals("Team Upgrades")) {
+            if (e.getCurrentItem().getItemMeta() != null) {
+                e.setCancelled(true);
+                int i = GameThread.getPlayerTeam(player);
+                int efficiency = teamsDB.getInt("team" + i + ".upgrades.forge-e") * 25;
+                int output = teamsDB.getInt("team" + i + ".upgrades.forge-o");
+                switch (e.getCurrentItem().getItemMeta().getDisplayName()) {
+                    case "Go Back": {
+                        generateMainScreen(player);
+                        break;
+                    }
+                    case "Forge Efficiency":{
+                        if (efficiency < 4){
+                            efficiency++;
+                            teamsDB.set("team" + i + ".upgrades.forge-e", efficiency);
+                            player.sendMessage("Forge Efficiency upgraded to " + efficiency * 25 + "%");
+                            generateUpgradeScreen(player);
+                        }
+                        break;
+                    }
+                    case "Forge Output":{
+                        if (output < 4){
+                            output++;
+                            teamsDB.set("team" + i + ".upgrades.forge-o", output);
+                            player.sendMessage("Forge output upgraded to " + output + " per cycle!");
+                            generateUpgradeScreen(player);
+                        }
+                        break;
                     }
                 }
             }
@@ -164,10 +203,12 @@ public class QueenManager implements Listener {
                     case "Power Funnel - Build Zone": {
                         player.getInventory().addItem(BuildingCheck.getZonePlacer());
                         player.sendMessage("You bought a " + e.getCurrentItem().getItemMeta().getDisplayName());
+                        break;
                     }
                     case "Power Funnel - Build Zone Blocker": {
                         player.getInventory().addItem(BuildingCheck.getZoneBlocker());
                         player.sendMessage("You bought a " + e.getCurrentItem().getItemMeta().getDisplayName());
+                        break;
                     }
                     default: {
                         int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
@@ -177,10 +218,12 @@ public class QueenManager implements Listener {
                                 player.sendMessage("You bought a " + e.getCurrentItem().getItemMeta().getDisplayName());
                             }
                         }
+                        break;
                     }
                     case "Knockback Shield": {
                         player.getInventory().addItem(KnockbackShield.getKnockbackShield());
                         player.sendMessage("You bought a " + e.getCurrentItem().getItemMeta().getDisplayName());
+                        break;
                     }
                 }
                 for (TWAbility item : itemsList){
@@ -204,6 +247,7 @@ public class QueenManager implements Listener {
                     if (teamsDB.getInt("team" + i + ".State") == 4){
                         player.setGameMode(GameMode.SPECTATOR);
                         player.sendMessage("You have been eliminated! Thanks for playing Starfihgter's Throne Worlds! You can still spectate.");
+                        Bukkit.getServer().broadcastMessage(player.getDisplayName() + " has been eliminated!");
                     }
                 }
             }
@@ -221,7 +265,7 @@ public class QueenManager implements Listener {
                 MultiverseWorld world = plugin.wm.getMVWorld(queen.getWorld());
                 World cbWorld = world.getCBWorld();
                 cbWorld.getWorldBorder().setSize(1, 60);
-
+                cbWorld.getWorldBorder().setDamageAmount(10);
                 new BukkitRunnable() {
                     @Override
                     public void run() {

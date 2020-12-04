@@ -1,8 +1,15 @@
 team0:
   WorldName:
   members:
-  State: 4
+  State: 0
   power:
+  portal:
+    x:
+    y:
+    z:
+  upgrades:
+    forge-e: 1
+    forge-o: 1
 team1:
 team2:
 team3:

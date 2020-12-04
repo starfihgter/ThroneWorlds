@@ -25,8 +25,7 @@ public class ALHCrossbow implements Listener {
 
         return alhCrossbow;
     }
-    @EventHandler
-    public void onUnload()
+
 
 
 }
