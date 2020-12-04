@@ -3,6 +3,7 @@ package net.stardevelopments.throneworlds.essence;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.utils.WorldManager;
 import net.stardevelopments.throneworlds.Main;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,6 +17,8 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Essence implements Listener {
 
@@ -66,6 +69,28 @@ public class Essence implements Listener {
             char team = worldName.charAt(6);
             int power = teamsDB.getInt("team" + team + ".power", 0);
             teamsDB.set("team" + team + ".power", power - 1);
+        }
+    }
+
+    public void doEssenceForgeDrop(Location location){
+        ItemStack item = getEssence();
+        location.getWorld().dropItem(location, item);
+    }
+
+    public void toBeExecutedEvery5Ticks(){
+        int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
+        for (int i = 0; i < totalTeams; i++){
+            if (teamsDB.getInt("team" + i + ".State") != 4){
+                int efficiency = teamsDB.getInt("team" + i + ".upgrades.forge-e");
+                int output = teamsDB.getInt("team" + i + ".upgrades.forge-o");
+                int random = ThreadLocalRandom.current().nextInt(0, 4);
+                if (efficiency >= random){
+                    Location location = new Location(wm.getMVWorld("Throne" + i).getCBWorld(), 15, 52, -4); // Placeholder Values.
+                    for(int j = 0; j < output; j++){
+                        doEssenceForgeDrop(location);
+                    }
+                }
+            }
         }
     }
 }

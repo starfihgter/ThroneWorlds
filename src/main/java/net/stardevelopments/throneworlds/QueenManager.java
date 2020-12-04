@@ -95,6 +95,38 @@ public class QueenManager implements Listener {
 
         player.openInventory(gui);
     }
+
+    // Upgrades screen
+    public void generateUpgradeScreen(Player player){
+        Inventory gui = Bukkit.createInventory(player, 36, "Team Upgrades");
+
+        int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
+        for (int i = 0; i < totalTeams; i++){
+            for (String member : teamsDB.getStringList("team" + i + ".members")){
+                if (player.getName().equals(member)){
+                    if (teamsDB.getInt("team" + i + ".State") != 4) {
+                        int efficiency = teamsDB.getInt("team" + i + ".upgrades.forge-e") * 25;
+                        int output = teamsDB.getInt("team" + i + ".upgrades.forge-o");
+
+                        ItemStack back = new ItemStack(Material.ARROW, 1);
+                        Main.setItemName(back, "Go Back", null);
+                        gui.setItem(35, back);
+
+                        ItemStack forgeE = new ItemStack(Material.BLAST_FURNACE, 1);
+                        Main.setItemName(forgeE, "Forge Efficiency", Arrays.asList("The Forge is currently operating at " + efficiency + "% efficiency!"));
+                        gui.setItem(0, forgeE);
+
+                        ItemStack forgeO = new ItemStack(Material.FURNACE_MINECART, 1);
+                        Main.setItemName(forgeO, "Forge Output", Arrays.asList("The Forge is currently outputting " + output + " essence per cycle!"));
+                        gui.setItem(1, forgeO);
+
+                        player.openInventory(gui);
+                    }
+                }
+            }
+        }
+    }
+
     @EventHandler
     public void onRightClick(PlayerInteractEntityEvent e){
         Entity queen = e.getRightClicked();
