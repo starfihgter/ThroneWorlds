@@ -166,7 +166,7 @@ public class QueenManager implements Listener {
             if (e.getCurrentItem().getItemMeta() != null) {
                 e.setCancelled(true);
                 int i = GameThread.getPlayerTeam(player);
-                int efficiency = teamsDB.getInt("team" + i + ".upgrades.forge-e") * 25;
+                int efficiency = teamsDB.getInt("team" + i + ".upgrades.forge-e");
                 int output = teamsDB.getInt("team" + i + ".upgrades.forge-o");
                 switch (e.getCurrentItem().getItemMeta().getDisplayName()) {
                     case "Go Back": {
