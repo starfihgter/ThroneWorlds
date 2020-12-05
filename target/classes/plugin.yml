@@ -1,5 +1,5 @@
 name: ThroneWorlds
-version: 1.0-SNAPSHOT-5.12.2020.0
+version: 1.0-SNAPSHOT-5.12.2020.3
 main: net.stardevelopments.throneworlds.Main
 api-version: 1.16
 description: its pretty epic
@@ -14,3 +14,6 @@ commands:
   scatter:
     description: Re-scatters portals!
     usage: /scatter
+  border:
+    description: Changes the overworld play area!
+    usage: /border [w i d t h]

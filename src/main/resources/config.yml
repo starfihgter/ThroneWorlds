@@ -1,2 +1,10 @@
 Teams: 4
 border-radius: 1415
+cost:
+  ALHCrossbow: 10
+  FireBallWand: 10
+  LifeSword: 10
+  PoisonShank: 10
+  PortalCompass: 10
+  TNTBow: 10
+  WitherBow: 100

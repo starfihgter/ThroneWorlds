@@ -14,3 +14,6 @@ commands:
   scatter:
     description: Re-scatters portals!
     usage: /scatter
+  border:
+    description: Changes the overworld play area!
+    usage: /border [w i d t h]

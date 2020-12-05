@@ -1,6 +1,7 @@
 net\stardevelopments\throneworlds\FileLoader.class
 net\stardevelopments\throneworlds\GameThread.class
 net\stardevelopments\throneworlds\weapons\FireBallWand.class
+net\stardevelopments\throneworlds\commands\BorderCommand.class
 net\stardevelopments\throneworlds\weapons\PortalCompass.class
 net\stardevelopments\throneworlds\Main.class
 net\stardevelopments\throneworlds\weapons\LifeSword.class
