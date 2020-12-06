@@ -87,7 +87,7 @@ public class Essence implements Listener {
                 int output = teamsDB.getInt("team" + i + ".upgrades.forge-o");
                 int random = ThreadLocalRandom.current().nextInt(0, 4);
                 if (efficiency >= random){
-                    Location location = new Location(wm.getMVWorld("Throne" + i).getCBWorld(), 15, 52, -4); // Placeholder Values.
+                    Location location = new Location(wm.getMVWorld("Throne" + i).getCBWorld(), 0, 52, 0); // Placeholder Values.
                     for(int j = 0; j < output; j++){
                         doEssenceForgeDrop(location);
                     }
