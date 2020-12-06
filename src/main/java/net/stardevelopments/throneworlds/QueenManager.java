@@ -4,6 +4,8 @@ import com.onarandombox.MultiverseCore.MVWorld;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import net.stardevelopments.throneworlds.weapons.*;
 import org.bukkit.*;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -102,6 +104,8 @@ public class QueenManager implements Listener {
             }
         }
     }
+
+
 
     //Use Queen UI
     @EventHandler

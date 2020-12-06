@@ -50,7 +50,6 @@ public class FireBallWand extends TWAbility implements Listener {
                 if (player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("Fireball Staff")) {
 
                     player.launchProjectile(Fireball.class);
-
                 }
             }
         }

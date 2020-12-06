@@ -41,12 +41,14 @@ public class KnockbackShield extends TWAbility implements Listener {
 
             Player player = (Player) entity;
 
-            if(player.isBlocking()){
+            if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(name)){
 
-                entity1.setVelocity(player.getLocation().getDirection().multiply(2));
+                if(player.isBlocking()){
 
+                    entity1.setVelocity(player.getLocation().getDirection().multiply(2));
+
+                }
             }
-
         }
     }
 
@@ -57,6 +59,7 @@ public class KnockbackShield extends TWAbility implements Listener {
 
     @Override
     public int getCost() {
+
         return cost;
     }
 }
