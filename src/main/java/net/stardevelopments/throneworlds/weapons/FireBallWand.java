@@ -12,14 +12,18 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class FireBallWand implements Listener {
+public class FireBallWand extends TWAbility implements Listener {
 
-    public static ItemStack getFireballStaff(){
+    String name = "Fireball Staff";
+    int cost = 10;
+
+    @Override
+    public ItemStack getItem(){
 
         ItemStack fireballStaff = new ItemStack(Material.BLAZE_ROD);
 
         ItemMeta fireballStaffMeta = fireballStaff.getItemMeta();
-        fireballStaffMeta.setDisplayName("Fireball Staff");
+        fireballStaffMeta.setDisplayName(name);
 
         ArrayList<String> lore = new ArrayList<>();
         lore.add("Shoots fireballs");
@@ -46,9 +50,18 @@ public class FireBallWand implements Listener {
                 if (player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("Fireball Staff")) {
 
                     player.launchProjectile(Fireball.class);
-
                 }
             }
         }
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public int getCost() {
+        return cost;
     }
 }

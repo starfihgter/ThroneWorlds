@@ -13,14 +13,18 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 
-public class PoisonShank implements Listener {
+public class PoisonShank extends TWAbility implements Listener {
 
-    public static ItemStack getPoisonShank(){
+    String name = "Poison Shank";
+    int cost = 10;
+
+    @Override
+    public ItemStack getItem(){
 
         ItemStack poisonShank = new ItemStack(Material.STICK);
 
         ItemMeta poisonShankMeta = poisonShank.getItemMeta();
-        poisonShankMeta.setDisplayName("Poison Shank");
+        poisonShankMeta.setDisplayName(name);
 
         ArrayList<String> lore = new ArrayList<>();
         lore.add("Poisons your opponent");
@@ -47,6 +51,15 @@ public class PoisonShank implements Listener {
                 }
             }
         }
+    }
 
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public int getCost() {
+        return cost;
     }
 }

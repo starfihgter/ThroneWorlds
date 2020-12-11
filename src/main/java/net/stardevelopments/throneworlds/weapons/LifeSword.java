@@ -9,14 +9,18 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 
-public class LifeSword implements Listener {
+public class LifeSword extends TWAbility implements Listener {
 
-    public static ItemStack getLifeSword(){
+    String name = "Life Stealer";
+    int cost = 10;
+
+    @Override
+    public ItemStack getItem(){
 
         ItemStack lifeSword = new ItemStack(Material.IRON_SWORD);
 
         ItemMeta lifeSwordMeta = lifeSword.getItemMeta();
-        lifeSwordMeta.setDisplayName("Life Stealer");
+        lifeSwordMeta.setDisplayName(name);
 
         ArrayList<String> lore = new ArrayList<>();
         lore.add("Steal life from your opponent");
@@ -34,12 +38,22 @@ public class LifeSword implements Listener {
 
             Player player = (Player) e.getDamager();
 
-            if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("Life Stealer")){
+                if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("Life Stealer")){
 
-                player.setHealth(player.getHealth() + 2);
+                    player.setHealth(player.getHealth() + 2);
 
             }
         }
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public int getCost() {
+        return cost;
     }
 
 }
