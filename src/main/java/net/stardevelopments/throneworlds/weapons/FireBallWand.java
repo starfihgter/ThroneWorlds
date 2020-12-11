@@ -1,5 +1,6 @@
 package net.stardevelopments.throneworlds.weapons;
 
+import net.stardevelopments.throneworlds.Main;
 import org.bukkit.Material;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
@@ -15,7 +16,7 @@ import java.util.Objects;
 public class FireBallWand extends TWAbility implements Listener {
 
     String name = "Fireball Staff";
-    int cost = 10;
+    int cost = Main.plugin.getConfig().getInt("FireBallWand", 4);
 
     @Override
     public ItemStack getItem(){
@@ -27,6 +28,7 @@ public class FireBallWand extends TWAbility implements Listener {
 
         ArrayList<String> lore = new ArrayList<>();
         lore.add("Shoots fireballs");
+        lore.add("This item costs " + cost + " essence!");
         fireballStaffMeta.setLore(lore);
 
         fireballStaff.setItemMeta(fireballStaffMeta);

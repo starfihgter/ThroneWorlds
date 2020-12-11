@@ -6,6 +6,7 @@ import com.onarandombox.MultiversePortals.MultiversePortals;
 import jdk.internal.jline.internal.Nullable;
 import net.stardevelopments.throneworlds.commands.BorderCommand;
 import net.stardevelopments.throneworlds.commands.ScatterCommand;
+import net.stardevelopments.throneworlds.commands.TeamsCommand;
 import net.stardevelopments.throneworlds.weapons.*;
 import net.stardevelopments.throneworlds.essence.Essence;
 import org.bukkit.Bukkit;
@@ -14,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 

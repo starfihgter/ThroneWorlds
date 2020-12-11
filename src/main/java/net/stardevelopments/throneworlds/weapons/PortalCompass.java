@@ -15,7 +15,7 @@ import java.util.Arrays;
 public class PortalCompass extends TWAbility {
     private int team;
     String name;
-    int cost = 10;
+    int cost = Main.plugin.getConfig().getInt("PortalCompass", 4);
     public PortalCompass(int pTeam){
         this.team = pTeam;
         name = "Team " + team + " portal tracker";
@@ -44,7 +44,7 @@ public class PortalCompass extends TWAbility {
         cmp.setLodestoneTracked(false);
         cmp.setLodestone(location);
         cmp.setDisplayName(name);
-        cmp.setLore(Arrays.asList("This tracker is useless after a portal scatter"));
+        cmp.setLore(Arrays.asList("This tracker is useless after a portal scatter", "This item costs " + cost + " essence!"));
         compass.setItemMeta(cmp);
         return compass;
     }

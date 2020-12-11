@@ -1,5 +1,6 @@
 package net.stardevelopments.throneworlds.weapons;
 
+import net.stardevelopments.throneworlds.Main;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 public class TntBow extends TWAbility implements Listener {
 
     String name = "TNT Bow";
-    int cost = 10;
+    int cost = Main.plugin.getConfig().getInt("TNTBow", 4);
     @Override
     public ItemStack getItem(){
         ItemStack tntBow = new ItemStack(Material.BOW);
@@ -25,6 +26,7 @@ public class TntBow extends TWAbility implements Listener {
 
         ArrayList<String> lore = new ArrayList<>();
         lore.add("Arrows detonate on impact");
+        lore.add("This item costs " + cost + " essence!");
         tntBowMeta.setLore(lore);
 
         tntBow.setItemMeta(tntBowMeta);
@@ -49,10 +51,7 @@ public class TntBow extends TWAbility implements Listener {
 
             Player player = (Player) e.getEntity().getShooter();
 
-            ArrayList<String> tntBowLore = new ArrayList<>();
-            tntBowLore.add("Arrows detonate on impact");
-
-            if(player.getInventory().getItemInMainHand().getItemMeta().getLore().equals(tntBowLore)){
+            if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(getName())){
 
                 Location location = e.getEntity().getLocation();
                 location.getWorld().createExplosion(location, 3);

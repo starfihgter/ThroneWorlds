@@ -1,5 +1,6 @@
 package net.stardevelopments.throneworlds.weapons;
 
+import net.stardevelopments.throneworlds.Main;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 public class WitherBow extends TWAbility implements Listener {
 
     String name = "Wither Bow";
-    int cost = 10;
+    int cost = Main.plugin.getConfig().getInt("WitherBow", 4);
 
     public ItemStack getItem(){
         ItemStack tntBow = new ItemStack(Material.BOW);
@@ -27,6 +28,7 @@ public class WitherBow extends TWAbility implements Listener {
 
         ArrayList<String> lore = new ArrayList<>();
         lore.add("You're a terrible person.");
+        lore.add("This item costs " + cost + " essence!");
         tntBowMeta.setLore(lore);
 
         tntBow.setItemMeta(tntBowMeta);
@@ -41,10 +43,7 @@ public class WitherBow extends TWAbility implements Listener {
 
             Player player = (Player) e.getEntity().getShooter();
 
-            ArrayList<String> tntBowLore = new ArrayList<>();
-            tntBowLore.add("You're a terrible person.");
-
-            if(player.getInventory().getItemInMainHand().getItemMeta().getLore().equals(tntBowLore)){
+            if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(getName())){
 
                 Location location = e.getEntity().getLocation();
                 location.getWorld().spawnEntity(location, EntityType.WITHER);

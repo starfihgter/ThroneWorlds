@@ -1,5 +1,6 @@
 package net.stardevelopments.throneworlds.weapons;
 
+import net.stardevelopments.throneworlds.Main;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 public class PoisonShank extends TWAbility implements Listener {
 
     String name = "Poison Shank";
-    int cost = 10;
+    int cost = Main.plugin.getConfig().getInt("PoisonShank", 4);
 
     @Override
     public ItemStack getItem(){
@@ -28,6 +29,7 @@ public class PoisonShank extends TWAbility implements Listener {
 
         ArrayList<String> lore = new ArrayList<>();
         lore.add("Poisons your opponent");
+        lore.add("This item costs " + cost + " essence!");
         poisonShankMeta.setLore(lore);
 
         poisonShank.setItemMeta(poisonShankMeta);

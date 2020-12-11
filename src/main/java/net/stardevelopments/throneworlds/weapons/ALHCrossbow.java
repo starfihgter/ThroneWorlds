@@ -1,5 +1,6 @@
 package net.stardevelopments.throneworlds.weapons;
 
+import net.stardevelopments.throneworlds.Main;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 public class ALHCrossbow extends TWAbility implements Listener {
 
     String name = "ALH Crossbow";
-    int cost = 10;
+    int cost = Main.plugin.getConfig().getInt("ALHCrossbow", 4);
 
     @Override
     public ItemStack getItem(){
@@ -23,6 +24,7 @@ public class ALHCrossbow extends TWAbility implements Listener {
 
         ArrayList<String> lore = new ArrayList<>();
         lore.add("Crossbow automatically reload");
+        lore.add("This item costs " + cost + " essence!");
         alhcrossbowMeta.getLore();
 
         alhCrossbow.setItemMeta(alhcrossbowMeta);

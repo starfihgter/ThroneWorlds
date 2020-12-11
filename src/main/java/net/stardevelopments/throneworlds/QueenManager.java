@@ -2,6 +2,7 @@ package net.stardevelopments.throneworlds;
 
 import com.onarandombox.MultiverseCore.MVWorld;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
+import net.stardevelopments.throneworlds.essence.Essence;
 import net.stardevelopments.throneworlds.weapons.*;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -33,6 +34,35 @@ public class QueenManager implements Listener {
     FileConfiguration worldState = Main.worldState.getUserRecord();
     TWAbility[] itemsList = {new TntBow(), new WitherBow(), new PoisonShank(), new LifeSword(), new KnockbackShield(), new FireBallWand(), new ALHCrossbow()};
 
+    public Boolean removeMoneys(ItemStack item, int cost, Player player){
+        int initCost = cost;
+        //Checking if player can pay
+        ItemStack essence = Essence.getEssence();
+        Inventory inventory = player.getInventory();
+        for (ItemStack slot : inventory.getContents()){
+            try{
+                slot.isSimilar(essence);
+            }catch (NullPointerException e){
+                break;
+            }
+                if (slot.isSimilar(essence)){
+                    if(slot.getAmount() >= cost){
+                        slot.setAmount(slot.getAmount() - cost);
+                        inventory.addItem(item);
+                        player.sendMessage("You bought " + item.getItemMeta().getDisplayName());
+                        return true;
+                    } else{
+                        cost = cost - slot.getAmount();
+                        slot.setAmount(0);
+                    }
+                }
+        }
+        for (int i = 0; i < initCost - cost; i++){
+            inventory.addItem(essence);
+        }
+        player.sendMessage("You need " + (cost) + " more essence to buy " + item.getItemMeta().getDisplayName());
+        return false;
+    }
     //Game start
     public void CreateQueens(){
 
@@ -74,7 +104,6 @@ public class QueenManager implements Listener {
 
         ItemStack back = new ItemStack(Material.ARROW, 1);
         Main.setItemName(back, "Go Back", null);
-
         gui.setItem(0, BuildingCheck.getZonePlacer());
         gui.setItem(1, BuildingCheck.getZoneBlocker());
 
@@ -176,18 +205,22 @@ public class QueenManager implements Listener {
                     }
                     case "Forge Efficiency":{
                         if (efficiency < 4){
-                            efficiency++;
-                            teamsDB.set("team" + i + ".upgrades.forge-e", efficiency);
-                            player.sendMessage("Forge Efficiency upgraded to " + efficiency * 25 + "%");
+                            if (removeMoneys(e.getCurrentItem(), Main.plugin.getConfig().getInt("ForgeE", 4), player)){
+                                efficiency++;
+                                teamsDB.set("team" + i + ".upgrades.forge-e", efficiency);
+                                player.sendMessage("Forge Efficiency upgraded to " + efficiency * 25 + "%");
+                            }
                             generateUpgradeScreen(player);
                         }
                         break;
                     }
                     case "Forge Output":{
                         if (output < 4){
-                            output++;
-                            teamsDB.set("team" + i + ".upgrades.forge-o", output);
-                            player.sendMessage("Forge output upgraded to " + output + " per cycle!");
+                            if (removeMoneys(e.getCurrentItem(), Main.plugin.getConfig().getInt("ForgeO", 4), player)) {
+                                output++;
+                                teamsDB.set("team" + i + ".upgrades.forge-o", output);
+                                player.sendMessage("Forge output upgraded to " + output + " per cycle!");
+                            }
                             generateUpgradeScreen(player);
                         }
                         break;
@@ -196,27 +229,23 @@ public class QueenManager implements Listener {
             }
         }
 
-        //Yeah I really gotta think of a better way to do this... Kinda wanna do it like tokens, except idk how I'd do internal methods in config...
         if (e.getView().getTitle().equals("Weapons and Ability Store")) {
             if (e.getCurrentItem().getItemMeta() != null) {
                 e.setCancelled(true);
                 switch (e.getCurrentItem().getItemMeta().getDisplayName()) {
                     case "Power Funnel - Build Zone": {
-                        player.getInventory().addItem(BuildingCheck.getZonePlacer());
-                        player.sendMessage("You bought a " + e.getCurrentItem().getItemMeta().getDisplayName());
+                        removeMoneys(BuildingCheck.getZonePlacer(), Main.plugin.getConfig().getInt("ZPlacer", 4), player);
                         break;
                     }
                     case "Power Funnel - Build Zone Blocker": {
-                        player.getInventory().addItem(BuildingCheck.getZoneBlocker());
-                        player.sendMessage("You bought a " + e.getCurrentItem().getItemMeta().getDisplayName());
+                        removeMoneys(BuildingCheck.getZoneBlocker(), Main.plugin.getConfig().getInt("ZBlocker", 4), player);
                         break;
                     }
                     default: {
                         int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
                         for (int i = 0; i < totalTeams; i++) {
                             if (e.getCurrentItem().getItemMeta().getDisplayName().equals(new PortalCompass(i).getName())) {
-                                player.getInventory().addItem(new PortalCompass(i).getItem());
-                                player.sendMessage("You bought a " + e.getCurrentItem().getItemMeta().getDisplayName());
+                                removeMoneys(new PortalCompass(i).getItem(), new PortalCompass(i).getCost(), player);
                             }
                         }
                         break;
@@ -224,8 +253,7 @@ public class QueenManager implements Listener {
                 }
                 for (TWAbility item : itemsList){
                     if (e.getCurrentItem().getItemMeta().getDisplayName().equals(item.getName())){
-                        player.getInventory().addItem(item.getItem());
-                        player.sendMessage("You bought a " + item.getName());
+                        removeMoneys(item.getItem(), item.getCost(), player);
                     }
                 }
             }

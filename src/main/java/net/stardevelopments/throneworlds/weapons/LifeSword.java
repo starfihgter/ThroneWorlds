@@ -1,5 +1,6 @@
 package net.stardevelopments.throneworlds.weapons;
 
+import net.stardevelopments.throneworlds.Main;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 public class LifeSword extends TWAbility implements Listener {
 
     String name = "Life Stealer";
-    int cost = 10;
+    int cost = Main.plugin.getConfig().getInt("LifeSword", 4);
 
     @Override
     public ItemStack getItem(){
@@ -24,6 +25,7 @@ public class LifeSword extends TWAbility implements Listener {
 
         ArrayList<String> lore = new ArrayList<>();
         lore.add("Steal life from your opponent");
+        lore.add("This item costs " + cost + " essence!");
         lifeSwordMeta.setLore(lore);
 
         lifeSword.setItemMeta(lifeSwordMeta);

@@ -1,5 +1,6 @@
 package net.stardevelopments.throneworlds.weapons;
 
+import net.stardevelopments.throneworlds.Main;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 public class KnockbackShield extends TWAbility implements Listener {
 
     String name = "Knockback Shield";
-    int cost = 10;
+    int cost = Main.plugin.getConfig().getInt("KBShield", 4);
 
     @Override
     public ItemStack getItem(){
@@ -25,6 +26,7 @@ public class KnockbackShield extends TWAbility implements Listener {
 
         ArrayList<String> lore = new ArrayList<>();
         lore.add("Blocking damage knockbacks attacker");
+        lore.add("This item costs " + cost + " essence!");
         knockbackShieldMeta.setLore(lore);
 
         knockbackShield.setItemMeta(knockbackShieldMeta);
