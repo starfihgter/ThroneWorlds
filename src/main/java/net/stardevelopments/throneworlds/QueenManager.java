@@ -32,7 +32,7 @@ public class QueenManager implements Listener {
     }
     FileConfiguration teamsDB = Main.teamsDB.getUserRecord();
     FileConfiguration worldState = Main.worldState.getUserRecord();
-    TWAbility[] itemsList = {new TntBow(), new WitherBow(), new PoisonShank(), new LifeSword(), new KnockbackShield(), new FireBallWand(), new ALHCrossbow()};
+    TWAbility[] itemsList = {new TntBow(), new WitherBow(), new PoisonShank(), new LifeSword(), new KnockbackShield(), new FireBallWand()};
 
     public Boolean removeMoneys(ItemStack item, int cost, Player player){
         int initCost = cost;
@@ -69,7 +69,7 @@ public class QueenManager implements Listener {
         int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
         for (int i = 0; i < totalTeams; i++){
             World world = Bukkit.getWorld(Objects.requireNonNull(teamsDB.getString("team" + i + ".WorldName")));
-            Location queenLoc = new Location(world, -14.5, 38.5, 0.5);
+            Location queenLoc = new Location(world, -12.5, 46, 0.5,-90,0);
             Entity queen = world.spawnEntity(queenLoc, EntityType.VILLAGER);
             queen.setCustomName("Queen " + i);
             LivingEntity livingQueen = (LivingEntity) queen;
@@ -88,7 +88,7 @@ public class QueenManager implements Listener {
         Main.setItemName(abilities, "Weapon and Ability Store", null);
         Main.setItemName(upgrade, "Upgrade shit!", null);
         Main.setItemName(power, "All the power you could want.", Arrays.asList("Current Power: " + teamsDB.getInt("team" + team + ".power", 0)
-                ,"Power Funnels can create Build Zones with a radius of " + (10 + (Math.pow((teamsDB.getInt("team" + team + ".power", 0)), 2) /2))));
+                ,"Power Funnels can create Build Zones with a radius of " + (10 + (9*Math.sqrt(teamsDB.getInt("team" + team + ".power", 0))))));
         gui.setItem(11, abilities);
         gui.setItem(13, upgrade);
         gui.setItem(15, power);
@@ -198,6 +198,7 @@ public class QueenManager implements Listener {
                 int i = GameThread.getPlayerTeam(player);
                 int efficiency = teamsDB.getInt("team" + i + ".upgrades.forge-e");
                 int output = teamsDB.getInt("team" + i + ".upgrades.forge-o");
+                int factor = 1;
                 switch (e.getCurrentItem().getItemMeta().getDisplayName()) {
                     case "Go Back": {
                         generateMainScreen(player);
@@ -205,7 +206,10 @@ public class QueenManager implements Listener {
                     }
                     case "Forge Efficiency":{
                         if (efficiency < 4){
-                            if (removeMoneys(e.getCurrentItem(), Main.plugin.getConfig().getInt("ForgeE", 4), player)){
+                            if (efficiency == 1){factor = 1;}
+                            if (efficiency == 2){factor = 4;}
+                            if (efficiency == 3){factor = 9;}
+                            if (removeMoneys(e.getCurrentItem(), Main.plugin.getConfig().getInt("ForgeE", 4) * factor, player)){
                                 efficiency++;
                                 teamsDB.set("team" + i + ".upgrades.forge-e", efficiency);
                                 player.sendMessage("Forge Efficiency upgraded to " + efficiency * 25 + "%");
@@ -216,7 +220,10 @@ public class QueenManager implements Listener {
                     }
                     case "Forge Output":{
                         if (output < 4){
-                            if (removeMoneys(e.getCurrentItem(), Main.plugin.getConfig().getInt("ForgeO", 4), player)) {
+                            if (output == 1){factor = 1;}
+                            if (output == 2){factor = 4;}
+                            if (output == 3){factor = 9;}
+                            if (removeMoneys(e.getCurrentItem(), Main.plugin.getConfig().getInt("ForgeO", 4) * factor, player)) {
                                 output++;
                                 teamsDB.set("team" + i + ".upgrades.forge-o", output);
                                 player.sendMessage("Forge output upgraded to " + output + " per cycle!");

@@ -50,7 +50,6 @@ public class BuildingCheck implements Listener {
     public boolean checkValid(Player player){
         int playerX = player.getLocation().getBlockX();
         int playerZ = player.getLocation().getBlockZ();
-        //THE GREAT MACHINE WILL FINALLY KNOW OUR PAIN
         int totalTeams = config.getInt("Teams", 4);
         for (int i = 0; i < totalTeams; i++){
             List<String> members= teamsDB.getStringList("team" + i + ".members");
@@ -62,7 +61,8 @@ public class BuildingCheck implements Listener {
 
                     double distance = Math.sqrt(Math.pow(playerX - x, 2) + Math.pow(playerZ - z, 2));
                     double radius = 10;
-                    radius = radius + (Math.pow((teamsDB.getInt("team" + i + ".power", 0)), 2) /2);
+                    radius = radius + ((9*Math.sqrt((teamsDB.getInt("team" + i + ".power", 0)))));
+                    if (radius > 120){radius = 120;}
                     if (distance < radius){
                         return true;
                     }
@@ -115,7 +115,7 @@ public class BuildingCheck implements Listener {
                         int blockX = WorldState.getInt("BlockZones." + key + ".x");
                         int blockZ = WorldState.getInt("BlockZones." + key + ".z");
                         double distance = Math.sqrt(Math.pow(player.getLocation().getBlockX() - blockX, 2) + Math.pow(player.getLocation().getBlockZ() - blockZ, 2));
-                        int radius = 30;
+                        int radius = 100;
                         if (distance < radius){
                             player.sendMessage("This area is being blocked against build zones!");
                             return;
