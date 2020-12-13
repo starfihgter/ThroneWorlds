@@ -32,7 +32,7 @@ public class QueenManager implements Listener {
     }
     FileConfiguration teamsDB = Main.teamsDB.getUserRecord();
     FileConfiguration worldState = Main.worldState.getUserRecord();
-    TWAbility[] itemsList = {new TntBow(), new WitherBow(), new PoisonShank(), new LifeSword(), new KnockbackShield(), new FireBallWand()};
+    TWAbility[] itemsList = {new WitherBow(), new PoisonShank(), new LifeSword(), new KnockbackShield()};
 
     public Boolean removeMoneys(ItemStack item, int cost, Player player){
         int initCost = cost;
