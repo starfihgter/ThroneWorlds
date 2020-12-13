@@ -4,7 +4,10 @@ import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiversePortals.MultiversePortals;
 import jdk.internal.jline.internal.Nullable;
-import net.stardevelopments.throneworlds.weapons.TntBow;
+import net.stardevelopments.throneworlds.commands.BorderCommand;
+import net.stardevelopments.throneworlds.commands.ScatterCommand;
+import net.stardevelopments.throneworlds.commands.TeamsCommand;
+import net.stardevelopments.throneworlds.weapons.*;
 import net.stardevelopments.throneworlds.essence.Essence;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -28,6 +31,9 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
+        plugin.saveResource("config.yml", false);
+        plugin.saveResource("teamsDB.yml", false);
+        plugin.saveResource("WorldState.yml", false);
         config = this.getConfig();
         teamsDB = new FileLoader("teamsDB.yml");
         worldState = new FileLoader("WorldState.yml");
@@ -49,13 +55,22 @@ public final class Main extends JavaPlugin {
 
         getCommand("startgame").setExecutor(gt);
         getCommand("teams").setExecutor(new TeamsCommand());
+        getCommand("scatter").setExecutor(new ScatterCommand(gt));
+        getCommand("border").setExecutor(new BorderCommand(this));
 
         int gameState = worldState.getUserRecord().getInt("GameState", 0);
         System.out.println("Throne worlds has started in state " + gameState);
 
         getServer().getPluginManager().registerEvents(new TntBow(), this);
+        getServer().getPluginManager().registerEvents(new LifeSword(), this);
+        getServer().getPluginManager().registerEvents(new PoisonShank(), this);
+        getServer().getPluginManager().registerEvents(new KnockbackShield(), this);
+        getServer().getPluginManager().registerEvents(new FireBallWand(), this);
+        getServer().getPluginManager().registerEvents(new WitherBow(), this);
         getServer().getPluginManager().registerEvents(new Essence(this), this);
         getServer().getPluginManager().registerEvents(qm, this);
+        getServer().getPluginManager().registerEvents(new BuildingCheck(this), this);
+
     }
 
     @Override

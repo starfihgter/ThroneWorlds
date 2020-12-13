@@ -1,2 +1,11 @@
 SpireActivated: false
 GameState: 0
+BuildZones:
+  team0:
+    z0:
+      x:
+      z:
+BlockZones:
+  z0:
+    x:
+    z:
