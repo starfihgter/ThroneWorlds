@@ -3,7 +3,7 @@ package net.stardevelopments.throneworlds;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiversePortals.MultiversePortals;
-import jdk.internal.jline.internal.Nullable;
+//import jdk.internal.jline.internal.Nullable;
 import net.stardevelopments.throneworlds.commands.BorderCommand;
 import net.stardevelopments.throneworlds.commands.ScatterCommand;
 import net.stardevelopments.throneworlds.commands.TeamsCommand;
@@ -30,6 +30,8 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+        //Save default plugin files
         plugin = this;
         plugin.saveResource("config.yml", false);
         plugin.saveResource("teamsDB.yml", false);
@@ -40,6 +42,7 @@ public final class Main extends JavaPlugin {
         teamsDB.reloadUserRecord();
         worldState.reloadUserRecord();
 
+        //Check for Multiverse Core and Multiverse Portals, and register MVWorldManager (wm) and Portal Manager (pm)
         MultiverseCore mvc = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
         pm = (MultiversePortals) Bukkit.getPluginManager().getPlugin("Multiverse-Portals");
         if (mvc == null || pm == null){
@@ -49,10 +52,11 @@ public final class Main extends JavaPlugin {
         }
         wm = mvc.getMVWorldManager();
 
-
+        //Create static QueenManager and GameThread Objects
         qm = new QueenManager(this);
         gt = new GameThread(this, qm);
 
+        //Command Registration
         getCommand("startgame").setExecutor(gt);
         getCommand("teams").setExecutor(new TeamsCommand());
         getCommand("scatter").setExecutor(new ScatterCommand(gt));
@@ -61,6 +65,7 @@ public final class Main extends JavaPlugin {
         int gameState = worldState.getUserRecord().getInt("GameState", 0);
         System.out.println("Throne worlds has started in state " + gameState);
 
+        //Class Listener Registration
         getServer().getPluginManager().registerEvents(new TntBow(), this);
         getServer().getPluginManager().registerEvents(new LifeSword(), this);
         getServer().getPluginManager().registerEvents(new PoisonShank(), this);
@@ -75,13 +80,15 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        //Save files
         teamsDB.saveCustomConfig();
         plugin.saveConfig();
         worldState.saveCustomConfig();
         System.out.println("Saved files!");
     }
 
-    public static ItemStack setItemName(ItemStack item, String name, @Nullable List<String> lore){
+    public static ItemStack setItemName(ItemStack item, String name, List<String> lore){
+        //Simple method to set item name and lore
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(name);
 

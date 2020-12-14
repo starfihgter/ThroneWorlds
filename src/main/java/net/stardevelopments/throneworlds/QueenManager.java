@@ -32,21 +32,27 @@ public class QueenManager implements Listener {
     }
     FileConfiguration teamsDB = Main.teamsDB.getUserRecord();
     FileConfiguration worldState = Main.worldState.getUserRecord();
+
+    //Ability master array - ADD CLASSES HERE TO AUTOMATICALLY ADD TO STORE
     TWAbility[] itemsList = {new WitherBow(), new PoisonShank(), new LifeSword(), new KnockbackShield()};
 
+    //This method checks if the player can afford a given item.
     public Boolean removeMoneys(ItemStack item, int cost, Player player){
         int initCost = cost;
         //Checking if player can pay
         ItemStack essence = Essence.getEssence();
         Inventory inventory = player.getInventory();
+
+        //Null Check
         for (ItemStack slot : inventory.getContents()){
             try{
                 slot.isSimilar(essence);
             }catch (NullPointerException e){
-                break;
+                break; //THIS IS EXITING THE FOR LOOP IN ITS ENTIRETY (bug)!
             }
                 if (slot.isSimilar(essence)){
                     if(slot.getAmount() >= cost){
+                        //If they have enough in THAT STACK, buys the item
                         slot.setAmount(slot.getAmount() - cost);
                         inventory.addItem(item);
                         player.sendMessage("You bought " + item.getItemMeta().getDisplayName());
@@ -58,6 +64,7 @@ public class QueenManager implements Listener {
                 }
         }
         for (int i = 0; i < initCost - cost; i++){
+            //Returns an essence for every essence removed, if not enough essence was found to pay for the item.
             inventory.addItem(essence);
         }
         player.sendMessage("You need " + (cost) + " more essence to buy " + item.getItemMeta().getDisplayName());
@@ -65,9 +72,10 @@ public class QueenManager implements Listener {
     }
     //Game start
     public void CreateQueens(){
-
         int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
         for (int i = 0; i < totalTeams; i++){
+
+            //Creates a queen in each throne world
             World world = Bukkit.getWorld(Objects.requireNonNull(teamsDB.getString("team" + i + ".WorldName")));
             Location queenLoc = new Location(world, -12.5, 46, 0.5,-90,0);
             Entity queen = world.spawnEntity(queenLoc, EntityType.VILLAGER);
@@ -79,6 +87,8 @@ public class QueenManager implements Listener {
     }
     //Generate Queen UI
     public void generateMainScreen(Player player){
+
+        //Define inventory, and main screen icons.
         Inventory gui = Bukkit.createInventory(player, 27, "The Queen");
         ItemStack abilities = new ItemStack(Material.HONEY_BOTTLE, 1);
         ItemStack upgrade = new ItemStack(Material.ENDER_CHEST, 1);
@@ -89,6 +99,8 @@ public class QueenManager implements Listener {
         Main.setItemName(upgrade, "Upgrade shit!", null);
         Main.setItemName(power, "All the power you could want.", Arrays.asList("Current Power: " + teamsDB.getInt("team" + team + ".power", 0)
                 ,"Power Funnels can create Build Zones with a radius of " + (10 + (9*Math.sqrt(teamsDB.getInt("team" + team + ".power", 0))))));
+
+        //Setting items and opening inventory
         gui.setItem(11, abilities);
         gui.setItem(13, upgrade);
         gui.setItem(15, power);
@@ -100,6 +112,8 @@ public class QueenManager implements Listener {
 
     //Abilities Screen
     public void generateAbilityScreen(Player player){
+
+        //Defining basics
         Inventory gui = Bukkit.createInventory(player, 36, "Weapons and Ability Store");
 
         ItemStack back = new ItemStack(Material.ARROW, 1);
@@ -107,6 +121,9 @@ public class QueenManager implements Listener {
         gui.setItem(0, BuildingCheck.getZonePlacer());
         gui.setItem(1, BuildingCheck.getZoneBlocker());
 
+
+        //This loop starts at slot 2 (after the zone blocker and placer cause they're hard coded), and then runs through each item
+        //in the itemsList array from earlier, and then assigns the item to a slot.
         int slot = 2;
         for (TWAbility item : itemsList){
             gui.setItem(slot, item.getItem());
@@ -114,6 +131,7 @@ public class QueenManager implements Listener {
         }
         gui.setItem(35, back);
 
+        //Checks how many teams many teams there are, then runs through them. If they aren't eliminated, adds a compass to the store.
         int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
         for (int i = 0; i < totalTeams; i++){
             if (teamsDB.getInt("team" + i + ".State") != 4){
@@ -128,11 +146,17 @@ public class QueenManager implements Listener {
     public void generateUpgradeScreen(Player player){
         Inventory gui = Bukkit.createInventory(player, 36, "Team Upgrades");
 
+        //Checks how many teams there are,
         int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
         for (int i = 0; i < totalTeams; i++){
+            //Then for each player of each team
             for (String member : teamsDB.getStringList("team" + i + ".members")){
+                //Checks if they are the player who is using the inventory
                 if (player.getName().equals(member)){
+                    //Checks if the team is eliminated
                     if (teamsDB.getInt("team" + i + ".State") != 4) {
+                        //Now we know what team the player is on, and we know they're not eliminated.
+                        //Grabs the current efficiency and output from team database
                         int efficiency = teamsDB.getInt("team" + i + ".upgrades.forge-e") * 25;
                         int output = teamsDB.getInt("team" + i + ".upgrades.forge-o");
 
@@ -140,6 +164,7 @@ public class QueenManager implements Listener {
                         Main.setItemName(back, "Go Back", null);
                         gui.setItem(35, back);
 
+                        //Creating upgrade items based on Efficiency and output values.
                         ItemStack forgeE = new ItemStack(Material.BLAST_FURNACE, 1);
                         Main.setItemName(forgeE, "Forge Efficiency", Arrays.asList("The Forge is currently operating at " + efficiency + "% efficiency!"));
                         gui.setItem(0, forgeE);
@@ -157,6 +182,7 @@ public class QueenManager implements Listener {
 
     @EventHandler
     public void onRightClick(PlayerInteractEntityEvent e){
+        //Checks if its a queen, opens the menu if so.
         Entity queen = e.getRightClicked();
         Player player = e.getPlayer();
         if (queen.getCustomName() != null) {
@@ -172,9 +198,12 @@ public class QueenManager implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
+        //Checks the entity was a queen
         if (e.getView().getTitle().equals("The Queen")) {
             e.setCancelled(true);
+            //Checks that the player is not clicking an empty space (console spam)
             if (e.getCurrentItem().hasItemMeta()) {
+                //Hardcoded standard buttons
                 switch (e.getCurrentItem().getItemMeta().getDisplayName()) {
                     case "Go Back": {
                         player.closeInventory();
@@ -195,20 +224,26 @@ public class QueenManager implements Listener {
         if (e.getView().getTitle().equals("Team Upgrades")) {
             if (e.getCurrentItem().getItemMeta() != null) {
                 e.setCancelled(true);
+                //Grabs player team and grabs team upgrade values
                 int i = GameThread.getPlayerTeam(player);
                 int efficiency = teamsDB.getInt("team" + i + ".upgrades.forge-e");
                 int output = teamsDB.getInt("team" + i + ".upgrades.forge-o");
                 int factor = 1;
+                //Code execution depending on what was clicked. Each option varies too much to not hard code somewhere.
                 switch (e.getCurrentItem().getItemMeta().getDisplayName()) {
                     case "Go Back": {
                         generateMainScreen(player);
                         break;
                     }
                     case "Forge Efficiency":{
+                        //Checks the efficiency is less than 4 (max), and then sets the 'factor' accordingly
+                        //The factor determines how much to multiply the base price by for this upgrade. Probably should add this
+                        //to configs rather than hardcoding
                         if (efficiency < 4){
                             if (efficiency == 1){factor = 1;}
                             if (efficiency == 2){factor = 4;}
                             if (efficiency == 3){factor = 9;}
+                            //If they can afford the upgrade, increase the efficiency by one and store the new efficiency
                             if (removeMoneys(e.getCurrentItem(), Main.plugin.getConfig().getInt("ForgeE", 4) * factor, player)){
                                 efficiency++;
                                 teamsDB.set("team" + i + ".upgrades.forge-e", efficiency);
@@ -219,6 +254,7 @@ public class QueenManager implements Listener {
                         break;
                     }
                     case "Forge Output":{
+                        //Basically the same as efficiency, but with output instead.
                         if (output < 4){
                             if (output == 1){factor = 1;}
                             if (output == 2){factor = 4;}
@@ -239,6 +275,7 @@ public class QueenManager implements Listener {
         if (e.getView().getTitle().equals("Weapons and Ability Store")) {
             if (e.getCurrentItem().getItemMeta() != null) {
                 e.setCancelled(true);
+                //Hardcoded compasses and Power Funnels.
                 switch (e.getCurrentItem().getItemMeta().getDisplayName()) {
                     case "Power Funnel - Build Zone": {
                         removeMoneys(BuildingCheck.getZonePlacer(), Main.plugin.getConfig().getInt("ZPlacer", 4), player);
@@ -249,6 +286,7 @@ public class QueenManager implements Listener {
                         break;
                     }
                     default: {
+                        //for all taems that are in, check which one they want. Check and give the player the appropriate compass.
                         int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
                         for (int i = 0; i < totalTeams; i++) {
                             if (e.getCurrentItem().getItemMeta().getDisplayName().equals(new PortalCompass(i).getName())) {
@@ -258,6 +296,7 @@ public class QueenManager implements Listener {
                         break;
                     }
                 }
+                //For each item in the items list, check if the item clicked is equal to it. If so, check and give the player said item.
                 for (TWAbility item : itemsList){
                     if (e.getCurrentItem().getItemMeta().getDisplayName().equals(item.getName())){
                         removeMoneys(item.getItem(), item.getCost(), player);
@@ -272,6 +311,7 @@ public class QueenManager implements Listener {
     public void onRespawn(PlayerRespawnEvent e){
         Player player = e.getPlayer();
         int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
+        //For each player of each team, is THIS player one of them? If so, are they out? If so, set them to spectator and state that they've been eliminated.
         for (int i = 0; i < totalTeams; i++){
             for (String member : teamsDB.getStringList("team" + i + ".members")){
                 if (player.getName().equals(member)){

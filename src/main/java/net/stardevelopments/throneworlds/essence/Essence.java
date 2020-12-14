@@ -54,7 +54,9 @@ public class Essence implements Listener {
     public void onPlace(BlockPlaceEvent event){
         Block block = event.getBlockPlaced();
         String worldName = wm.getMVWorld(block.getWorld()).getName();
+        //If the player is placing an Emerald block in a throne,
         if (block.getType().equals(Material.EMERALD_BLOCK) && worldName.contains("Throne")){
+            //Get the team of that throne and add the block to its power
             char team = worldName.charAt(6);
             int power = teamsDB.getInt("team" + team + ".power", 0);
             teamsDB.set("team" + team + ".power", power + 1);
@@ -63,6 +65,7 @@ public class Essence implements Listener {
 
     @EventHandler
     public void onBreak(BlockBreakEvent event){
+        //Same as onPlace, but for break.
         Block block = event.getBlock();
         String worldName = wm.getMVWorld(block.getWorld()).getName();
         if (block.getType().equals(Material.EMERALD_BLOCK) && worldName.contains("Throne")){
@@ -73,19 +76,24 @@ public class Essence implements Listener {
     }
 
     public void doEssenceForgeDrop(Location location){
+        //Drop a single essence at location.
         System.out.println("Forge outputting");
         ItemStack item = getEssence();
         location.getWorld().dropItem(location, item);
     }
 
     public void toBeExecutedEvery5Ticks(){
+        //This method is executed every 40 ticks, despite the method name. Next line is a debug step that will be removed.
         System.out.println("Forge checking");
+        //For each team, if the are not out...
         int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
         for (int i = 0; i < totalTeams; i++){
             if (teamsDB.getInt("team" + i + ".State") != 4){
+                //Get efficiency and output of forge, and a random number between 0 and 4
                 int efficiency = teamsDB.getInt("team" + i + ".upgrades.forge-e");
                 int output = teamsDB.getInt("team" + i + ".upgrades.forge-o");
                 int random = ThreadLocalRandom.current().nextInt(0, 4);
+                //if the efficiency value (chance) is greater than or equal to the random number, drop OUTPUT amount of essence at the forge.
                 if (efficiency >= random){
                     Location location = new Location(wm.getMVWorld("Throne" + i).getCBWorld(), 2.5, 53, -11.5);
                     for(int j = 0; j < output; j++){
