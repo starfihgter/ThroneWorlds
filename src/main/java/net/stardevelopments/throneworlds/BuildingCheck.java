@@ -48,20 +48,28 @@ public class BuildingCheck implements Listener {
 
     //Check validity
     public boolean checkValid(Player player){
+        //Get the players current location
         int playerX = player.getLocation().getBlockX();
         int playerZ = player.getLocation().getBlockZ();
         int totalTeams = config.getInt("Teams", 4);
+        //Check which team the player is on (written before the static getPlayerTeam method)
         for (int i = 0; i < totalTeams; i++){
             List<String> members= teamsDB.getStringList("team" + i + ".members");
             if (members.contains(player.getName())){
+                //Get all the buildzones for that team
                 Set<String> zoneList = WorldState.getConfigurationSection("BuildZones.team" + i).getKeys(false);
+                //For each Build Zone,
                 for (String key : zoneList){
+                    //Get the location
                     int x = WorldState.getInt("BuildZones.team" + i + "." + key + ".x");
                     int z = WorldState.getInt("BuildZones.team" + i + "." + key + ".z");
 
+                    //Figure out how far the player is from it, and if they are within the radius of the zones according
+                    //to the team's power.
                     double distance = Math.sqrt(Math.pow(playerX - x, 2) + Math.pow(playerZ - z, 2));
                     double radius = 10;
                     radius = radius + ((9*Math.sqrt((teamsDB.getInt("team" + i + ".power", 0)))));
+                    //Max out at 120, if they are in the radius, return true. If not, false.
                     if (radius > 120){radius = 120;}
                     if (distance < radius){
                         return true;
@@ -78,6 +86,7 @@ public class BuildingCheck implements Listener {
         MVWorldManager wm = plugin.wm;
         Player player = event.getPlayer();
         String worldName = wm.getMVWorld(player.getWorld()).getName();
+        //Check they are in the overworld. If the block break is NOT valid, cancel the event.
         if (worldName.equals("Overworld")){
             if (!checkValid(player)){
                 event.setCancelled(true);
@@ -90,6 +99,7 @@ public class BuildingCheck implements Listener {
         MVWorldManager wm = plugin.wm;
         Player player = event.getPlayer();
         String worldName = wm.getMVWorld(player.getWorld()).getName();
+        //Check thehy are in the overworld. If the block place is NOT valid, cancel the event.
         if (worldName.equals("Overworld")){
             if (!checkValid(player)){
                 event.setCancelled(true);
@@ -102,14 +112,17 @@ public class BuildingCheck implements Listener {
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         ItemStack item = event.getItem();
+        //Check in overworld, and annoying NPE check.
         if (player.getWorld().getName().equals("Overworld")) {
             try {
                 item.getType();
             } catch (NullPointerException e) {
                 return;
             }
+            //Who cares if i check for nether stars. You can't get them legit.
             if (item.getType().equals(Material.NETHER_STAR)) {
                 try {
+                    //For every blockzone, check player is not within 100 blocks of said build zone. Functionally similar to CheckValid()
                     Set<String> blockZones = WorldState.getConfigurationSection("BlockZones").getKeys(false);
                     for (String key : blockZones){
                         int blockX = WorldState.getInt("BlockZones." + key + ".x");
@@ -121,7 +134,9 @@ public class BuildingCheck implements Listener {
                             return;
                         }
                     }
-                } catch (NullPointerException ignored){}
+                } catch (NullPointerException ignored){} //Double NPE catch.
+                //If the zone if not blocked (cleared by earlier code)< check which team the player is in, and then
+                //add the build zone to that team's Build Zones, and remove the item.
                 int totalTeams = config.getInt("Teams", 4);
                 for (int i = 0; i < totalTeams; i++) {
                     List<String> members = teamsDB.getStringList("team" + i + ".members");
@@ -134,6 +149,7 @@ public class BuildingCheck implements Listener {
                     }
                 }
             }else if (item.getType().equals(Material.BARRIER)){
+                //same process as placer, but for blocking.
                 int size;
                 try { size = WorldState.getConfigurationSection("BlockZones").getKeys(false).size();}
                 catch (NullPointerException ignored){

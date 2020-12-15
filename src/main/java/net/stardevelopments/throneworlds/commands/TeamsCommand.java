@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TeamsCommand implements CommandExecutor {
+    //I'm tired, and this code is self-explanatory and easy to read.
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         FileConfiguration teamsDB = Main.teamsDB.getUserRecord();
