@@ -3,7 +3,7 @@ package net.stardevelopments.throneworlds;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiversePortals.MultiversePortals;
-import jdk.internal.jline.internal.Nullable;
+
 import net.stardevelopments.throneworlds.commands.BorderCommand;
 import net.stardevelopments.throneworlds.commands.ScatterCommand;
 import net.stardevelopments.throneworlds.commands.TeamsCommand;
@@ -81,7 +81,7 @@ public final class Main extends JavaPlugin {
         System.out.println("Saved files!");
     }
 
-    public static ItemStack setItemName(ItemStack item, String name, @Nullable List<String> lore){
+    public static ItemStack setItemName(ItemStack item, String name, List<String> lore){
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(name);
 
