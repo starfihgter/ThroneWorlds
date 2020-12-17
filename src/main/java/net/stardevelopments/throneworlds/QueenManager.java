@@ -40,33 +40,28 @@ public class QueenManager implements Listener {
     public Boolean removeMoneys(ItemStack item, int cost, Player player){
         int initCost = cost;
         //Checking if player can pay
-        ItemStack essence = Essence.getEssence();
+        ItemStack essence = Essence.getEssence(1);
         Inventory inventory = player.getInventory();
 
         //Null Check
         for (ItemStack slot : inventory.getContents()){
-            try{
-                slot.isSimilar(essence);
-            }catch (NullPointerException e){
-                break; //THIS IS EXITING THE FOR LOOP IN ITS ENTIRETY (bug)!
-            }
-                if (slot.isSimilar(essence)){
-                    if(slot.getAmount() >= cost){
-                        //If they have enough in THAT STACK, buys the item
-                        slot.setAmount(slot.getAmount() - cost);
-                        inventory.addItem(item);
-                        player.sendMessage("You bought " + item.getItemMeta().getDisplayName());
-                        return true;
-                    } else{
-                        cost = cost - slot.getAmount();
-                        slot.setAmount(0);
+                if (slot != null) {
+                    if (slot.isSimilar(essence)) {
+                        if (slot.getAmount() >= cost) {
+                            //If they have enough in THAT STACK, buys the item
+                            slot.setAmount(slot.getAmount() - cost);
+                            inventory.addItem(item);
+                            player.sendMessage("You bought " + item.getItemMeta().getDisplayName());
+                            return true;
+                        } else {
+                            cost = cost - slot.getAmount();
+                            slot.setAmount(0);
+                        }
                     }
                 }
         }
-        for (int i = 0; i < initCost - cost; i++){
-            //Returns an essence for every essence removed, if not enough essence was found to pay for the item.
-            inventory.addItem(essence);
-        }
+        //If not enough Essence was found, exits the loop and refunds essence
+        inventory.addItem(Essence.getEssence(initCost - cost));
         player.sendMessage("You need " + (cost) + " more essence to buy " + item.getItemMeta().getDisplayName());
         return false;
     }
@@ -332,7 +327,8 @@ public class QueenManager implements Listener {
             if (queen.getCustomName().contains("Queen ")) {
                 char team = plugin.wm.getMVWorld(queen.getWorld()).getName().charAt(6);
                 teamsDB.set("team" + team + ".State", 4);
-                Bukkit.getServer().broadcastMessage("Team " + team + "'s Queen has been slain! Their Throne world is collapsing!");
+                String teamName = teamsDB.getString("team" + team + ".name");
+                Bukkit.getServer().broadcastMessage("The "+ teamName + "' Queen has been slain! Their Throne world is collapsing!");
                 MultiverseWorld world = plugin.wm.getMVWorld(queen.getWorld());
                 World cbWorld = world.getCBWorld();
                 cbWorld.getWorldBorder().setSize(1, 60);
@@ -347,7 +343,7 @@ public class QueenManager implements Listener {
                             player.setHealth(0);
                         }
                         plugin.wm.deleteWorld(world.getName(), true);
-                        Bukkit.getServer().broadcastMessage("Throne World " + team + " has collapsed.");
+                        Bukkit.getServer().broadcastMessage("The Throne World of the " + teamName + " has collapsed.");
                         plugin.gt.portalScatter();
                         cancel();
                     }
