@@ -90,8 +90,8 @@ public class Essence implements Listener {
         for (int i = 0; i < totalTeams; i++){
             if (teamsDB.getInt("team" + i + ".State") != 4){
                 //Get efficiency and output of forge, and a random number between 0 and 4
-                int efficiency = teamsDB.getInt("team" + i + ".upgrades.forge-e");
-                int output = teamsDB.getInt("team" + i + ".upgrades.forge-o");
+                int efficiency = teamsDB.getInt("team" + i + ".upgrades.forge-e", 1);
+                int output = teamsDB.getInt("team" + i + ".upgrades.forge-o", 1);
                 int random = ThreadLocalRandom.current().nextInt(0, 4);
                 //if the efficiency value (chance) is greater than or equal to the random number, drop OUTPUT amount of essence at the forge.
                 if (efficiency >= random){

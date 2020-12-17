@@ -157,8 +157,8 @@ public class QueenManager implements Listener {
                     if (teamsDB.getInt("team" + i + ".State") != 4) {
                         //Now we know what team the player is on, and we know they're not eliminated.
                         //Grabs the current efficiency and output from team database
-                        int efficiency = teamsDB.getInt("team" + i + ".upgrades.forge-e") * 25;
-                        int output = teamsDB.getInt("team" + i + ".upgrades.forge-o");
+                        int efficiency = teamsDB.getInt("team" + i + ".upgrades.forge-e",1) * 25;
+                        int output = teamsDB.getInt("team" + i + ".upgrades.forge-o",1);
 
                         ItemStack back = new ItemStack(Material.ARROW, 1);
                         Main.setItemName(back, "Go Back", null);

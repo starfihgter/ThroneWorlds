@@ -93,6 +93,7 @@ public class BuildingCheck implements Listener {
                 player.sendMessage("You are not in a building zone!");
             }
         }
+        if (event.getBlock().getType().equals(Material.BARRIER)){event.setCancelled(true);}
     }
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event){
@@ -105,6 +106,9 @@ public class BuildingCheck implements Listener {
                 event.setCancelled(true);
                 player.sendMessage("You are not in a building zone!");
             }
+        }
+        if (event.getBlockPlaced().getType().equals(Material.BARRIER)){
+            event.setCancelled(true);
         }
     }
 
