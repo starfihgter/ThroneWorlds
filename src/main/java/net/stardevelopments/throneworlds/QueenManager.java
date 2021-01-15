@@ -34,7 +34,7 @@ public class QueenManager implements Listener {
     FileConfiguration worldState = Main.worldState.getUserRecord();
 
     //Ability master array - ADD CLASSES HERE TO AUTOMATICALLY ADD TO STORE
-    TWAbility[] itemsList = {new WitherBow(), new PoisonShank(), new LifeSword(), new KnockbackShield()};
+    TWAbility[] itemsList = {new WitherBow(), new MagicMirror(), new Scaffolding()};
 
     //This method checks if the player can afford a given item.
     public Boolean removeMoneys(ItemStack item, int cost, Player player){
@@ -322,24 +322,34 @@ public class QueenManager implements Listener {
     //Queen Death
     @EventHandler
     public void onEntityDeath(EntityDeathEvent e){
+        //Checks if the queen died
         Entity queen = e.getEntity();
         if (queen.getCustomName() != null) {
             if (queen.getCustomName().contains("Queen ")) {
+                //If the queen did die, check which one it was, and mark that team as out.
                 char team = plugin.wm.getMVWorld(queen.getWorld()).getName().charAt(6);
                 teamsDB.set("team" + team + ".State", 4);
                 String teamName = teamsDB.getString("team" + team + ".name");
                 Bukkit.getServer().broadcastMessage("The "+ teamName + "' Queen has been slain! Their Throne world is collapsing!");
+                //Get the throne world and start closing the border (1 minute)
                 MultiverseWorld world = plugin.wm.getMVWorld(queen.getWorld());
                 World cbWorld = world.getCBWorld();
+                cbWorld.getWorldBorder().setCenter(26,-2);
                 cbWorld.getWorldBorder().setSize(1, 60);
                 cbWorld.getWorldBorder().setDamageAmount(10);
+                //After one minute and 2 seconds (just to be sure), execute run()
                 new BukkitRunnable() {
                     @Override
                     public void run() {
+                        //For each player still in the throne world, teleport them to 0 , 0 , 0 in the overworld to move them
+                        //out of the TW, as worlds cannot be deleted if players are in them.
                         for (Player player : cbWorld.getPlayers()){
                             Location tpDest = new Location(Bukkit.getWorld("world"), 0, 0, 0);
                             player.teleport(tpDest);
-                            player.setBedSpawnLocation(plugin.wm.getMVWorld("Overworld").getSpawnLocation(), true);
+                            //If the player was on the eliminated team, set their new spawn point to the overworld, as they can
+                            //No longer respawn in their TW.
+                            if (GameThread.getPlayerTeam(player) == team){
+                            player.setBedSpawnLocation(plugin.wm.getMVWorld("Overworld").getSpawnLocation(), true);}
                             player.setHealth(0);
                         }
                         plugin.wm.deleteWorld(world.getName(), true);

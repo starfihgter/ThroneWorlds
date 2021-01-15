@@ -100,7 +100,11 @@ public class BuildingCheck implements Listener {
         MVWorldManager wm = plugin.wm;
         Player player = event.getPlayer();
         String worldName = wm.getMVWorld(player.getWorld()).getName();
-        //Check thehy are in the overworld. If the block place is NOT valid, cancel the event.
+        //Check if the block is a scaffold, if so, its valid so don't do the other shit.
+        if (event.getBlockPlaced().getType().equals(Material.SCAFFOLDING)){
+            return;
+        }
+        //Check they are in the overworld. If the block place is NOT valid, cancel the event.
         if (worldName.equals("Overworld")){
             if (!checkValid(player)){
                 event.setCancelled(true);
