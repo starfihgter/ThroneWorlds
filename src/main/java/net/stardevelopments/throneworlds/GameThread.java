@@ -245,4 +245,9 @@ public class GameThread implements CommandExecutor {
         return  false;
         }
     }
+
+    //Manage incoming border change
+    public void onBorderUpdate(){
+
+    }
 }
