@@ -36,7 +36,7 @@ public class MagicMirror extends TWAbility implements Listener {
     }
     @EventHandler
     public void onUse(PlayerInteractEvent e) {
-        Player player = (Player) e.getPlayer();
+        Player player = e.getPlayer();
         ItemStack mirror = e.getItem();
 
         try{
@@ -45,14 +45,12 @@ public class MagicMirror extends TWAbility implements Listener {
             return;
         }
 
-        if (mirror.getType() == Material.getMaterial("WHITE_STAINED_GLASS_PANE")){
-            if (Objects.requireNonNull(e.getItem()).getType() == Material.getMaterial("WHITE_STAINED_GLASS_PANE")) {
+        if (mirror.getType() == Material.WHITE_STAINED_GLASS_PANE){
                 if (player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("Magic Mirror")) {
 
                     player.teleport(player.getBedSpawnLocation());
 
                 }
-            }
         }
     }
 

@@ -91,8 +91,8 @@ public class QueenManager implements Listener {
 
         char team = plugin.wm.getMVWorld(player.getWorld()).getName().charAt(6);
         Main.setItemName(abilities, "Weapon and Ability Store", null);
-        Main.setItemName(upgrade, "Upgrade shit!", null);
-        Main.setItemName(power, "All the power you could want.", Arrays.asList("Current Power: " + teamsDB.getInt("team" + team + ".power", 0)
+        Main.setItemName(upgrade, "Island Upgrades", null);
+        Main.setItemName(power, "Throne Power", Arrays.asList("Current Power: " + teamsDB.getInt("team" + team + ".power", 0)
                 ,"Power Funnels can create Build Zones with a radius of " + (10 + (9*Math.sqrt(teamsDB.getInt("team" + team + ".power", 0))))));
 
         //Setting items and opening inventory
@@ -208,7 +208,7 @@ public class QueenManager implements Listener {
                         generateAbilityScreen(player);
                         break;
                     }
-                    case "Upgrade shit!": {
+                    case "Island Upgrades": {
                         generateUpgradeScreen(player);
                         break;
                     }

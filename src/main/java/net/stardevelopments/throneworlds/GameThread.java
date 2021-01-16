@@ -248,6 +248,20 @@ public class GameThread implements CommandExecutor {
 
     //Manage incoming border change
     public void onBorderUpdate(){
+        //Calculate ticks until the border changes
+        long changeTime = plugin.getConfig().getLong("next-change");
+        long millisecondsUntilChange = changeTime - System.currentTimeMillis();
+        int ticksUntilChange = (int) (millisecondsUntilChange / 50L);
 
+        //Set task to execute border change and scatter
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                World world = plugin.wm.getMVWorld("Overworld").getCBWorld();
+                world.getWorldBorder().setSize(plugin.getConfig().getInt("border-radius") * 2, 60);
+                portalScatter();
+                Bukkit.getServer().broadcastMessage("Play area now shrinking to a radius of " + plugin.getConfig().getInt("border-radius"));
+            }
+        }.runTaskLater(plugin, ticksUntilChange);
     }
 }

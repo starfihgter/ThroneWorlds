@@ -27,7 +27,7 @@ public class WitherBow extends TWAbility implements Listener {
         tntBowMeta.setDisplayName(name);
 
         ArrayList<String> lore = new ArrayList<>();
-        lore.add("You're a terrible person.");
+        lore.add("Single use item - Creates a wither where your arrow lands.");
         lore.add("This item costs " + cost + " essence!");
         tntBowMeta.setLore(lore);
 
