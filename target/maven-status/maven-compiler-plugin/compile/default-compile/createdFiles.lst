@@ -19,4 +19,5 @@ net\stardevelopments\throneworlds\scoreboard\ScoreBoard.class
 net\stardevelopments\throneworlds\weapons\PoisonShank.class
 net\stardevelopments\throneworlds\commands\TeamsCommand.class
 net\stardevelopments\throneworlds\weapons\WitherBow.class
+net\stardevelopments\throneworlds\weapons\Scaffolding.class
 net\stardevelopments\throneworlds\weapons\TWAbility.class

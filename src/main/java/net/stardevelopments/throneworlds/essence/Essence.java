@@ -30,9 +30,9 @@ public class Essence implements Listener {
         this.wm = pp.wm;
     }
     //Get essence item
-    public static ItemStack getEssence(){
+    public static ItemStack getEssence(int amount){
 
-        ItemStack essence = new ItemStack(Material.EMERALD);
+        ItemStack essence = new ItemStack(Material.EMERALD, amount);
         ItemMeta essenceMeta = essence.getItemMeta();
         essenceMeta.setDisplayName("Essence");
         essence.setItemMeta(essenceMeta);
@@ -44,7 +44,7 @@ public class Essence implements Listener {
     @EventHandler
     public void onDrop(EntityDeathEvent event){
         if (event.getEntity().getKiller() != null) {
-            event.getDrops().add(getEssence());
+            event.getDrops().add(getEssence(1));
         }
     }
 
@@ -75,10 +75,10 @@ public class Essence implements Listener {
         }
     }
 
-    public void doEssenceForgeDrop(Location location){
+    public void doEssenceForgeDrop(Location location, int num){
         //Drop a single essence at location.
         System.out.println("Forge outputting");
-        ItemStack item = getEssence();
+        ItemStack item = getEssence(num);
         location.getWorld().dropItem(location, item);
     }
 
@@ -90,15 +90,13 @@ public class Essence implements Listener {
         for (int i = 0; i < totalTeams; i++){
             if (teamsDB.getInt("team" + i + ".State") != 4){
                 //Get efficiency and output of forge, and a random number between 0 and 4
-                int efficiency = teamsDB.getInt("team" + i + ".upgrades.forge-e");
-                int output = teamsDB.getInt("team" + i + ".upgrades.forge-o");
+                int efficiency = teamsDB.getInt("team" + i + ".upgrades.forge-e", 1);
+                int output = teamsDB.getInt("team" + i + ".upgrades.forge-o", 1);
                 int random = ThreadLocalRandom.current().nextInt(0, 4);
                 //if the efficiency value (chance) is greater than or equal to the random number, drop OUTPUT amount of essence at the forge.
                 if (efficiency >= random){
                     Location location = new Location(wm.getMVWorld("Throne" + i).getCBWorld(), 2.5, 53, -11.5);
-                    for(int j = 0; j < output; j++){
-                        doEssenceForgeDrop(location);
-                    }
+                        doEssenceForgeDrop(location, output);
                 }
             }
         }

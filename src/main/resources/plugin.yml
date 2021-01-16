@@ -16,4 +16,4 @@ commands:
     usage: /scatter
   border:
     description: Changes the overworld play area!
-    usage: /border [w i d t h]
+    usage: /border [radius] [seconds to change]

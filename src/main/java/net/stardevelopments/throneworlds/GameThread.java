@@ -61,7 +61,8 @@ public class GameThread implements CommandExecutor {
         worldState.set("BuildZones", null);
         worldState.set("BlockZones", null);
         for (int i = 0; i < totalTeams; i++) {
-            if (teamsDB.getInt("team" + i + ".State") != 4){
+
+            String teamName = teamsDB.getString("team" + i + ".name");
                 //Check and delete portals
                 if (teamsDB.isInt("team" + i + ".portal.x")) {
                     int x = teamsDB.getInt("team" + i + ".portal.x");
@@ -94,6 +95,7 @@ public class GameThread implements CommandExecutor {
                     }
                     //*cries*
                 }
+            if (teamsDB.getInt("team" + i + ".State") != 4){
             //Randomly generate x and z within play area
             int radius = plugin.getConfig().getInt("border-radius");
             int x = ThreadLocalRandom.current().nextInt(-radius, radius);
@@ -110,8 +112,28 @@ public class GameThread implements CommandExecutor {
             worldState.set("BuildZones.team" + i + ".z0.x", x);
             worldState.set("BuildZones.team" + i + ".z0.z", z);
             //Generate portal. I could not think of a better way to do this. Please feel free to change if I'm a moron
-            Material obsidian = Material.OBSIDIAN;
-            Material gateway = Material.END_GATEWAY;
+            Material obsidian;
+            //Determines colour for generated portal.
+            switch (i) {
+                case 0:{
+                    obsidian = Material.GREEN_GLAZED_TERRACOTTA;
+                    break;
+                }
+                case 1:{
+                    obsidian = Material.BLUE_GLAZED_TERRACOTTA;
+                    break;
+                }
+                case 2:{
+                    obsidian = Material.PURPLE_GLAZED_TERRACOTTA;
+                    break;
+                }
+                case 3:{
+                    obsidian = Material.RED_GLAZED_TERRACOTTA;
+                    break;
+                }
+                default:
+                    throw new IllegalStateException("Unexpected team value: " + i);
+            }
             yBlock.setType(obsidian);
             Block block;
             for (int b = 1; b < 5; b++) {
@@ -146,7 +168,7 @@ public class GameThread implements CommandExecutor {
             pm.addPortal(overWorld, "team" + i + "out", "starfihgter", pl);
             pm.getPortal("team" + i + "out").setDestination("p:team" + i + "home");
             pm.getPortal("team" + i + "home").setDestination("p:team" + i + "out");
-            Bukkit.getServer().broadcastMessage("Portals scattered!");
+            Bukkit.getServer().broadcastMessage("The " + teamName + "' portal has relocated!");
         }
     }
     }
@@ -222,5 +244,24 @@ public class GameThread implements CommandExecutor {
         out("Unable to find Overworld Template!", sender);
         return  false;
         }
+    }
+
+    //Manage incoming border change
+    public void onBorderUpdate(){
+        //Calculate ticks until the border changes
+        long changeTime = plugin.getConfig().getLong("next-change");
+        long millisecondsUntilChange = changeTime - System.currentTimeMillis();
+        int ticksUntilChange = (int) (millisecondsUntilChange / 50L);
+
+        //Set task to execute border change and scatter
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                World world = plugin.wm.getMVWorld("Overworld").getCBWorld();
+                world.getWorldBorder().setSize(plugin.getConfig().getInt("border-radius") * 2, 60);
+                portalScatter();
+                Bukkit.getServer().broadcastMessage("Play area now shrinking to a radius of " + plugin.getConfig().getInt("border-radius"));
+            }
+        }.runTaskLater(plugin, ticksUntilChange);
     }
 }
