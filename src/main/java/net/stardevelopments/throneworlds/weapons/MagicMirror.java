@@ -15,7 +15,7 @@ import java.util.Objects;
 public class MagicMirror extends TWAbility implements Listener {
 
     String name = "Magic Mirror";
-    int cost = Main.plugin.getConfig().getInt("MagicMirror", 4);
+    int cost = Main.plugin.getConfig().getInt("Magic-Mirror", 4);
 
     @Override
     public ItemStack getItem(){
@@ -45,8 +45,10 @@ public class MagicMirror extends TWAbility implements Listener {
             return;
         }
 
+        //This needs a timer at a minimum.
+
         if (mirror.getType() == Material.WHITE_STAINED_GLASS_PANE){
-                if (player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("Magic Mirror")) {
+                if (player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(name)) {
 
                     player.teleport(player.getBedSpawnLocation());
 

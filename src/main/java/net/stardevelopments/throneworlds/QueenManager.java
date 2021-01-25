@@ -5,6 +5,7 @@ import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import net.stardevelopments.throneworlds.essence.Essence;
 import net.stardevelopments.throneworlds.weapons.*;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -77,6 +78,7 @@ public class QueenManager implements Listener {
             queen.setCustomName("Queen " + i);
             LivingEntity livingQueen = (LivingEntity) queen;
             livingQueen.setAI(false);
+            livingQueen.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(80);
             //queens[0] = queen;
         }
     }
@@ -348,8 +350,7 @@ public class QueenManager implements Listener {
                             player.teleport(tpDest);
                             //If the player was on the eliminated team, set their new spawn point to the overworld, as they can
                             //No longer respawn in their TW.
-                            if (GameThread.getPlayerTeam(player) == team){
-                            player.setBedSpawnLocation(plugin.wm.getMVWorld("Overworld").getSpawnLocation(), true);}
+                            if (GameThread.getPlayerTeam(player) == team) { player.setBedSpawnLocation(plugin.wm.getMVWorld("Overworld").getSpawnLocation(), true);}
                             player.setHealth(0);
                         }
                         plugin.wm.deleteWorld(world.getName(), true);
