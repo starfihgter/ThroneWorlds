@@ -27,7 +27,7 @@ public class BorderCommand implements CommandExecutor {
         long currentTime = System.currentTimeMillis();
         currentTime += (secondsToChange * 1000L);
         plugin.getConfig().set("next-change", currentTime);
-        Bukkit.getServer().broadcastMessage("The play area will shrink from a radius of " + radius + " blocks to " + newRadius + " at the next portal scatter!");
+        Bukkit.getServer().broadcastMessage("§l§bThe play area will shrink from a radius of " + radius + " blocks to " + newRadius + " at the next portal scatter!");
         plugin.getConfig().set("border-radius", newRadius);
         gt.onBorderUpdate();
         //Shrink border

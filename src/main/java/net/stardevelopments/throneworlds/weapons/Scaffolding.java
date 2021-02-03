@@ -10,7 +10,7 @@ public class Scaffolding extends TWAbility {
     @Override
     public ItemStack getItem() {
         ItemStack scaffold = new ItemStack(Material.SCAFFOLDING, 10);
-        Main.setItemName(scaffold, getName(), Arrays.asList("Can be placed anywhere!", "This item costs " + getCost() + " essence!"));
+        Main.setItemName(scaffold, getName(), Arrays.asList("§fCan be placed anywhere!", "§eThis item costs " + getCost() + " essence!"));
         return scaffold;
     }
 

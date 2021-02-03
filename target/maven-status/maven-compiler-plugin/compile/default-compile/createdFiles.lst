@@ -1,3 +1,4 @@
+net\stardevelopments\throneworlds\weapons\MagicMirror$1.class
 net\stardevelopments\throneworlds\weapons\FireBallWand.class
 net\stardevelopments\throneworlds\Main.class
 net\stardevelopments\throneworlds\weapons\LifeSword.class
@@ -10,6 +11,7 @@ net\stardevelopments\throneworlds\BuildingCheck.class
 net\stardevelopments\throneworlds\weapons\KnockbackShield.class
 net\stardevelopments\throneworlds\weapons\MagicMirror.class
 net\stardevelopments\throneworlds\FileLoader.class
+net\stardevelopments\throneworlds\GameThread$2.class
 net\stardevelopments\throneworlds\GameThread.class
 net\stardevelopments\throneworlds\commands\BorderCommand.class
 net\stardevelopments\throneworlds\weapons\PortalCompass.class

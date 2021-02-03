@@ -27,8 +27,8 @@ public class FireBallWand extends TWAbility implements Listener {
         fireballStaffMeta.setDisplayName(name);
 
         ArrayList<String> lore = new ArrayList<>();
-        lore.add("Shoots fireballs");
-        lore.add("This item costs " + cost + " essence!");
+        lore.add("§fShoots fireballs");
+        lore.add("§eThis item costs " + cost + " essence!");
         fireballStaffMeta.setLore(lore);
 
         fireballStaff.setItemMeta(fireballStaffMeta);

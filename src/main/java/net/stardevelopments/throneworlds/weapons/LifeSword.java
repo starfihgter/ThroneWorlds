@@ -24,8 +24,8 @@ public class LifeSword extends TWAbility implements Listener {
         lifeSwordMeta.setDisplayName(name);
 
         ArrayList<String> lore = new ArrayList<>();
-        lore.add("Steal life from your opponent");
-        lore.add("This item costs " + cost + " essence!");
+        lore.add("§fSteal life from your opponent");
+        lore.add("§eThis item costs " + cost + " essence!");
         lifeSwordMeta.setLore(lore);
 
         lifeSword.setItemMeta(lifeSwordMeta);
