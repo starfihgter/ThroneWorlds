@@ -5,6 +5,7 @@ net\stardevelopments\throneworlds\weapons\LifeSword.class
 net\stardevelopments\throneworlds\weapons\TntBow.class
 net\stardevelopments\throneworlds\weapons\ALHCrossbow.class
 net\stardevelopments\throneworlds\commands\ScatterCommand.class
+net\stardevelopments\throneworlds\weapons\GoldPickaxe.class
 net\stardevelopments\throneworlds\QueenManager.class
 net\stardevelopments\throneworlds\GameThread$1.class
 net\stardevelopments\throneworlds\BuildingCheck.class
@@ -20,6 +21,7 @@ net\stardevelopments\throneworlds\essence\Essence.class
 net\stardevelopments\throneworlds\scoreboard\ScoreBoard.class
 net\stardevelopments\throneworlds\weapons\PoisonShank.class
 net\stardevelopments\throneworlds\commands\TeamsCommand.class
+net\stardevelopments\throneworlds\weapons\TNTBundle.class
 net\stardevelopments\throneworlds\weapons\WitherBow.class
 net\stardevelopments\throneworlds\weapons\Scaffolding.class
 net\stardevelopments\throneworlds\weapons\TWAbility.class

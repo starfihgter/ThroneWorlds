@@ -205,7 +205,7 @@ public class GameThread implements CommandExecutor {
                 MultiverseWorld world = plugin.wm.getMVWorld("Throne" + i);
                 World cbWorld = world.getCBWorld();
                 cbWorld.getWorldBorder().setCenter(14 ,-4);
-                cbWorld.getWorldBorder().setSize(100);
+                cbWorld.getWorldBorder().setSize(300);
             }
             // Send players to thrones (set spawn points and kill all players). Setup portals
             for (int i = 0; i < totalTeams; i++){
@@ -258,7 +258,7 @@ public class GameThread implements CommandExecutor {
             @Override
             public void run() {
                 World world = plugin.wm.getMVWorld("Overworld").getCBWorld();
-                world.getWorldBorder().setSize(plugin.getConfig().getInt("border-radius") * 2, 60);
+                world.getWorldBorder().setSize(((plugin.getConfig().getInt("border-radius"))*2), 60);
                 portalScatter();
                 Bukkit.getServer().broadcastMessage("§l§cPlay area now shrinking to a radius of " + plugin.getConfig().getInt("border-radius"));
             }

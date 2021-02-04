@@ -35,7 +35,7 @@ public class QueenManager implements Listener {
     FileConfiguration worldState = Main.worldState.getUserRecord();
 
     //Ability master array - ADD CLASSES HERE TO AUTOMATICALLY ADD TO STORE
-    TWAbility[] itemsList = {new WitherBow(), new MagicMirror(), new Scaffolding()};
+    TWAbility[] itemsList = {new WitherBow(), new MagicMirror(), new Scaffolding(), new TNTBundle(), new GoldPickaxe()};
 
     //This method checks if the player can afford a given item.
     public Boolean removeMoneys(ItemStack item, int cost, Player player){
@@ -238,8 +238,8 @@ public class QueenManager implements Listener {
                         //to configs rather than hardcoding
                         if (efficiency < 4){
                             if (efficiency == 1){factor = 1;}
-                            if (efficiency == 2){factor = 4;}
-                            if (efficiency == 3){factor = 9;}
+                            if (efficiency == 2){factor = 6;}
+                            if (efficiency == 3){factor = 15;}
                             //If they can afford the upgrade, increase the efficiency by one and store the new efficiency
                             if (removeMoneys(e.getCurrentItem(), Main.plugin.getConfig().getInt("ForgeE", 4) * factor, player)){
                                 efficiency++;
@@ -254,8 +254,8 @@ public class QueenManager implements Listener {
                         //Basically the same as efficiency, but with output instead.
                         if (output < 4){
                             if (output == 1){factor = 1;}
-                            if (output == 2){factor = 4;}
-                            if (output == 3){factor = 9;}
+                            if (output == 2){factor = 6;}
+                            if (output == 3){factor = 15;}
                             if (removeMoneys(e.getCurrentItem(), Main.plugin.getConfig().getInt("ForgeO", 4) * factor, player)) {
                                 output++;
                                 teamsDB.set("team" + i + ".upgrades.forge-o", output);

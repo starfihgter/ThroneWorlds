@@ -5,8 +5,10 @@ magic-mirror: 10
 FireBallWand: 400
 PortalCompass: 20
 TNTBow: 400
+TNTBundle: 200
 WitherBow: 500
 ForgeE: 45
 ForgeO: 45
 ZPlacer: 30
 ZBlocker: 30
+GP: 50
