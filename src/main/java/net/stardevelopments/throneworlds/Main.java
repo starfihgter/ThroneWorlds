@@ -7,7 +7,6 @@ import net.stardevelopments.throneworlds.commands.BorderCommand;
 import net.stardevelopments.throneworlds.commands.ScatterCommand;
 import net.stardevelopments.throneworlds.commands.TeamsCommand;
 import net.stardevelopments.throneworlds.weapons.*;
-import net.stardevelopments.throneworlds.essence.Essence;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -26,6 +25,7 @@ public final class Main extends JavaPlugin {
     public MultiversePortals pm;
     GameThread gt;
     QueenManager qm;
+    static ScoreBoardManager sb;
 
     @Override
     public void onEnable() {
@@ -54,6 +54,7 @@ public final class Main extends JavaPlugin {
         //Create static QueenManager and GameThread Objects
         qm = new QueenManager(this);
         gt = new GameThread(this, qm);
+        sb = new ScoreBoardManager(this);
 
         //Command Registration
         getCommand("startgame").setExecutor(gt);

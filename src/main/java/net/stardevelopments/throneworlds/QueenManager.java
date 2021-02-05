@@ -1,8 +1,6 @@
 package net.stardevelopments.throneworlds;
 
-import com.onarandombox.MultiverseCore.MVWorld;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
-import net.stardevelopments.throneworlds.essence.Essence;
 import net.stardevelopments.throneworlds.weapons.*;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
@@ -18,7 +16,6 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
@@ -334,6 +331,7 @@ public class QueenManager implements Listener {
                 teamsDB.set("team" + team + ".State", 4);
                 String teamName = teamsDB.getString("team" + team + ".name");
                 Bukkit.getServer().broadcastMessage("The "+ teamName + "' Queen has been slain! Their Throne world is collapsing!");
+                Main.sb.teamEliminated(team,0);
                 //Get the throne world and start closing the border (1 minute)
                 MultiverseWorld world = plugin.wm.getMVWorld(queen.getWorld());
                 World cbWorld = world.getCBWorld();

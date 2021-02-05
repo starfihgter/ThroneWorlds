@@ -1,4 +1,4 @@
-package net.stardevelopments.throneworlds.essence;
+package net.stardevelopments.throneworlds;
 
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.utils.WorldManager;
