@@ -79,6 +79,7 @@ public class QueenManager implements Listener {
             LivingEntity livingQueen = (LivingEntity) queen;
             livingQueen.setAI(false);
             livingQueen.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(80);
+            livingQueen.setHealth(80);
             //queens[0] = queen;
         }
     }
@@ -346,7 +347,7 @@ public class QueenManager implements Listener {
                         //For each player still in the throne world, teleport them to 0 , 0 , 0 in the overworld to move them
                         //out of the TW, as worlds cannot be deleted if players are in them.
                         for (Player player : cbWorld.getPlayers()){
-                            Location tpDest = new Location(Bukkit.getWorld("world"), 0, 0, 0);
+                            Location tpDest = new Location(Bukkit.getWorld("Overworld"), 0, 0, 0);
                             player.teleport(tpDest);
                             //If the player was on the eliminated team, set their new spawn point to the overworld, as they can
                             //No longer respawn in their TW.
