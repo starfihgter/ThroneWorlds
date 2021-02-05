@@ -1,12 +1,9 @@
 package net.stardevelopments.throneworlds;
 
-import com.onarandombox.MultiverseCore.MVWorld;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
-import com.onarandombox.MultiversePortals.MultiversePortals;
 import com.onarandombox.MultiversePortals.PortalLocation;
 import com.onarandombox.MultiversePortals.utils.PortalManager;
-import net.stardevelopments.throneworlds.essence.Essence;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,7 +18,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GameThread implements CommandExecutor {
@@ -170,7 +166,9 @@ public class GameThread implements CommandExecutor {
             pm.getPortal("team" + i + "home").setDestination("p:team" + i + "out");
             Bukkit.getServer().broadcastMessage("The " + teamName + "' portal has relocated!");
         }
+
     }
+        Main.sb.onPortalScatter();
     }
 
     //Game Start
@@ -235,10 +233,12 @@ public class GameThread implements CommandExecutor {
                     new Essence(plugin).toBeExecutedEvery5Ticks();
                 }
             }.runTaskTimer(plugin, 40, 40);
+            Main.sb.generateScoreboard();
             Bukkit.getServer().broadcastMessage("Throne Worlds created!");
             qm.CreateQueens();
             portalScatter();
-            worldState.set("GameState:", 2);
+            worldState.set("GameState", 2);
+            Main.sb.onPortalScatter();
             return true;
         }else{
         out("Unable to find Overworld Template!", sender);
@@ -260,8 +260,7 @@ public class GameThread implements CommandExecutor {
                 World world = plugin.wm.getMVWorld("Overworld").getCBWorld();
                 world.getWorldBorder().setSize(((plugin.getConfig().getInt("border-radius"))*2), 60);
                 portalScatter();
-                Bukkit.getServer().broadcastMessage("Play area now shrinking to a radius of " + plugin.getConfig().getInt("border-radius"));
-                plugin.getConfig().set("next-change", 0L);
+                Bukkit.getServer().broadcastMessage("§l§cPlay area now shrinking to a radius of " + plugin.getConfig().getInt("border-radius"));
             }
         }.runTaskLater(plugin, ticksUntilChange);
     }
