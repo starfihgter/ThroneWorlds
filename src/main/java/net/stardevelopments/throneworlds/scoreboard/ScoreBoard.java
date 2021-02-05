@@ -1,16 +1,21 @@
 package net.stardevelopments.throneworlds.scoreboard;
 
+import net.stardevelopments.throneworlds.GameThread;
 import net.stardevelopments.throneworlds.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.*;
 
-public class ScoreBoard {
+import java.io.File;
+
+public class ScoreBoard implements Listener {
 
     //Below is a basic constructor for the class to grab an instance of the main class.
     Main plugin;
@@ -36,15 +41,51 @@ public class ScoreBoard {
         ScoreboardManager manager = Bukkit.getScoreboardManager();
         Scoreboard sb = manager.getNewScoreboard();
 
-        Objective objective = sb.registerNewObjective("throneWorlds", "dummy", ChatColor.BLUE + "THRONE WORLDS");
+        int playerTeam = GameThread.getPlayerTeam(player);
+
+        FileConfiguration teamsDB = Main.teamsDB.getUserRecord();
+        int px = teamsDB.getInt("team" + playerTeam + ".portal.x");
+        int py = teamsDB.getInt("team" + playerTeam + ".portal.y");
+
+
+        int x = player.getLocation().getBlockX();
+        int y = player.getLocation().getBlockY();
+        int z = player.getLocation().getBlockZ();
+
+        Objective objective = sb.registerNewObjective("throneWorlds", "dummy", ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "THRONE WORLDS");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
-        Score xyz = objective.getScore(ChatColor.RED + "xyz");
-        xyz.setScore(2);
+        Score space1 = objective.getScore(" ");
+        space1.setScore(10);
 
-        Score power = objective.getScore(ChatColor.GREEN + "POWER");
-        power.setScore(1);
+        Score pteam = objective.getScore(ChatColor.BLUE + "Team: " + playerTeam);
+        pteam.setScore(9);
 
+        Score xyz = objective.getScore(ChatColor.RED + " " + x + " " + y + " " + z);
+        xyz.setScore(8);
+
+        Score thronepower = objective.getScore(ChatColor.GREEN + );
+        thronepower.setScore(7);
+
+        Score space2 = objective.getScore(" ");
+        space2.setScore(6);
+
+        Score cporloc = objective.getScore(ChatColor.GRAY + "Portal location: " + );
+        cporloc.setScore(5);
+
+        Score teamStatus0 = objective.getScore(ChatColor.BLUE + "" + ChatColor.BOLD + "Team 0");
+        teamStatus0.setScore(4);
+
+        Score teamStatus1 = objective.getScore(ChatColor.GREEN + "" + ChatColor.BOLD + "Team 1");
+        teamStatus1.setScore(3);
+
+        Score teamStatus2 = objective.getScore(ChatColor.YELLOW + "" + ChatColor.BOLD + "Team 2");
+        teamStatus2.setScore(2);
+
+        Score teamStatus3 = objective.getScore(ChatColor.RED + "" + ChatColor.BOLD + "Team 3");
+        teamStatus3.setScore(1);
+
+        player.setScoreboard(sb);
 
         //This is just to start the loop. Runs timerUpdate() every second, passing through only the player (for now, idk
         //If you need other parameters.
@@ -94,5 +135,11 @@ public class ScoreBoard {
     public void onPortalScatter(){
         //To be called on a portal scatter (GameThread.portalScatter()).
         //This should update the location of the player's portal.
+
+    }
+
+    @EventHandler
+    public void onMove(PlayerMoveEvent e) {
+        generateScoreboard(e.getPlayer());
     }
 }
