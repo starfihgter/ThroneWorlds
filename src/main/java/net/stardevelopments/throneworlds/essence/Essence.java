@@ -77,14 +77,12 @@ public class Essence implements Listener {
 
     public void doEssenceForgeDrop(Location location, int num){
         //Drop a single essence at location.
-        System.out.println("Forge outputting");
         ItemStack item = getEssence(num);
         location.getWorld().dropItem(location, item);
     }
 
     public void toBeExecutedEvery5Ticks(){
         //This method is executed every 40 ticks, despite the method name. Next line is a debug step that will be removed.
-        System.out.println("Forge checking");
         //For each team, if the are not out...
         int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
         for (int i = 0; i < totalTeams; i++){

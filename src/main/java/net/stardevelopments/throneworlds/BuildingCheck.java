@@ -34,7 +34,7 @@ public class BuildingCheck implements Listener {
     public static ItemStack getZonePlacer(){
         ItemStack item;
         item = new ItemStack(Material.NETHER_STAR, 1);
-        Main.setItemName(item, "Power Funnel - Build Zone", Arrays.asList("Creates a power-dependant building zone", "Zone will have a radius of RADIUS blocks", "Lasts until next portal scatter", "This item costs " + Main.plugin.getConfig().getInt("ZPlacer", 4)));
+        Main.setItemName(item, "Power Funnel - Build Zone", Arrays.asList("§fCreates a power-dependant building zone", "§cZone will have a radius of RADIUS blocks", "§bLasts until next portal scatter", "§eThis item costs " + Main.plugin.getConfig().getInt("ZPlacer", 4)));
         return item;
     }
 
@@ -42,7 +42,7 @@ public class BuildingCheck implements Listener {
     public static ItemStack getZoneBlocker(){
         ItemStack item;
         item = new ItemStack(Material.BARRIER, 1);
-        Main.setItemName(item, "Power Funnel - Build Zone Blocker", Arrays.asList("Creates an area in which Build Zone Power Funnels cannot be used.", "This item does not destroy pre-existing Build Zones.", "Lasts until next portal scatter", "This item costs " + Main.plugin.getConfig().getInt("ZBlocker", 4)));
+        Main.setItemName(item, "Power Funnel - Build Zone Blocker", Arrays.asList("§fCreates an area in which Build Zone Power Funnels cannot be used.", "§cThis item does not destroy pre-existing Build Zones.", "§bLasts until next portal scatter", "§eThis item costs " + Main.plugin.getConfig().getInt("ZBlocker", 4)));
         return item;
     }
 

@@ -1,5 +1,5 @@
 name: ThroneWorlds
-version: 1.0-SNAPSHOT-15.01.2021.1
+version: 1.0-SNAPSHOT-5.02.2021.1
 main: net.stardevelopments.throneworlds.Main
 api-version: 1.16
 description: its pretty epic
@@ -16,4 +16,4 @@ commands:
     usage: /scatter
   border:
     description: Changes the overworld play area!
-    usage: /border [w i d t h]
+    usage: /border [radius] [seconds to change]

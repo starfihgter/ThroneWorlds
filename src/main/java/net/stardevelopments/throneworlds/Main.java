@@ -74,6 +74,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new Essence(this), this);
         getServer().getPluginManager().registerEvents(qm, this);
         getServer().getPluginManager().registerEvents(new BuildingCheck(this), this);
+        getServer().getPluginManager().registerEvents(new MagicMirror(), this);
 
     }
 

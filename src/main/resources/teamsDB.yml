@@ -1,5 +1,5 @@
 team0:
-  name: "Green Guardians"
+  name: "§aGreen Guardians§f"
   WorldName:
   members:
   State: 0
@@ -12,11 +12,11 @@ team0:
     forge-e: 1
     forge-o: 1
 team1:
-  name: "Blue Blazes"
+  name: "§bBlue Blazes§f"
 team2:
-  name: "Purple Pandas"
+  name: "§dPurple Pandas§f"
 team3:
-  name: "Red Rocks"
+  name: "§4Red Rocks§f"
 
 #State 0 - Game not started
 #State 1 - Set-up phase (portal inactive)

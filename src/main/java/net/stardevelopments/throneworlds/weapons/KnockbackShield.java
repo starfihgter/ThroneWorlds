@@ -25,8 +25,8 @@ public class KnockbackShield extends TWAbility implements Listener {
         knockbackShieldMeta.setDisplayName(name);
 
         ArrayList<String> lore = new ArrayList<>();
-        lore.add("Blocking damage knockbacks attacker");
-        lore.add("This item costs " + cost + " essence!");
+        lore.add("§fBlocking damage knockbacks attacker");
+        lore.add("§eThis item costs " + cost + " essence!");
         knockbackShieldMeta.setLore(lore);
 
         knockbackShield.setItemMeta(knockbackShieldMeta);

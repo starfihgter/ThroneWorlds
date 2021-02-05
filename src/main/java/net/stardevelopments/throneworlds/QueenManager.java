@@ -5,6 +5,7 @@ import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import net.stardevelopments.throneworlds.essence.Essence;
 import net.stardevelopments.throneworlds.weapons.*;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -34,7 +35,7 @@ public class QueenManager implements Listener {
     FileConfiguration worldState = Main.worldState.getUserRecord();
 
     //Ability master array - ADD CLASSES HERE TO AUTOMATICALLY ADD TO STORE
-    TWAbility[] itemsList = {new WitherBow(), new MagicMirror(), new Scaffolding()};
+    TWAbility[] itemsList = {new WitherBow(), new MagicMirror(), new Scaffolding(), new TNTBundle(), new GoldPickaxe()};
 
     //This method checks if the player can afford a given item.
     public Boolean removeMoneys(ItemStack item, int cost, Player player){
@@ -77,6 +78,8 @@ public class QueenManager implements Listener {
             queen.setCustomName("Queen " + i);
             LivingEntity livingQueen = (LivingEntity) queen;
             livingQueen.setAI(false);
+            livingQueen.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(80);
+            livingQueen.setHealth(80);
             //queens[0] = queen;
         }
     }
@@ -236,8 +239,8 @@ public class QueenManager implements Listener {
                         //to configs rather than hardcoding
                         if (efficiency < 4){
                             if (efficiency == 1){factor = 1;}
-                            if (efficiency == 2){factor = 4;}
-                            if (efficiency == 3){factor = 9;}
+                            if (efficiency == 2){factor = 6;}
+                            if (efficiency == 3){factor = 15;}
                             //If they can afford the upgrade, increase the efficiency by one and store the new efficiency
                             if (removeMoneys(e.getCurrentItem(), Main.plugin.getConfig().getInt("ForgeE", 4) * factor, player)){
                                 efficiency++;
@@ -252,8 +255,8 @@ public class QueenManager implements Listener {
                         //Basically the same as efficiency, but with output instead.
                         if (output < 4){
                             if (output == 1){factor = 1;}
-                            if (output == 2){factor = 4;}
-                            if (output == 3){factor = 9;}
+                            if (output == 2){factor = 6;}
+                            if (output == 3){factor = 15;}
                             if (removeMoneys(e.getCurrentItem(), Main.plugin.getConfig().getInt("ForgeO", 4) * factor, player)) {
                                 output++;
                                 teamsDB.set("team" + i + ".upgrades.forge-o", output);
@@ -344,12 +347,11 @@ public class QueenManager implements Listener {
                         //For each player still in the throne world, teleport them to 0 , 0 , 0 in the overworld to move them
                         //out of the TW, as worlds cannot be deleted if players are in them.
                         for (Player player : cbWorld.getPlayers()){
-                            Location tpDest = new Location(Bukkit.getWorld("world"), 0, 0, 0);
+                            Location tpDest = new Location(Bukkit.getWorld("Overworld"), 0, 0, 0);
                             player.teleport(tpDest);
                             //If the player was on the eliminated team, set their new spawn point to the overworld, as they can
                             //No longer respawn in their TW.
-                            if (GameThread.getPlayerTeam(player) == team){
-                            player.setBedSpawnLocation(plugin.wm.getMVWorld("Overworld").getSpawnLocation(), true);}
+                            if (GameThread.getPlayerTeam(player) == team) { player.setBedSpawnLocation(plugin.wm.getMVWorld("Overworld").getSpawnLocation(), true);}
                             player.setHealth(0);
                         }
                         plugin.wm.deleteWorld(world.getName(), true);
