@@ -59,7 +59,7 @@ public final class Main extends JavaPlugin {
         getCommand("startgame").setExecutor(gt);
         getCommand("teams").setExecutor(new TeamsCommand());
         getCommand("scatter").setExecutor(new ScatterCommand(gt));
-        getCommand("border").setExecutor(new BorderCommand(this));
+        getCommand("border").setExecutor(new BorderCommand(this, gt));
 
         int gameState = worldState.getUserRecord().getInt("GameState", 0);
         System.out.println("Throne worlds has started in state " + gameState);
@@ -74,6 +74,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new Essence(this), this);
         getServer().getPluginManager().registerEvents(qm, this);
         getServer().getPluginManager().registerEvents(new BuildingCheck(this), this);
+        getServer().getPluginManager().registerEvents(new MagicMirror(), this);
 
     }
 

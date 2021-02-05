@@ -25,8 +25,8 @@ public class TntBow extends TWAbility implements Listener {
         tntBowMeta.setDisplayName(name);
 
         ArrayList<String> lore = new ArrayList<>();
-        lore.add("Arrows detonate on impact");
-        lore.add("This item costs " + cost + " essence!");
+        lore.add("§fArrows detonate on impact");
+        lore.add("§eThis item costs " + cost + " essence!");
         tntBowMeta.setLore(lore);
 
         tntBow.setItemMeta(tntBowMeta);

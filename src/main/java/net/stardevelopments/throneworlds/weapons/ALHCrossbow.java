@@ -23,8 +23,8 @@ public class ALHCrossbow extends TWAbility implements Listener {
         alhcrossbowMeta.setDisplayName(name);
 
         ArrayList<String> lore = new ArrayList<>();
-        lore.add("Crossbow automatically reload");
-        lore.add("This item costs " + cost + " essence!");
+        lore.add("§fCrossbow automatically reload");
+        lore.add("§eThis item costs " + cost + " essence!");
         alhcrossbowMeta.getLore();
 
         alhCrossbow.setItemMeta(alhcrossbowMeta);

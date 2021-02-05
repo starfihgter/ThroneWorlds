@@ -44,7 +44,7 @@ public class PortalCompass extends TWAbility {
         cmp.setLodestoneTracked(false);
         cmp.setLodestone(location);
         cmp.setDisplayName(name);
-        cmp.setLore(Arrays.asList("This tracker is useless after a portal scatter", "This item costs " + cost + " essence!"));
+        cmp.setLore(Arrays.asList("§fThis tracker is useless after a portal scatter", "§eThis item costs " + cost + " essence!"));
         compass.setItemMeta(cmp);
         return compass;
     }

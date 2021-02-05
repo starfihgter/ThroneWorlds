@@ -28,8 +28,8 @@ public class PoisonShank extends TWAbility implements Listener {
         poisonShankMeta.setDisplayName(name);
 
         ArrayList<String> lore = new ArrayList<>();
-        lore.add("Poisons your opponent");
-        lore.add("This item costs " + cost + " essence!");
+        lore.add("§fPoisons your opponent");
+        lore.add("§eThis item costs " + cost + " essence!");
         poisonShankMeta.setLore(lore);
 
         poisonShank.setItemMeta(poisonShankMeta);

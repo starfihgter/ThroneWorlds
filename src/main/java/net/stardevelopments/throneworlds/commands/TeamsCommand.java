@@ -1,5 +1,6 @@
 package net.stardevelopments.throneworlds.commands;
 
+import net.stardevelopments.throneworlds.GameThread;
 import net.stardevelopments.throneworlds.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -37,10 +38,15 @@ public class TeamsCommand implements CommandExecutor {
                         }
                         case "join": {
                             String team = args[1];
-                            List<String> teamList = teamsDB.getStringList("team" + team + ".members");
-                            teamList.add(sender.getName());
-                            teamsDB.set("team" + team + ".members", teamList);
-                            sender.sendMessage("You have joined team " + team + "!");
+                            //Check that player is not already assigned to a team.
+                            if (GameThread.getPlayerTeam(((Player) sender).getPlayer()) == -1) {
+                                List<String> teamList = teamsDB.getStringList("team" + team + ".members");
+                                teamList.add(sender.getName());
+                                teamsDB.set("team" + team + ".members", teamList);
+                                sender.sendMessage("You have joined team " + team + "!");
+                            } else{
+                                sender.sendMessage("You are already on a team!");
+                            }
                             break;
                         }
                         case "leave": {
