@@ -53,19 +53,19 @@ public class MagicMirror extends TWAbility implements Listener {
 
 
         if (mirror.getType() == Material.WHITE_STAINED_GLASS_PANE){
-                if (player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(name)) {
-                    player.sendMessage("You feel the seam between realities grow weaker");
-                    player.sendMessage("You will return to your Throne World in 10 Seconds");
-                    mirror.setAmount(mirror.getAmount() - 1);
-                    e.setCancelled(true);
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            player.sendMessage("You were returned to your Throne World!");
-                            player.teleport(player.getBedSpawnLocation());
-                        }
-                    }.runTaskLater(Main.plugin, 200);
-                }
+            if (player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(name)) {
+                player.sendMessage("You feel the seam between realities grow weaker");
+                player.sendMessage("You will return to your Throne World in 20 Seconds");
+                mirror.setAmount(mirror.getAmount() - 1);
+                e.setCancelled(true);
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        player.sendMessage("You were returned to your Throne World!");
+                        player.teleport(player.getBedSpawnLocation());
+                    }
+                }.runTaskLater(Main.plugin, 400);
+            }
         }
     }
 

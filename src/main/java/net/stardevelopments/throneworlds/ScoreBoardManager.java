@@ -75,7 +75,7 @@ public class ScoreBoardManager implements Listener {
         //with a message like "awaiting announcement or something like that.
         long changeTime = config.getLong("next-change", 0);
         int borderRadius = config.getInt("border-radius");
-        if (changeTime == 0) {
+        if (changeTime <= 0) {
             for (int i = 0; i < totalTeams; i++) {
                 Objective objective = boardList[i].getObjective("Timer");
                 for (String entry : boardList[i].getEntries()){
@@ -91,8 +91,8 @@ public class ScoreBoardManager implements Listener {
                     player.setScoreboard(boardList[i]);
 
                 }
-                return;
             }
+            return;
         }
             long secondsUntilChange = Math.round((changeTime - System.currentTimeMillis()) / 1000L);
             int input = (int) secondsUntilChange;

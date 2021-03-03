@@ -261,6 +261,7 @@ public class GameThread implements CommandExecutor {
                 world.getWorldBorder().setSize(((plugin.getConfig().getInt("border-radius"))*2), 60);
                 portalScatter();
                 Bukkit.getServer().broadcastMessage("§l§cPlay area now shrinking to a radius of " + plugin.getConfig().getInt("border-radius"));
+                plugin.getConfig().set("next-change", 0);
             }
         }.runTaskLater(plugin, ticksUntilChange);
     }

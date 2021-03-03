@@ -75,8 +75,8 @@ public class QueenManager implements Listener {
             queen.setCustomName("Queen " + i);
             LivingEntity livingQueen = (LivingEntity) queen;
             livingQueen.setAI(false);
-            livingQueen.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(80);
-            livingQueen.setHealth(80);
+            livingQueen.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(100);
+            livingQueen.setHealth(100);
             //queens[0] = queen;
         }
     }
