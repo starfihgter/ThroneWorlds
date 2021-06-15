@@ -314,6 +314,11 @@ public class QueenManager implements Listener {
                         player.setGameMode(GameMode.SPECTATOR);
                         player.sendMessage("You have been eliminated! Thanks for playing Starfihgter's Throne Worlds! You can still spectate.");
                         Bukkit.getServer().broadcastMessage(player.getDisplayName() + " has been eliminated!");
+                    } else{
+                        Location spawn = plugin.wm.getMVWorld(teamsDB.getString("team" + i + ".WorldName")).getSpawnLocation();
+                        e.setRespawnLocation(spawn);
+                        player.sendMessage("Attempted to Override vanilla spawning");
+                        player.setBedSpawnLocation(spawn, true);
                     }
                 }
             }
