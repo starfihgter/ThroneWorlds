@@ -88,8 +88,9 @@ public class ScoreBoardManager implements Listener {
                 List<String> teamPlayers = teamsDB.getStringList("team" + i + ".members");
                 for (String playerName : teamPlayers) {
                     Player player = Bukkit.getPlayer(playerName);
-                    player.setScoreboard(boardList[i]);
-
+                    if (player != null) {
+                        player.setScoreboard(boardList[i]);
+                    }
                 }
             }
             return;
@@ -119,8 +120,9 @@ public class ScoreBoardManager implements Listener {
                 List<String> teamPlayers = teamsDB.getStringList("team" + i + ".members");
                 for (String playerName : teamPlayers) {
                     Player player = Bukkit.getPlayer(playerName);
-                    player.setScoreboard(boardList[i]);
-
+                    if (player != null) {
+                        player.setScoreboard(boardList[i]);
+                    }
                 }
             }
         }
