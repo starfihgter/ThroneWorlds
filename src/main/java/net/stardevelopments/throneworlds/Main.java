@@ -26,6 +26,7 @@ public final class Main extends JavaPlugin {
     GameThread gt;
     QueenManager qm;
     static ScoreBoardManager sb;
+    PlayerManager playerManager;
 
     @Override
     public void onEnable() {
@@ -55,6 +56,7 @@ public final class Main extends JavaPlugin {
         qm = new QueenManager(this);
         gt = new GameThread(this, qm);
         sb = new ScoreBoardManager(this);
+        playerManager = new PlayerManager(this);
 
         //Command Registration
         getCommand("startgame").setExecutor(gt);
@@ -76,6 +78,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(qm, this);
         getServer().getPluginManager().registerEvents(new BuildingCheck(this), this);
         getServer().getPluginManager().registerEvents(new MagicMirror(), this);
+        getServer().getPluginManager().registerEvents(playerManager, this);
 
     }
 

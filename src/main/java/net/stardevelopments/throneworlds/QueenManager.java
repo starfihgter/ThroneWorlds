@@ -301,29 +301,6 @@ public class QueenManager implements Listener {
         }
     }
 
-    //Check Respawn validity
-    @EventHandler
-    public void onRespawn(PlayerRespawnEvent e){
-        Player player = e.getPlayer();
-        int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
-        //For each player of each team, is THIS player one of them? If so, are they out? If so, set them to spectator and state that they've been eliminated.
-        for (int i = 0; i < totalTeams; i++){
-            for (String member : teamsDB.getStringList("team" + i + ".members")){
-                if (player.getName().equals(member)){
-                    if (teamsDB.getInt("team" + i + ".State") == 4){
-                        player.setGameMode(GameMode.SPECTATOR);
-                        player.sendMessage("You have been eliminated! Thanks for playing Starfihgter's Throne Worlds! You can still spectate.");
-                        Bukkit.getServer().broadcastMessage(player.getDisplayName() + " has been eliminated!");
-                    } else{
-                        Location spawn = plugin.wm.getMVWorld(teamsDB.getString("team" + i + ".WorldName")).getSpawnLocation();
-                        e.setRespawnLocation(spawn);
-                        player.sendMessage("Attempted to Override vanilla spawning");
-                        player.setBedSpawnLocation(spawn, true);
-                    }
-                }
-            }
-        }
-    }
     //Queen Death
     @EventHandler
     public void onEntityDeath(EntityDeathEvent e){
