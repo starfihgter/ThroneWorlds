@@ -10,10 +10,12 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -341,6 +343,40 @@ public class QueenManager implements Listener {
                     }
                 }.runTaskLater(plugin, 1240);
 
+            }
+        }
+    }
+
+    //Queen Damage Cancelling
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent e){
+        //Checks if the queen was stabbed.
+        Entity queen = e.getEntity();
+        if (queen.getCustomName() != null) {
+            if (queen.getCustomName().contains("Queen ")) {
+                //Cancels all damage accept for direct attacks and projectiles.
+                switch (e.getCause())
+            {
+                case ENTITY_ATTACK:
+                case ENTITY_SWEEP_ATTACK:
+                case ENTITY_EXPLOSION:
+                case PROJECTILE:
+                    break;
+                default:
+                    e.setCancelled(true);
+                    break;
+            }
+            }
+        }
+    }
+
+    //Detect Throne World Intrusion
+    @EventHandler
+    public void onPortalTransit(PlayerTeleportEvent e){
+        //Check if teleport was through a portal and to a ThroneWorld
+        if (e.getCause().equals(PlayerTeleportEvent.TeleportCause.PLUGIN)){
+            if (e.getTo().getWorld().getName().contains("throne")){
+                //Check which world, check if enemy
             }
         }
     }
