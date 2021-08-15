@@ -333,7 +333,7 @@ public class QueenManager implements Listener {
                             player.teleport(tpDest);
                             //If the player was on the eliminated team, set their new spawn point to the overworld, as they can
                             //No longer respawn in their TW.
-                            if (GameThread.getPlayerTeam(player) == team) { player.setBedSpawnLocation(plugin.wm.getMVWorld("Overworld").getSpawnLocation(), true);}
+                            if (GameThread.getPlayerTeam(player) == (int) team - '0') { player.setBedSpawnLocation(plugin.wm.getMVWorld("Overworld").getSpawnLocation(), true);}
                             player.setHealth(0);
                         }
                         plugin.wm.deleteWorld(world.getName(), true);
@@ -375,8 +375,29 @@ public class QueenManager implements Listener {
     public void onPortalTransit(PlayerTeleportEvent e){
         //Check if teleport was through a portal and to a ThroneWorld
         if (e.getCause().equals(PlayerTeleportEvent.TeleportCause.PLUGIN)){
-            if (e.getTo().getWorld().getName().contains("throne")){
+            World entryWorld = e.getTo().getWorld();
+            World exitWorld = e.getFrom().getWorld();
+            Player player = e.getPlayer();
+            if (entryWorld.getName().contains("throne")){
                 //Check which world, check if enemy
+                char team = plugin.wm.getMVWorld(entryWorld).getName().charAt(6);
+                String teamName = teamsDB.getString("team" + team + ".name");
+                if (GameThread.getPlayerTeam(player) != (int) team - '0'){
+                    teamsDB.set("team" + team + ".RespawnBlocked", true);
+                    //at some point make it specific to involved players, maybe just make it all players. Design decision needs to be made here
+                    Bukkit.getServer().broadcastMessage("The Throne World of the " + teamName + "is being invaded!"); // consider if to add invading team.
+                }
+            }
+            if (exitWorld.getName().contains("throne")){
+                //Check which world, check if enemy
+                char team = plugin.wm.getMVWorld(exitWorld).getName().charAt(6);
+                String teamName = teamsDB.getString("team" + team + ".name");
+                if (GameThread.getPlayerTeam(player) != (int) team - '0'){
+                    for (Player occupier : exitWorld.getPlayers()){ if (GameThread.getPlayerTeam(occupier) != (int) team - '0'){ return; } }
+                    teamsDB.set("team" + team + ".RespawnBlocked", false);
+                    //at some point make it specific to involved players, maybe just make it all players. Design decision needs to be made here
+                    Bukkit.getServer().broadcastMessage("The Throne World of the " + teamName + "has been sealed!"); // change language lmaoo
+                }
             }
         }
     }
