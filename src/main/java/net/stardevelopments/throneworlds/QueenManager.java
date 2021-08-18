@@ -383,22 +383,28 @@ public class QueenManager implements Listener {
                 char team = plugin.wm.getMVWorld(entryWorld).getName().charAt(6);
                 String teamName = teamsDB.getString("team" + team + ".name");
                 if (GameThread.getPlayerTeam(player) != (int) team - '0'){
-                    teamsDB.set("team" + team + ".RespawnBlocked", true);
-                    //at some point make it specific to involved players, maybe just make it all players. Design decision needs to be made here
-                    Bukkit.getServer().broadcastMessage("The Throne World of the " + teamName + "is being invaded!"); // consider if to add invading team.
+                    if (!teamsDB.getBoolean("team" + team + ".RespawnBlocked",false)) {
+                        teamsDB.set("team" + team + ".RespawnBlocked", true);
+                        //at some point make it specific to involved players, maybe just make it all players. Design decision needs to be made here
+                        Bukkit.getServer().broadcastMessage("The Throne World of the " + teamName + "is being invaded!"); // consider if to add invading team.
+                    }
                 }
             }
             if (exitWorld.getName().contains("throne")){
                 //Check which world, check if enemy
                 char team = plugin.wm.getMVWorld(exitWorld).getName().charAt(6);
                 String teamName = teamsDB.getString("team" + team + ".name");
-                if (GameThread.getPlayerTeam(player) != (int) team - '0'){
-                    for (Player occupier : exitWorld.getPlayers()){ if (GameThread.getPlayerTeam(occupier) != (int) team - '0'){ return; } }
-                    teamsDB.set("team" + team + ".RespawnBlocked", false);
-                    //at some point make it specific to involved players, maybe just make it all players. Design decision needs to be made here
-                    Bukkit.getServer().broadcastMessage("The Throne World of the " + teamName + "has been sealed!"); // change language lmaoo
+                    if (GameThread.getPlayerTeam(player) != (int) team - '0') {
+                        for (Player occupier : exitWorld.getPlayers()) {
+                            if (GameThread.getPlayerTeam(occupier) != (int) team - '0') {
+                                return;
+                            }
+                        }
+                        teamsDB.set("team" + team + ".RespawnBlocked", false);
+                        //at some point make it specific to involved players, maybe just make it all players. Design decision needs to be made here
+                        Bukkit.getServer().broadcastMessage("The Throne World of the " + teamName + "has been sealed!"); // change language lmaoo
+                    }
                 }
-            }
         }
     }
 }
