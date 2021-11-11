@@ -387,6 +387,7 @@ public class QueenManager implements Listener {
                         teamsDB.set("team" + team + ".RespawnBlocked", true);
                         //at some point make it specific to involved players, maybe just make it all players. Design decision needs to be made here
                         Bukkit.getServer().broadcastMessage("The Throne World of the " + teamName + "is being invaded!"); // consider if to add invading team.
+                        //Add action bar message for invaded team
                     }
                 }
             }
@@ -403,6 +404,7 @@ public class QueenManager implements Listener {
                         teamsDB.set("team" + team + ".RespawnBlocked", false);
                         //at some point make it specific to involved players, maybe just make it all players. Design decision needs to be made here
                         Bukkit.getServer().broadcastMessage("The Throne World of the " + teamName + "has been sealed!"); // change language lmaoo
+                        //Respawn any spectator players in that team.
                     }
                 }
         }

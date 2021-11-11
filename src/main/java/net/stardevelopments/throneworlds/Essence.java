@@ -75,7 +75,7 @@ public class Essence implements Listener {
         }
     }
 
-    public void doEssenceForgeDrop(Location location, int num){
+    public static void doEssenceForgeDrop(Location location, int num){
         //Drop a single essence at location.
         ItemStack item = getEssence(num);
         location.getWorld().dropItem(location, item);

@@ -11,6 +11,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerManager implements Listener{
@@ -35,23 +37,31 @@ public class PlayerManager implements Listener{
             //Stop event, set to spectator, drop essence
             e.setCancelled(true);
             player.setGameMode(GameMode.SPECTATOR);
-
-            //Respawn logic
-            int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
-            //For each player of each team, is THIS player one of them? If so, are they out? If so, set them to spectator and state that they've been eliminated.
-            for (int i = 0; i < totalTeams; i++){
-                for (String member : teamsDB.getStringList("team" + i + ".members")){
-                    if (player.getName().equals(member)){
+            
+            ItemStack essence = Essence.getEssence(1);
+            Inventory inventory = player.getInventory();
+            //remove essence
+            int numEssence = 0;
+            for (ItemStack slot : inventory.getContents()){
+                if (slot != null) {
+                    if (slot.isSimilar(essence)) {
+                        numEssence += slot.getAmount();
+                        slot.setAmount(0);
+                    }
+                }
+            }
+            Essence.doEssenceForgeDrop(player.getLocation(),numEssence);
+            //get player team. are they out? If so, set them to spectator and state that they've been eliminated.
+                        int i = GameThread.getPlayerTeam(player);
                         //Eliminated
                         if (teamsDB.getInt("team" + i + ".State") == 4){
                             player.sendTitle("ELIMINATED", "You have suffered your final death.");
                             player.sendMessage("You have been eliminated! Thanks for playing Starfihgter's Throne Worlds! You can still spectate.");
                             Bukkit.getServer().broadcastMessage(player.getDisplayName() + " has been eliminated!");
-                            return;
                         }
                         //If respawn is blocked
                         else if (teamsDB.getBoolean("team" + i + ".RespawnBlocked")){
-                            player.sendTitle("REVIVE BLOCKED", "Eliminate hostiles on your Throne World to respawn");
+                            player.sendTitle("RESURRECTION BLOCKED", "Eliminate hostiles on your Throne World to respawn");
                         }
                         //Final case, respawn all good
                         else{
@@ -61,17 +71,16 @@ public class PlayerManager implements Listener{
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
-                                    //Run a check here to ensure that respawn is still viable and not blocked. No announcement needed, whatever method starts the block will anounce to player. This basically just canels.
-                            player.teleport(spawn);
-                            player.setHealth(20);
-                            player.setGameMode(GameMode.SURVIVAL);
-                            player.setBedSpawnLocation(spawn, true);
+                                    //Check respawn is still valid and respawn. Also check that player has not already been respawned.
+                                    if (player.getGameMode().equals(GameMode.SPECTATOR) && !teamsDB.getBoolean("team" + i + ".RespawnBlocked")) {
+                                        player.teleport(spawn);
+                                        player.setHealth(20);
+                                        player.setGameMode(GameMode.SURVIVAL);
+                                        player.setBedSpawnLocation(spawn, true);
+                                    }
                                 }
                             }.runTaskLater(plugin, 150);
                         }
                     }
                 }
-            }
-        }
     }
-}
