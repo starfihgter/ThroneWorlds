@@ -37,7 +37,7 @@ public class PlayerManager implements Listener{
             //Stop event, set to spectator, drop essence
             e.setCancelled(true);
             player.setGameMode(GameMode.SPECTATOR);
-            
+
             ItemStack essence = Essence.getEssence(1);
             Inventory inventory = player.getInventory();
             //remove essence
@@ -50,7 +50,7 @@ public class PlayerManager implements Listener{
                     }
                 }
             }
-            Essence.doEssenceForgeDrop(player.getLocation(),numEssence);
+            if(numEssence>0){Essence.doEssenceForgeDrop(player.getLocation(),numEssence);}
             //get player team. are they out? If so, set them to spectator and state that they've been eliminated.
                         int i = GameThread.getPlayerTeam(player);
                         //Eliminated

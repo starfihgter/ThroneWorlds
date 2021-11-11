@@ -69,9 +69,9 @@ public final class Main extends JavaPlugin {
 
         //Class Listener Registration
         getServer().getPluginManager().registerEvents(new TntBow(), this);
-        getServer().getPluginManager().registerEvents(new LifeSword(), this);
-        getServer().getPluginManager().registerEvents(new PoisonShank(), this);
-        getServer().getPluginManager().registerEvents(new KnockbackShield(), this);
+        //getServer().getPluginManager().registerEvents(new LifeSword(), this);
+        //getServer().getPluginManager().registerEvents(new PoisonShank(), this);
+        //getServer().getPluginManager().registerEvents(new KnockbackShield(), this);
         getServer().getPluginManager().registerEvents(new FireBallWand(), this);
         getServer().getPluginManager().registerEvents(new WitherBow(), this);
         getServer().getPluginManager().registerEvents(new Essence(this), this);

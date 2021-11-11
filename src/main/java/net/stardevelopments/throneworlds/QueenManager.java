@@ -373,16 +373,21 @@ public class QueenManager implements Listener {
     //Detect Throne World Intrusion
     @EventHandler
     public void onPortalTransit(PlayerTeleportEvent e){
+        Bukkit.getServer().broadcastMessage("[DEBUG] PortalTransitEvent Triggered"); //debug
         //Check if teleport was through a portal and to a ThroneWorld
+        Bukkit.getServer().broadcastMessage("[DEBUG] EVENT CAUSE: "+e.getCause().toString()); //debug
         if (e.getCause().equals(PlayerTeleportEvent.TeleportCause.PLUGIN)){
+            Bukkit.getServer().broadcastMessage("[DEBUG] EVENT CAUSE FOUND AS PLUGIN"); //debug
             World entryWorld = e.getTo().getWorld();
             World exitWorld = e.getFrom().getWorld();
             Player player = e.getPlayer();
             if (entryWorld.getName().contains("throne")){
+                Bukkit.getServer().broadcastMessage("[DEBUG] CONTAINS THRONE"); //debug
                 //Check which world, check if enemy
                 char team = plugin.wm.getMVWorld(entryWorld).getName().charAt(6);
                 String teamName = teamsDB.getString("team" + team + ".name");
                 if (GameThread.getPlayerTeam(player) != (int) team - '0'){
+                    Bukkit.getServer().broadcastMessage("[DEBUG] IDK WEIRD ASS CODE THAT I DO NOT UNDERSTAND"); //debug
                     if (!teamsDB.getBoolean("team" + team + ".RespawnBlocked",false)) {
                         teamsDB.set("team" + team + ".RespawnBlocked", true);
                         //at some point make it specific to involved players, maybe just make it all players. Design decision needs to be made here
