@@ -381,7 +381,7 @@ public class QueenManager implements Listener {
             World entryWorld = e.getTo().getWorld();
             World exitWorld = e.getFrom().getWorld();
             Player player = e.getPlayer();
-            if (entryWorld.getName().contains("throne")){
+            if (entryWorld.getName().contains("Throne")){
                 Bukkit.getServer().broadcastMessage("[DEBUG] CONTAINS THRONE"); //debug
                 //Check which world, check if enemy
                 char team = plugin.wm.getMVWorld(entryWorld).getName().charAt(6);
@@ -396,7 +396,7 @@ public class QueenManager implements Listener {
                     }
                 }
             }
-            if (exitWorld.getName().contains("throne")){
+            if (exitWorld.getName().contains("Throne")){
                 //Check which world, check if enemy
                 char team = plugin.wm.getMVWorld(exitWorld).getName().charAt(6);
                 String teamName = teamsDB.getString("team" + team + ".name");
