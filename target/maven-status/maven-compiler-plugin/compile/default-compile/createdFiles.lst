@@ -1,8 +1,11 @@
 net\stardevelopments\throneworlds\weapons\MagicMirror$1.class
 net\stardevelopments\throneworlds\weapons\FireBallWand.class
+net\stardevelopments\throneworlds\QueenManager$2.class
 net\stardevelopments\throneworlds\Main.class
+net\stardevelopments\throneworlds\PlayerManager$1.class
 net\stardevelopments\throneworlds\weapons\LifeSword.class
 net\stardevelopments\throneworlds\Essence.class
+net\stardevelopments\throneworlds\PlayerManager.class
 net\stardevelopments\throneworlds\weapons\TntBow.class
 net\stardevelopments\throneworlds\weapons\ALHCrossbow.class
 net\stardevelopments\throneworlds\commands\ScatterCommand.class

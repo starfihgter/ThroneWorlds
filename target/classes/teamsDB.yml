@@ -11,6 +11,7 @@ team0:
   upgrades:
     forge-e: 1
     forge-o: 1
+  RespawnBlocked:
 team1:
   name: "§bBlue Blazes§f"
 team2:

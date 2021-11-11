@@ -373,25 +373,20 @@ public class QueenManager implements Listener {
     //Detect Throne World Intrusion
     @EventHandler
     public void onPortalTransit(PlayerTeleportEvent e){
-        Bukkit.getServer().broadcastMessage("[DEBUG] PortalTransitEvent Triggered"); //debug
         //Check if teleport was through a portal and to a ThroneWorld
-        Bukkit.getServer().broadcastMessage("[DEBUG] EVENT CAUSE: "+e.getCause().toString()); //debug
         if (e.getCause().equals(PlayerTeleportEvent.TeleportCause.PLUGIN)){
-            Bukkit.getServer().broadcastMessage("[DEBUG] EVENT CAUSE FOUND AS PLUGIN"); //debug
             World entryWorld = e.getTo().getWorld();
             World exitWorld = e.getFrom().getWorld();
             Player player = e.getPlayer();
             if (entryWorld.getName().contains("Throne")){
-                Bukkit.getServer().broadcastMessage("[DEBUG] CONTAINS THRONE"); //debug
                 //Check which world, check if enemy
                 char team = plugin.wm.getMVWorld(entryWorld).getName().charAt(6);
                 String teamName = teamsDB.getString("team" + team + ".name");
                 if (GameThread.getPlayerTeam(player) != (int) team - '0'){
-                    Bukkit.getServer().broadcastMessage("[DEBUG] IDK WEIRD ASS CODE THAT I DO NOT UNDERSTAND"); //debug
                     if (!teamsDB.getBoolean("team" + team + ".RespawnBlocked",false)) {
                         teamsDB.set("team" + team + ".RespawnBlocked", true);
                         //at some point make it specific to involved players, maybe just make it all players. Design decision needs to be made here
-                        Bukkit.getServer().broadcastMessage("The Throne World of the " + teamName + "is being invaded!"); // consider if to add invading team.
+                        Bukkit.getServer().broadcastMessage("The Throne World of the " + teamName + " is being invaded!"); // consider if to add invading team.
                         //Add action bar message for invaded team
                     }
                 }
@@ -402,14 +397,23 @@ public class QueenManager implements Listener {
                 String teamName = teamsDB.getString("team" + team + ".name");
                     if (GameThread.getPlayerTeam(player) != (int) team - '0') {
                         for (Player occupier : exitWorld.getPlayers()) {
-                            if (GameThread.getPlayerTeam(occupier) != (int) team - '0') {
-                                return;
+                            if(occupier != player) {
+                                if (GameThread.getPlayerTeam(occupier) != (int) team - '0') {
+                                    return;
+                                }
                             }
                         }
                         teamsDB.set("team" + team + ".RespawnBlocked", false);
                         //at some point make it specific to involved players, maybe just make it all players. Design decision needs to be made here
-                        Bukkit.getServer().broadcastMessage("The Throne World of the " + teamName + "has been sealed!"); // change language lmaoo
+                        Bukkit.getServer().broadcastMessage("The Throne World of the " + teamName + " has been sealed!"); // change language lmaoo
                         //Respawn any spectator players in that team.
+                        for(Player dedboi : Bukkit.getServer().getOnlinePlayers()){
+                            if (GameThread.getPlayerTeam(dedboi) == (int) team - '0') {
+                                if(dedboi.getGameMode().equals(GameMode.SPECTATOR)){
+                                    if(//finish later, add logic to respawn all players.)
+                                }
+                            }
+                        }
                     }
                 }
         }
