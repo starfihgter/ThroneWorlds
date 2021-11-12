@@ -32,6 +32,8 @@ public class PlayerManager implements Listener{
             player = (Player) e.getEntity();
         } else{ return;}
 
+        if(worldState.getInt("GameState")==0){return;}
+
         //Check if the damage is going to be fatal
         if (player.getHealth() - e.getFinalDamage() <= 0){
             //Stop event, set to spectator, drop essence
@@ -57,6 +59,7 @@ public class PlayerManager implements Listener{
                         if (teamsDB.getInt("team" + i + ".State") == 4){
                             player.sendTitle("ELIMINATED", "You have suffered your final death.");
                             player.sendMessage("You have been eliminated! Thanks for playing Starfihgter's Throne Worlds! You can still spectate.");
+                            player.sendMessage("If an ally survived the collapse... maybe they can bring you back somehow...");
                             Bukkit.getServer().broadcastMessage(player.getDisplayName() + " has been eliminated!");
                         }
                         //If respawn is blocked
@@ -77,6 +80,7 @@ public class PlayerManager implements Listener{
                                         player.setHealth(20);
                                         player.setGameMode(GameMode.SURVIVAL);
                                         player.setBedSpawnLocation(spawn, true);
+                                        player.sendMessage("Your essence was consumed to bring you back to your Throne World.");
                                     }
                                 }
                             }.runTaskLater(plugin, 150);

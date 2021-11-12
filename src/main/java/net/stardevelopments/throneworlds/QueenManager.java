@@ -77,8 +77,8 @@ public class QueenManager implements Listener {
             queen.setCustomName("Queen " + i);
             LivingEntity livingQueen = (LivingEntity) queen;
             livingQueen.setAI(false);
-            livingQueen.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(100);
-            livingQueen.setHealth(100);
+            livingQueen.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(300);
+            livingQueen.setHealth(300);
             //queens[0] = queen;
         }
     }
@@ -410,7 +410,14 @@ public class QueenManager implements Listener {
                         for(Player dedboi : Bukkit.getServer().getOnlinePlayers()){
                             if (GameThread.getPlayerTeam(dedboi) == (int) team - '0') {
                                 if(dedboi.getGameMode().equals(GameMode.SPECTATOR)){
-                                    if(//finish later, add logic to respawn all players.)
+                                    if(teamsDB.getInt("team" + team + ".State", 0)!=4){
+                                        Location spawn = plugin.wm.getMVWorld(teamsDB.getString("team" + team + ".WorldName")).getSpawnLocation();
+                                        player.teleport(spawn);
+                                        player.setHealth(20);
+                                        player.setGameMode(GameMode.SURVIVAL);
+                                        player.setBedSpawnLocation(spawn, true);
+                                        player.sendMessage("Your essence was consumed to bring you back to your Throne World.");
+                                    }
                                 }
                             }
                         }
