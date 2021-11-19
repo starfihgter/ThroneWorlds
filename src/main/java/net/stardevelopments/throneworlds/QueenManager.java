@@ -333,8 +333,8 @@ public class QueenManager implements Listener {
                             player.teleport(tpDest);
                             //If the player was on the eliminated team, set their new spawn point to the overworld, as they can
                             //No longer respawn in their TW.
-                            if (GameThread.getPlayerTeam(player) == (int) team - '0') { player.setBedSpawnLocation(plugin.wm.getMVWorld("Overworld").getSpawnLocation(), true);}
-                            player.setHealth(0);
+                            if (GameThread.getPlayerTeam(player) == (int) team - '0') { player.setGameMode(GameMode.SPECTATOR);player.sendMessage("You have been Eliminated! Thanks for playing Starfihgter's Throne Worlds! You can still spectate.");}
+                            else {player.setHealth(0);}
                         }
                         plugin.wm.deleteWorld(world.getName(), true);
                         Bukkit.getServer().broadcastMessage("The Throne World of the " + teamName + " has collapsed.");
@@ -412,11 +412,11 @@ public class QueenManager implements Listener {
                                 if(dedboi.getGameMode().equals(GameMode.SPECTATOR)){
                                     if(teamsDB.getInt("team" + team + ".State", 0)!=4){
                                         Location spawn = plugin.wm.getMVWorld(teamsDB.getString("team" + team + ".WorldName")).getSpawnLocation();
-                                        player.teleport(spawn);
-                                        player.setHealth(20);
-                                        player.setGameMode(GameMode.SURVIVAL);
-                                        player.setBedSpawnLocation(spawn, true);
-                                        player.sendMessage("Your essence was consumed to bring you back to your Throne World.");
+                                        dedboi.teleport(spawn);
+                                        dedboi.setHealth(20);
+                                        dedboi.setGameMode(GameMode.SURVIVAL);
+                                        dedboi.setBedSpawnLocation(spawn, true);
+                                        dedboi.sendMessage("Your essence was consumed to bring you back to your Throne World.");
                                     }
                                 }
                             }
