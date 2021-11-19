@@ -60,7 +60,7 @@ public final class Main extends JavaPlugin {
 
         //Command Registration
         getCommand("startgame").setExecutor(gt);
-        getCommand("teams").setExecutor(new TeamsCommand());
+        getCommand("setteam").setExecutor(new TeamsCommand());
         getCommand("scatter").setExecutor(new ScatterCommand(gt));
         getCommand("border").setExecutor(new BorderCommand(this, gt));
 

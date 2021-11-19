@@ -30,8 +30,7 @@ public class GameThread implements CommandExecutor {
 
     //Dual Output
     public void out(String message, CommandSender sender){
-        System.out.println(message);
-        sender.sendMessage(message);
+        Bukkit.getServer().broadcastMessage(message);
     }
 
     //Get Player Team
@@ -236,9 +235,9 @@ public class GameThread implements CommandExecutor {
             Main.sb.generateScoreboard();
             Bukkit.getServer().broadcastMessage("Throne Worlds created!");
             qm.CreateQueens();
-            portalScatter();
             worldState.set("GameState", 2);
-            Main.sb.onPortalScatter();
+            onBorderUpdate();
+            portalScatter();
             return true;
         }else{
         out("Unable to find Overworld Template!", sender);
@@ -250,18 +249,35 @@ public class GameThread implements CommandExecutor {
     public void onBorderUpdate(){
         //Calculate ticks until the border changes
         long changeTime = plugin.getConfig().getLong("next-change");
+        int radius = plugin.getConfig().getInt("border-radius");
         long millisecondsUntilChange = changeTime - System.currentTimeMillis();
         int ticksUntilChange = (int) (millisecondsUntilChange / 50L);
+
+        //Create random new time between 3 and 20 minutes, half radius for subsequent shrink.
+        int newRadius = radius/2;
+
+        int newSecondsToChange = ThreadLocalRandom.current().nextInt(180, 1200);
+        long newMilSecsUntilChange = newSecondsToChange*1000L;
 
         //Set task to execute border change and scatter
         new BukkitRunnable() {
             @Override
             public void run() {
+                //
                 World world = plugin.wm.getMVWorld("Overworld").getCBWorld();
-                world.getWorldBorder().setSize(((plugin.getConfig().getInt("border-radius"))*2), 60);
+                world.getWorldBorder().setSize((radius*2), 60);
+                plugin.getConfig().set("border-radius", newRadius);
                 portalScatter();
-                Bukkit.getServer().broadcastMessage("§l§cPlay area now shrinking to a radius of " + plugin.getConfig().getInt("border-radius"));
-                plugin.getConfig().set("next-change", 0);
+                Bukkit.getServer().broadcastMessage("§l§cPlay area now shrinking to a radius of " + radius);
+                Bukkit.getServer().broadcastMessage("§l§cThe play area will shrink to a radius of "+ newRadius + " in " + newSecondsToChange/60 + " minutes");
+                plugin.getConfig().set("next-change", newMilSecsUntilChange);
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        onBorderUpdate();
+                    }}.runTaskLater(plugin, newMilSecsUntilChange/50L);
+
             }
         }.runTaskLater(plugin, ticksUntilChange);
     }
