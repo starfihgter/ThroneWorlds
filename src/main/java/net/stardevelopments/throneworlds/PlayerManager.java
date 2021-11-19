@@ -3,8 +3,10 @@ package net.stardevelopments.throneworlds;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,6 +23,19 @@ public class PlayerManager implements Listener{
     public PlayerManager(Main pp){this.plugin=pp;}
     FileConfiguration teamsDB = Main.teamsDB.getUserRecord();
     FileConfiguration worldState = Main.worldState.getUserRecord();
+
+    //Called when a player enters their throne world
+    public static void onPlayerEntry(Player player){
+        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(25);
+        if (player.getHealth() == 20){player.setHealth(25);}
+        //Check here for any specific buffs from upgrading queen.
+    }
+
+    //Called when a player exits their throne world.
+    public static void onPlayerExit(Player player){
+        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
+        //Reset ANY AND ALL possible modified attributes.
+    }
 
     //check for and override player deaths
     @EventHandler

@@ -375,12 +375,12 @@ public class QueenManager implements Listener {
     public void onPortalTransit(PlayerTeleportEvent e){
         //Check if teleport was through a portal and to a ThroneWorld
         if (e.getCause().equals(PlayerTeleportEvent.TeleportCause.PLUGIN)){
-            World entryWorld = e.getTo().getWorld();
-            World exitWorld = e.getFrom().getWorld();
+            World toWorld = e.getTo().getWorld();
+            World fromWorld = e.getFrom().getWorld();
             Player player = e.getPlayer();
-            if (entryWorld.getName().contains("Throne")){
+            if (toWorld.getName().contains("Throne")){
                 //Check which world, check if enemy
-                char team = plugin.wm.getMVWorld(entryWorld).getName().charAt(6);
+                char team = plugin.wm.getMVWorld(toWorld).getName().charAt(6);
                 String teamName = teamsDB.getString("team" + team + ".name");
                 if (GameThread.getPlayerTeam(player) != (int) team - '0'){
                     if (!teamsDB.getBoolean("team" + team + ".RespawnBlocked",false)) {
@@ -389,14 +389,14 @@ public class QueenManager implements Listener {
                         Bukkit.getServer().broadcastMessage("The Throne World of the " + teamName + " is being invaded!"); // consider if to add invading team.
                         //Add action bar message for invaded team
                     }
-                }
+                } else{PlayerManager.onPlayerEntry(player);}
             }
-            if (exitWorld.getName().contains("Throne")){
+            if (fromWorld.getName().contains("Throne")){
                 //Check which world, check if enemy
-                char team = plugin.wm.getMVWorld(exitWorld).getName().charAt(6);
+                char team = plugin.wm.getMVWorld(fromWorld).getName().charAt(6);
                 String teamName = teamsDB.getString("team" + team + ".name");
                     if (GameThread.getPlayerTeam(player) != (int) team - '0') {
-                        for (Player occupier : exitWorld.getPlayers()) {
+                        for (Player occupier : fromWorld.getPlayers()) {
                             if(occupier != player) {
                                 if (GameThread.getPlayerTeam(occupier) != (int) team - '0') {
                                     return;
@@ -421,7 +421,7 @@ public class QueenManager implements Listener {
                                 }
                             }
                         }
-                    }
+                    } else {PlayerManager.onPlayerExit(player);}
                 }
         }
     }
