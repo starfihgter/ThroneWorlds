@@ -72,7 +72,7 @@ public final class Main extends JavaPlugin {
         //getServer().getPluginManager().registerEvents(new LifeSword(), this); // These classes are bugged, throw exceptions on entity hit.
         //getServer().getPluginManager().registerEvents(new PoisonShank(), this);
         //getServer().getPluginManager().registerEvents(new KnockbackShield(), this);
-        getServer().getPluginManager().registerEvents(new FireBallWand(), this);
+        //getServer().getPluginManager().registerEvents(new FireBallWand(), this);
         getServer().getPluginManager().registerEvents(new WitherBow(), this);
         getServer().getPluginManager().registerEvents(new Essence(this), this);
         getServer().getPluginManager().registerEvents(qm, this);
