@@ -8,13 +8,6 @@ import java.util.Arrays;
 
 public class TNTBundle extends TWAbility {
     public TNTBundle() {
-        super("TNT Bundle");
-    }
-
-    @Override
-    public ItemStack getItem() {
-        ItemStack TNT = new ItemStack(Material.TNT, 10);
-        Main.setItemName(TNT, name, Arrays.asList("§f10 blocks of TNT", "§eThis item costs " + getCost() + " essence!"));
-        return TNT;
+        super("TNT Bundle",Material.TNT,16,"Goes Kaboom.");
     }
 }

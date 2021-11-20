@@ -16,25 +16,7 @@ import java.util.ArrayList;
 
 public class PoisonShank extends TWAbility implements Listener {
     public PoisonShank() {
-        super("Poison Shank");
-    }
-
-    @Override
-    public ItemStack getItem(){
-
-        ItemStack poisonShank = new ItemStack(Material.STICK);
-
-        ItemMeta poisonShankMeta = poisonShank.getItemMeta();
-        poisonShankMeta.setDisplayName(name);
-
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add("§fPoisons your opponent");
-        lore.add("§eThis item costs " + getCost() + " essence!");
-        poisonShankMeta.setLore(lore);
-
-        poisonShank.setItemMeta(poisonShankMeta);
-
-        return poisonShank;
+        super("Poison Shank",Material.STICK,1,"Inflict poison upon thy enemies.");
     }
 
     @EventHandler

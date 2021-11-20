@@ -8,12 +8,6 @@ import java.util.Arrays;
 
 public class GoldPickaxe extends TWAbility {
     public GoldPickaxe() {
-        super("Gold Pickaxe");
-    }
-
-    public ItemStack getItem() {
-        ItemStack TNT = new ItemStack(Material.GOLDEN_PICKAXE, 1);
-        Main.setItemName(TNT, getName(), Arrays.asList("§fQuick but fragile", "§eThis item costs " + getCost() + " essence!"));
-        return TNT;
+        super("Gold Pickaxe",Material.GOLDEN_PICKAXE,1,"Quick but fragile");
     }
 }

@@ -14,16 +14,10 @@ import java.util.Arrays;
 
 public class PortalCompass extends TWAbility {
     private int team;
-    String name;
     int cost = Main.plugin.getConfig().getInt("PortalCompass", 4);
     public PortalCompass(int pTeam){
+        super("Team " + pTeam + " portal tracker",Material.COMPASS,1,"Something has gone wrong, this should be overwritten");
         this.team = pTeam;
-        name = "Team " + team + " portal tracker";
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     @Override
@@ -43,7 +37,7 @@ public class PortalCompass extends TWAbility {
         Location location = world.getBlockAt(x, y, z).getLocation();
         cmp.setLodestoneTracked(false);
         cmp.setLodestone(location);
-        cmp.setDisplayName(name);
+        cmp.setDisplayName(getName());
         cmp.setLore(Arrays.asList("§fThis tracker is useless after a portal scatter", "§eThis item costs " + cost + " essence!"));
         compass.setItemMeta(cmp);
         return compass;

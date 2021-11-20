@@ -19,27 +19,7 @@ import java.util.Objects;
 public class MagicMirror extends TWAbility implements Listener {
 
     public MagicMirror() {
-        super("Magic Mirror");
-    }
-
-
-
-    public ItemStack getItem(){
-
-        ItemStack magicMirror = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
-
-        ItemMeta magicMirrorMeta = magicMirror.getItemMeta();
-        magicMirrorMeta.setDisplayName(name);
-
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add("§fReturns you to your throne world");
-        lore.add("§eThis item costs " + getCost() + " essence!");
-        magicMirrorMeta.setLore(lore);
-
-        magicMirror.setItemMeta(magicMirrorMeta);
-
-        return magicMirror;
-
+        super("Magic Mirror",Material.WHITE_STAINED_GLASS_PANE,1,"Returns the user to their Throne World.");
     }
 
     @EventHandler

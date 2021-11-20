@@ -8,12 +8,7 @@ import java.util.Arrays;
 
 public class Scaffolding extends TWAbility {
     public Scaffolding() {
-        super("Scaffolding");
+        super("Scaffolding",Material.SCAFFOLDING,16,"Can be placed anywhere!");
     }
-
-    public ItemStack getItem() {
-        ItemStack scaffold = new ItemStack(Material.SCAFFOLDING, 10);
-        Main.setItemName(scaffold, name, Arrays.asList("§fCan be placed anywhere!", "§eThis item costs " + getCost() + " essence!"));
-        return scaffold;
-    }
+    //Code for scaffolding building exception is in BuildingCheck.java
 }
