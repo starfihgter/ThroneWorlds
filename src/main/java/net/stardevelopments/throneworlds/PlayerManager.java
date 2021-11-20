@@ -1,5 +1,6 @@
 package net.stardevelopments.throneworlds;
 
+import net.stardevelopments.throneworlds.weapons.PoisonShank;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;

@@ -14,8 +14,10 @@ import java.util.ArrayList;
 
 public class TntBow extends TWAbility implements Listener {
 
-    String name = "TNT Bow";
-    int cost = Main.plugin.getConfig().getInt("TNTBow", 4);
+    public TntBow() {
+        super("TNT Bow");
+    }
+
     @Override
     public ItemStack getItem(){
         ItemStack tntBow = new ItemStack(Material.BOW);
@@ -26,22 +28,12 @@ public class TntBow extends TWAbility implements Listener {
 
         ArrayList<String> lore = new ArrayList<>();
         lore.add("§fArrows detonate on impact");
-        lore.add("§eThis item costs " + cost + " essence!");
+        lore.add("§eThis item costs " + getCost() + " essence!");
         tntBowMeta.setLore(lore);
 
         tntBow.setItemMeta(tntBowMeta);
 
         return tntBow;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public int getCost() {
-        return cost;
     }
 
     @EventHandler

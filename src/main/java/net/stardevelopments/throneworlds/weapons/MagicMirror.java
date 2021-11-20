@@ -18,10 +18,12 @@ import java.util.Objects;
 
 public class MagicMirror extends TWAbility implements Listener {
 
-    String name = "Magic Mirror";
-    int cost = Main.plugin.getConfig().getInt("magic-mirror", 4);
+    public MagicMirror() {
+        super("Magic Mirror");
+    }
 
-    @Override
+
+
     public ItemStack getItem(){
 
         ItemStack magicMirror = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
@@ -31,7 +33,7 @@ public class MagicMirror extends TWAbility implements Listener {
 
         ArrayList<String> lore = new ArrayList<>();
         lore.add("§fReturns you to your throne world");
-        lore.add("§eThis item costs " + cost + " essence!");
+        lore.add("§eThis item costs " + getCost() + " essence!");
         magicMirrorMeta.setLore(lore);
 
         magicMirror.setItemMeta(magicMirrorMeta);
@@ -68,10 +70,4 @@ public class MagicMirror extends TWAbility implements Listener {
             }
         }
     }
-
-    @Override
-    public String getName() { return name; }
-
-    @Override
-    public int getCost() { return cost;}
 }

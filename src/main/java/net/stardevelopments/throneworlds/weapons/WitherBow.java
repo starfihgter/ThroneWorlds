@@ -16,8 +16,9 @@ import java.util.ArrayList;
 
 public class WitherBow extends TWAbility implements Listener {
 
-    String name = "Wither Bow";
-    int cost = Main.plugin.getConfig().getInt("WitherBow", 4);
+    public WitherBow() {
+        super("Wither Bow");
+    }
 
     public ItemStack getItem(){
         ItemStack tntBow = new ItemStack(Material.BOW);
@@ -28,7 +29,7 @@ public class WitherBow extends TWAbility implements Listener {
 
         ArrayList<String> lore = new ArrayList<>();
         lore.add("§fSingle use item - Creates a wither where your arrow lands.");
-        lore.add("§eThis item costs " + cost + " essence!");
+        lore.add("§eThis item costs " + getCost() + " essence!");
         tntBowMeta.setLore(lore);
 
         tntBow.setItemMeta(tntBowMeta);
@@ -54,15 +55,5 @@ public class WitherBow extends TWAbility implements Listener {
 
         }
 
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public int getCost() {
-        return cost;
     }
 }

@@ -7,20 +7,13 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Arrays;
 
 public class Scaffolding extends TWAbility {
-    @Override
+    public Scaffolding() {
+        super("Scaffolding");
+    }
+
     public ItemStack getItem() {
         ItemStack scaffold = new ItemStack(Material.SCAFFOLDING, 10);
-        Main.setItemName(scaffold, getName(), Arrays.asList("§fCan be placed anywhere!", "§eThis item costs " + getCost() + " essence!"));
+        Main.setItemName(scaffold, name, Arrays.asList("§fCan be placed anywhere!", "§eThis item costs " + getCost() + " essence!"));
         return scaffold;
-    }
-
-    @Override
-    public String getName() {
-        return "Scaffolding";
-    }
-
-    @Override
-    public int getCost() {
-        return 20;
     }
 }
