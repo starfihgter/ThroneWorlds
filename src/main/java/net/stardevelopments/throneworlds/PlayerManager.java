@@ -27,9 +27,12 @@ public class PlayerManager implements Listener{
 
     //Called when a player enters their throne world
     public static void onPlayerEntry(Player player){
-        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(25);
-        if (player.getHealth() == 20){player.setHealth(25);}
-        //Check here for any specific buffs from upgrading queen.
+        //Set upgraded health, and if player is close enough to full health, give them the bonus hearts.
+        FileConfiguration teamsDB = Main.teamsDB.getUserRecord();
+        int currentHBonus = teamsDB.getInt("team" + GameThread.getPlayerTeam(player) + ".upgrades.health-bonus",25);
+        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(currentHBonus);
+        if (player.getHealth() >= 18){player.setHealth(currentHBonus);}
+
     }
 
     //Called when a player exits their throne world.
@@ -73,8 +76,9 @@ public class PlayerManager implements Listener{
                         int i = GameThread.getPlayerTeam(player);
                         //Eliminated
                         if (teamsDB.getInt("team" + i + ".State") == 4){
+                            //player.teleport(inBetweenTeamSpawn);
                             player.sendTitle("ELIMINATED", "You have suffered your final death.");
-                            player.sendMessage("You have been eliminated! Thanks for playing Starfihgter's Throne Worlds! You can still spectate.");
+                            player.sendMessage("You have been eliminated! Thanks for playing Starfihgter's Throne Worlds!");
                             player.sendMessage("If an ally survived the collapse... maybe they can bring you back somehow...");
                             Bukkit.getServer().broadcastMessage(player.getDisplayName() + " has been eliminated!");
                         }

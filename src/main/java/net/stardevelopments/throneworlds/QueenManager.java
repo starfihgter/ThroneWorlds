@@ -2,10 +2,9 @@ package net.stardevelopments.throneworlds;
 
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import net.stardevelopments.throneworlds.weapons.*;
+import net.stardevelopments.throneworlds.weapons.blocksanditems.*;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -14,11 +13,12 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Wood;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -33,11 +33,11 @@ public class QueenManager implements Listener {
     FileConfiguration teamsDB = Main.teamsDB.getUserRecord();
     FileConfiguration worldState = Main.worldState.getUserRecord();
 
-    //Ability master array - ADD CLASSES HERE TO AUTOMATICALLY ADD TO STORE
-    TWAbility[] itemsList = {new WitherBow(), new MagicMirror(), new Scaffolding(), new TNTBundle(), new GoldPickaxe()};
+    //Ability master array - ADD CLASSES HERE TO AUTOMATICALLY ADD TO STORE (compasses are added manually)
+    TWAbility[] itemsList = {new WitherBow(), new MagicMirror(), new Scaffolding(), new TNTBundle(), new GoldPickaxe(),new PoisonShank(),new RevivalTotem(),new ObsidianItem(), new StoneItem(), new WoodItem(), new IronBlockItem()};
 
     //This method checks if the player can afford a given item.
-    public Boolean removeMoneys(ItemStack item, int cost, Player player){
+    public Boolean removeMoneys(ItemStack item, int cost, Player player, Boolean giveItem){
         int initCost = cost;
         //Checking if player can pay
         ItemStack essence = Essence.getEssence(1);
@@ -50,8 +50,8 @@ public class QueenManager implements Listener {
                         if (slot.getAmount() >= cost) {
                             //If they have enough in THAT STACK, buys the item
                             slot.setAmount(slot.getAmount() - cost);
-                            inventory.addItem(item);
-                            player.sendMessage("You bought " + item.getItemMeta().getDisplayName());
+                            if (giveItem){inventory.addItem(item);}
+                            player.sendMessage("You bought " + item.getItemMeta().getDisplayName() + " for " + initCost + "essence!");
                             return true;
                         } else {
                             cost = cost - slot.getAmount();
@@ -113,7 +113,9 @@ public class QueenManager implements Listener {
         //Defining basics
         Inventory gui = Bukkit.createInventory(player, 36, "Weapons and Ability Store");
 
+
         ItemStack back = new ItemStack(Material.ARROW, 1);
+        //For consistencies sake, these should be reworked as TWAbilties. Fine for now.
         Main.setItemName(back, "Go Back", null);
         gui.setItem(0, BuildingCheck.getZonePlacer());
         gui.setItem(1, BuildingCheck.getZoneBlocker());
@@ -156,6 +158,7 @@ public class QueenManager implements Listener {
                         //Grabs the current efficiency and output from team database
                         int efficiency = teamsDB.getInt("team" + i + ".upgrades.forge-e",1) * 25;
                         int output = teamsDB.getInt("team" + i + ".upgrades.forge-o",1);
+                        int currentHBonus = teamsDB.getInt("team" + i + ".upgrades.health-bonus",25);
 
                         ItemStack back = new ItemStack(Material.ARROW, 1);
                         Main.setItemName(back, "Go Back", null);
@@ -169,6 +172,10 @@ public class QueenManager implements Listener {
                         ItemStack forgeO = new ItemStack(Material.FURNACE_MINECART, 1);
                         Main.setItemName(forgeO, "Forge Output", Arrays.asList("The Forge is currently outputting " + output + " essence per cycle!"));
                         gui.setItem(1, forgeO);
+
+                        ItemStack healthB = new ItemStack(Material.ENCHANTED_GOLDEN_APPLE,currentHBonus);
+                        Main.setItemName(healthB,"Throne Health Bonus", Arrays.asList("Your queen grants you " + (currentHBonus - 20) + " extra hit points while on your island!"));
+                        gui.setItem(2,healthB);
 
                         player.openInventory(gui);
                     }
@@ -225,6 +232,7 @@ public class QueenManager implements Listener {
                 int i = GameThread.getPlayerTeam(player);
                 int efficiency = teamsDB.getInt("team" + i + ".upgrades.forge-e");
                 int output = teamsDB.getInt("team" + i + ".upgrades.forge-o");
+                int currentHBonus = teamsDB.getInt("team" + i + ".upgrades.health-bonus",25);
                 int factor = 1;
                 //Code execution depending on what was clicked. Each option varies too much to not hard code somewhere.
                 switch (e.getCurrentItem().getItemMeta().getDisplayName()) {
@@ -241,7 +249,7 @@ public class QueenManager implements Listener {
                             if (efficiency == 2){factor = 6;}
                             if (efficiency == 3){factor = 15;}
                             //If they can afford the upgrade, increase the efficiency by one and store the new efficiency
-                            if (removeMoneys(e.getCurrentItem(), Main.plugin.getConfig().getInt("ForgeE", 4) * factor, player)){
+                            if (removeMoneys(e.getCurrentItem(), Main.plugin.getConfig().getInt("ForgeE", 4) * factor, player,false)){
                                 efficiency++;
                                 teamsDB.set("team" + i + ".upgrades.forge-e", efficiency);
                                 player.sendMessage("Forge Efficiency upgraded to " + efficiency * 25 + "%");
@@ -256,12 +264,21 @@ public class QueenManager implements Listener {
                             if (output == 1){factor = 1;}
                             if (output == 2){factor = 6;}
                             if (output == 3){factor = 15;}
-                            if (removeMoneys(e.getCurrentItem(), Main.plugin.getConfig().getInt("ForgeO", 4) * factor, player)) {
+                            if (removeMoneys(e.getCurrentItem(), Main.plugin.getConfig().getInt("ForgeO", 4) * factor, player, false)) {
                                 output++;
                                 teamsDB.set("team" + i + ".upgrades.forge-o", output);
                                 player.sendMessage("Forge output upgraded to " + output + " per cycle!");
                             }
                             generateUpgradeScreen(player);
+                        }
+                        break;
+                    }
+                    //Set cost as 15 times the current health bonus, attempt to buy and update teamsDB if successful.
+                    case "Throne Health Bonus":{
+                        int healthCost = currentHBonus * 15;
+                        if (removeMoneys(e.getCurrentItem(),healthCost,player,false)){
+                            teamsDB.set("team" + i + ".upgrades.health-bonus",currentHBonus + 5);
+                            player.sendMessage("Health bonus increased by 5 hp!");
                         }
                         break;
                     }
@@ -275,11 +292,11 @@ public class QueenManager implements Listener {
                 //Hardcoded compasses and Power Funnels.
                 switch (e.getCurrentItem().getItemMeta().getDisplayName()) {
                     case "Power Funnel - Build Zone": {
-                        removeMoneys(BuildingCheck.getZonePlacer(), Main.plugin.getConfig().getInt("ZPlacer", 4), player);
+                        removeMoneys(BuildingCheck.getZonePlacer(), Main.plugin.getConfig().getInt("ZPlacer", 4), player,true);
                         break;
                     }
                     case "Power Funnel - Build Zone Blocker": {
-                        removeMoneys(BuildingCheck.getZoneBlocker(), Main.plugin.getConfig().getInt("ZBlocker", 4), player);
+                        removeMoneys(BuildingCheck.getZoneBlocker(), Main.plugin.getConfig().getInt("ZBlocker", 4), player,true);
                         break;
                     }
                     default: {
@@ -287,7 +304,7 @@ public class QueenManager implements Listener {
                         int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
                         for (int i = 0; i < totalTeams; i++) {
                             if (e.getCurrentItem().getItemMeta().getDisplayName().equals(new PortalCompass(i).getName())) {
-                                removeMoneys(new PortalCompass(i).getItem(), new PortalCompass(i).getCost(), player);
+                                removeMoneys(new PortalCompass(i).getItem(), new PortalCompass(i).getCost(), player,true);
                             }
                         }
                         break;
@@ -296,7 +313,7 @@ public class QueenManager implements Listener {
                 //For each item in the items list, check if the item clicked is equal to it. If so, check and give the player said item.
                 for (TWAbility item : itemsList){
                     if (e.getCurrentItem().getItemMeta().getDisplayName().equals(item.getName())){
-                        removeMoneys(item.getItem(), item.getCost(), player);
+                        removeMoneys(item.getItem(), item.getCost(), player,true);
                     }
                 }
             }
