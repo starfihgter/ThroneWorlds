@@ -79,6 +79,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BuildingCheck(this), this);
         getServer().getPluginManager().registerEvents(new MagicMirror(), this);
         getServer().getPluginManager().registerEvents(playerManager, this);
+        getServer().getPluginManager().registerEvents(new RevivalTotem(this),this);
 
     }
 
