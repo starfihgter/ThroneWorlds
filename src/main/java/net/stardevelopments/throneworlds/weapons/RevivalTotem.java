@@ -19,7 +19,7 @@ public class RevivalTotem extends TWAbility implements Listener {
     Main plugin;
     FileConfiguration teamsDB = Main.teamsDB.getUserRecord();
     public RevivalTotem(Main passPlug) {
-        super("Radiance Anchor", Material.TOTEM_OF_UNDYING,1,"Allows your to revive you and your team from beyond the grave!");
+        super("Radiance Anchor", Material.TOTEM_OF_UNDYING,1,"Type \"Light the path home\" to revive you and your team from beyond the grave!");
         this.plugin = passPlug;
     }
 
@@ -27,10 +27,9 @@ public class RevivalTotem extends TWAbility implements Listener {
     //Get for chat message to revive players
     public void onChatEvent(AsyncPlayerChatEvent e){
         Player player = e.getPlayer();
-        //Check if the player is in spectator, said the phrase, and has the Revive totem in their inventory.
-        if (player.getGameMode().equals(GameMode.SPECTATOR)){
+        //Check if player said the phrase, and has the Revive totem in their inventory.
             if(player.getInventory().contains(getItem())){
-                if(e.getMessage().equals("Light our path home")){
+                if(e.getMessage().equals("Light the path home")){
                     int team = GameThread.getPlayerTeam(player);
                     //For each player in the game, check if they're in spectator (or in the inbetween after update), and on the team.
                     //if so, respawn them with a different message.
@@ -46,7 +45,6 @@ public class RevivalTotem extends TWAbility implements Listener {
                     }
                 }
             }
-        }
     }
 
 

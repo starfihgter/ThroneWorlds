@@ -1,6 +1,7 @@
-package net.stardevelopments.throneworlds.weapons;
+package net.stardevelopments.throneworlds.weapons.blocksanditems;
 
 import net.stardevelopments.throneworlds.Main;
+import net.stardevelopments.throneworlds.weapons.TWAbility;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
