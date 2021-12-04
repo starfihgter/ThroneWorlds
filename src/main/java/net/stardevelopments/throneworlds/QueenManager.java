@@ -32,7 +32,7 @@ public class QueenManager implements Listener {
     FileConfiguration worldState = Main.worldState.getUserRecord();
 
     //Ability master array - ADD CLASSES HERE TO AUTOMATICALLY ADD TO STORE (compasses are added manually)
-    TWAbility[] itemsList = {new WitherBow(), new MagicMirror(), new Scaffolding(), new TNTBundle(), new GoldPickaxe(),new PoisonShank(),new RevivalTotem(plugin),new PortalShutdownItem(), new ObsidianItem(), new StoneItem(), new WoodItem(), new IronBlockItem()};
+    TWAbility[] itemsList = {new WitherBow(), new MagicMirror(), new Scaffolding(), new TNTBundle(), new GoldPickaxe(),new PoisonShank(),new RevivalTotem(plugin),new PortalShutdownItem(plugin.pm), new ObsidianItem(), new StoneItem(), new WoodItem(), new IronBlockItem()};
 
     //This method checks if the player can afford a given item.
     public Boolean removeMoneys(ItemStack item, int cost, Player player, Boolean giveItem){

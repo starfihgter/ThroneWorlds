@@ -88,6 +88,13 @@ public class GameThread implements CommandExecutor {
                         block = overWorld.getCBWorld().getBlockAt(x + 3, y + b, z);
                         block.setType(obsidian);
                     }
+                    //Setting portal fill
+                    overWorld.getCBWorld().getBlockAt(x+1, y + 1, z).setType(obsidian);
+                    overWorld.getCBWorld().getBlockAt(x+1, y + 2, z).setType(obsidian);
+                    overWorld.getCBWorld().getBlockAt(x+1, y + 3, z).setType(obsidian);
+                    overWorld.getCBWorld().getBlockAt(x+2, y + 1, z).setType(obsidian);
+                    overWorld.getCBWorld().getBlockAt(x+2, y + 2, z).setType(obsidian);
+                    overWorld.getCBWorld().getBlockAt(x+2, y + 3, z).setType(obsidian);
                     //*cries*
                 }
             if (teamsDB.getInt("team" + i + ".State") != 4){
@@ -150,6 +157,14 @@ public class GameThread implements CommandExecutor {
                 block = overWorld.getCBWorld().getBlockAt(x + 3, y + b, z);
                 block.setType(obsidian);
             }
+            //Filling portals
+                Material fillMaterial = Material.END_PORTAL;
+                overWorld.getCBWorld().getBlockAt(x+1, y + 1, z).setType(fillMaterial);
+                overWorld.getCBWorld().getBlockAt(x+1, y + 2, z).setType(fillMaterial);
+                overWorld.getCBWorld().getBlockAt(x+1, y + 3, z).setType(fillMaterial);
+                overWorld.getCBWorld().getBlockAt(x+2, y + 1, z).setType(fillMaterial);
+                overWorld.getCBWorld().getBlockAt(x+2, y + 2, z).setType(fillMaterial);
+                overWorld.getCBWorld().getBlockAt(x+2, y + 3, z).setType(fillMaterial);
             //*cries*
             //MVC portal linking
             PortalManager pm = plugin.pm.getPortalManager();
@@ -160,7 +175,7 @@ public class GameThread implements CommandExecutor {
             Vector bottomLeft = new Vector(x, y, z);
             Vector topRight = new Vector(x + 3, y + 4, z);
             pl.setLocation(bottomLeft, topRight, overWorld);
-            pm.addPortal(overWorld, "team" + i + "out", "starfihgter", pl);
+            pm.addPortal(overWorld, "team" + i + "out", "", pl);
             pm.getPortal("team" + i + "out").setDestination("p:team" + i + "home");
             pm.getPortal("team" + i + "home").setDestination("p:team" + i + "out");
             Bukkit.getServer().broadcastMessage("The " + teamName + "' portal has relocated!");

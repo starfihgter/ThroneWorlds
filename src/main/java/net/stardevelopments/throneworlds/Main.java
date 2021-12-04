@@ -80,6 +80,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new MagicMirror(), this);
         getServer().getPluginManager().registerEvents(playerManager, this);
         getServer().getPluginManager().registerEvents(new RevivalTotem(this),this);
+        getServer().getPluginManager().registerEvents(new PortalShutdownItem(pm),this);
 
     }
 
