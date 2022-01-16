@@ -19,10 +19,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class PortalShutdownItem extends TWAbility implements Listener {
-    MultiversePortals MVP;
-    public PortalShutdownItem(MultiversePortals passedPM) {
+    Main mainPlugin;
+    public PortalShutdownItem(Main passedPM) {
         super("Ascendant Disruptor", Material.IRON_BARS, 1, "Seals your portal for 1 minute!");
-        this.MVP = passedPM;
+        this.mainPlugin = passedPM;
     }
 
     @EventHandler
@@ -39,6 +39,7 @@ public class PortalShutdownItem extends TWAbility implements Listener {
 
         if (item.getType() == Material.IRON_BARS){
             FileConfiguration teamsDB = Main.teamsDB.getUserRecord();
+            MultiversePortals MVP = mainPlugin.pm;
             PortalManager pm = MVP.getPortalManager();
             int team = GameThread.getPlayerTeam(player);
             int x = teamsDB.getInt("team" + team + ".portal.x");
@@ -56,6 +57,7 @@ public class PortalShutdownItem extends TWAbility implements Listener {
             //Announce
             String teamName = teamsDB.getString("team" + team + ".name");
             Bukkit.getServer().broadcastMessage(teamName + " have sealed their portal for 1 minute!");
+            player.getInventory().remove(getItem());
 
             new BukkitRunnable() {
                 @Override
@@ -63,7 +65,7 @@ public class PortalShutdownItem extends TWAbility implements Listener {
                     int x = teamsDB.getInt("team" + team + ".portal.x");
                     int y = teamsDB.getInt("team" + team + ".portal.y");
                     int z = teamsDB.getInt("team" + team + ".portal.z");
-                    Material fillMaterial = Material.END_PORTAL;
+                    Material fillMaterial = Material.END_GATEWAY;
                     overWorld.getBlockAt(x+1, y + 1, z).setType(fillMaterial);
                     overWorld.getBlockAt(x+1, y + 2, z).setType(fillMaterial);
                     overWorld.getBlockAt(x+1, y + 3, z).setType(fillMaterial);

@@ -158,7 +158,7 @@ public class GameThread implements CommandExecutor {
                 block.setType(obsidian);
             }
             //Filling portals
-                Material fillMaterial = Material.END_PORTAL;
+                Material fillMaterial = Material.END_GATEWAY;
                 overWorld.getCBWorld().getBlockAt(x+1, y + 1, z).setType(fillMaterial);
                 overWorld.getCBWorld().getBlockAt(x+1, y + 2, z).setType(fillMaterial);
                 overWorld.getCBWorld().getBlockAt(x+1, y + 3, z).setType(fillMaterial);
@@ -263,17 +263,16 @@ public class GameThread implements CommandExecutor {
     //Manage incoming border change
     public void onBorderUpdate(){
         //Calculate ticks until the border changes
-        long changeTime = plugin.getConfig().getLong("next-change");
-        int radius = plugin.getConfig().getInt("border-radius");
-        long millisecondsUntilChange = changeTime - System.currentTimeMillis();
-        int ticksUntilChange = (int) (millisecondsUntilChange / 50L);
+        long changeTime = plugin.getConfig().getLong("next-change",0);
+        int radius = plugin.getConfig().getInt("border-radius",1000);
 
         //Create random new time between 3 and 20 minutes, half radius for subsequent shrink.
         int newRadius = radius/2;
 
         int newSecondsToChange = ThreadLocalRandom.current().nextInt(180, 1200);
         long newMilSecsUntilChange = newSecondsToChange*1000L;
-
+        plugin.getConfig().set("next-change", (newMilSecsUntilChange + System.currentTimeMillis()));
+        Bukkit.getServer().broadcastMessage("OI LOOK " + newSecondsToChange+ " AND " +radius);
         //Set task to execute border change and scatter
         new BukkitRunnable() {
             @Override
@@ -285,15 +284,8 @@ public class GameThread implements CommandExecutor {
                 portalScatter();
                 Bukkit.getServer().broadcastMessage("§l§cPlay area now shrinking to a radius of " + radius);
                 Bukkit.getServer().broadcastMessage("§l§cThe play area will shrink to a radius of "+ newRadius + " in " + newSecondsToChange/60 + " minutes");
-                plugin.getConfig().set("next-change", newMilSecsUntilChange);
-
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        onBorderUpdate();
-                    }}.runTaskLater(plugin, newMilSecsUntilChange/50L);
-
+                onBorderUpdate();
             }
-        }.runTaskLater(plugin, ticksUntilChange);
+        }.runTaskLater(plugin, newMilSecsUntilChange/50L);
     }
 }

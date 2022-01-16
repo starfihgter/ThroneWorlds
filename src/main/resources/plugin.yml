@@ -12,8 +12,8 @@ commands:
     description: Allows you to choose a team!
     usage: /setteam [list|join|leave] [team]
   scatter:
-    description: [DEPRECATED] Re-scatters portals
+    description: DEPRECATED - Re-scatters portals
     usage: /scatter
   border:
-    description: [DEPRECATED] Changes the overworld play area
+    description: DEPRECATED - Changes the overworld play area
     usage: /border [radius] [seconds to change]

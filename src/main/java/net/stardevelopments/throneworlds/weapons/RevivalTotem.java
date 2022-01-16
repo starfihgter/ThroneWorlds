@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -25,7 +26,7 @@ public class RevivalTotem extends TWAbility implements Listener {
 
     @EventHandler
     //Get for chat message to revive players
-    public void onChatEvent(AsyncPlayerChatEvent e){
+    public void onChatEvent(PlayerChatEvent e){
         Player player = e.getPlayer();
         //Check if player said the phrase, and has the Revive totem in their inventory.
             if(player.getInventory().contains(getItem())){
