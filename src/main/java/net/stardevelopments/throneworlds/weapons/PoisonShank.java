@@ -28,7 +28,6 @@ public class PoisonShank extends TWAbility implements Listener {
             if (e.getDamager() instanceof Player) {
 
                 if (player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("Poison Shank")) {
-
                     hit.addPotionEffect(new PotionEffect(PotionEffectType.POISON,10,1));
                     player.getInventory().remove(player.getInventory().getItemInMainHand());
 

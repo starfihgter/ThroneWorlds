@@ -25,7 +25,6 @@ public abstract class TWAbility {
         ItemStack item = new ItemStack(material, num);
         Main.setItemName(item, getName(), Arrays.asList("§f" + lore, "§eThis item costs " + getCost() + " essence!"));
         return item;
-
     }
 
     //abstracted name return

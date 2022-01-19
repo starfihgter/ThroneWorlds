@@ -33,7 +33,6 @@ public class PlayerManager implements Listener{
         int currentHBonus = teamsDB.getInt("team" + GameThread.getPlayerTeam(player) + ".upgrades.health-bonus",25);
         player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(currentHBonus);
         if (player.getHealth() >= 18){player.setHealth(currentHBonus);}
-
     }
 
     //Called when a player exits their throne world.
@@ -70,6 +69,10 @@ public class PlayerManager implements Listener{
                         numEssence += slot.getAmount();
                         slot.setAmount(0);
                     }
+                    if (slot.isSimilar(Essence.getEssenceBlock(1))) {
+                        numEssence += slot.getAmount() * 9;
+                        slot.setAmount(0);
+                    }
                 }
             }
             if(numEssence>0){Essence.doEssenceForgeDrop(player.getLocation(),numEssence);}
@@ -80,7 +83,7 @@ public class PlayerManager implements Listener{
                             //player.teleport(inBetweenTeamSpawn);
                             player.sendTitle("ELIMINATED", "You have suffered your final death.");
                             player.sendMessage("You have been eliminated! Thanks for playing Starfihgter's Throne Worlds!");
-                            player.sendMessage("If an ally survived the collapse... maybe they can bring you back somehow...");
+                            //player.sendMessage("If an ally survived the collapse... maybe they can bring you back somehow..."); //Omitted from this playtest
                             Bukkit.getServer().broadcastMessage(player.getDisplayName() + " has been eliminated!");
                         }
                         //If respawn is blocked
@@ -101,6 +104,7 @@ public class PlayerManager implements Listener{
                                         player.setHealth(20);
                                         player.setGameMode(GameMode.SURVIVAL);
                                         player.setBedSpawnLocation(spawn, true);
+                                        onPlayerEntry(player);
                                         player.sendMessage("Your essence was consumed to bring you back to your Throne World.");
                                     }
                                 }

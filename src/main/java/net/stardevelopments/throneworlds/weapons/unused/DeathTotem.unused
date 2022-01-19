@@ -1,0 +1,20 @@
+package net.stardevelopments.throneworlds.weapons;
+
+import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerInteractEvent;
+
+public class DeathTotem extends TWAbility {
+
+    public DeathTotem() {
+        super("Death Totem", Material.WITHER_SKELETON_SKULL, 1, "Returns you to the location of your last death");
+    }
+
+    @EventHandler
+    public void onUse(PlayerInteractEvent e){
+        if (e.getItem().getItemMeta().getDisplayName().equals(name)){
+
+        }
+        return;
+    }
+}

@@ -4,18 +4,19 @@ import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import com.onarandombox.MultiversePortals.PortalLocation;
 import com.onarandombox.MultiversePortals.utils.PortalManager;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -27,7 +28,7 @@ public class GameThread implements CommandExecutor {
         this.plugin = mPlugin;
         this.qm = qmp;
     }
-
+// 26 53 -1
     //Dual Output
     public void out(String message, CommandSender sender){
         Bukkit.getServer().broadcastMessage(message);
@@ -198,6 +199,20 @@ public class GameThread implements CommandExecutor {
             out("Unable to start game, game state currently " + worldState.getInt("GameState", 0), sender);
             return false;
         }
+
+        //Recipe Alterations
+        Bukkit.getServer().removeRecipe(NamespacedKey.minecraft("emerald"));
+        Bukkit.getServer().removeRecipe(NamespacedKey.minecraft("emerald_block"));
+        //Adding both essence recipes
+        ShapedRecipe condensedEssence = new ShapedRecipe(new NamespacedKey(plugin,"condensed_essence"),Essence.getEssenceBlock(1));
+        condensedEssence.shape("EEE","EEE","EEE");
+        condensedEssence.setIngredient('E',Material.EMERALD);
+        plugin.getServer().addRecipe(condensedEssence);
+
+        ShapedRecipe essenceReturn = new ShapedRecipe(new NamespacedKey(plugin,"essence"),Essence.getEssence(9));
+        essenceReturn.shape("E");
+        essenceReturn.setIngredient('E',Material.EMERALD_BLOCK);
+        plugin.getServer().addRecipe(essenceReturn);
         //Create overworld
         if(wm.cloneWorld("OverworldTemplate", "Overworld")){
             World overWorld = Bukkit.getWorld("Overworld");
@@ -272,7 +287,6 @@ public class GameThread implements CommandExecutor {
         int newSecondsToChange = ThreadLocalRandom.current().nextInt(180, 1200);
         long newMilSecsUntilChange = newSecondsToChange*1000L;
         plugin.getConfig().set("next-change", (newMilSecsUntilChange + System.currentTimeMillis()));
-        Bukkit.getServer().broadcastMessage("OI LOOK " + newSecondsToChange+ " AND " +radius);
         //Set task to execute border change and scatter
         new BukkitRunnable() {
             @Override

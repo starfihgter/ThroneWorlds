@@ -37,7 +37,8 @@ public class PortalShutdownItem extends TWAbility implements Listener {
         }
 
 
-        if (item.getType() == Material.IRON_BARS){
+        if (item.getType() == Material.IRON_BARS && item.getItemMeta().getDisplayName().equals(name)){
+            e.setCancelled(true);
             FileConfiguration teamsDB = Main.teamsDB.getUserRecord();
             MultiversePortals MVP = mainPlugin.pm;
             PortalManager pm = MVP.getPortalManager();

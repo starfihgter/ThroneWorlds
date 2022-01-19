@@ -39,10 +39,12 @@ public class QueenManager implements Listener {
         int initCost = cost;
         //Checking if player can pay
         ItemStack essence = Essence.getEssence(1);
+        ItemStack eBlock = Essence.getEssenceBlock(1);
         Inventory inventory = player.getInventory();
 
         //Null Check
         for (ItemStack slot : inventory.getContents()){
+            //Logic for checking each slot, and removing the amount of essence found from the total.
                 if (slot != null) {
                     if (slot.isSimilar(essence)) {
                         if (slot.getAmount() >= cost) {
@@ -53,6 +55,23 @@ public class QueenManager implements Listener {
                             return true;
                         } else {
                             cost = cost - slot.getAmount();
+                            slot.setAmount(0);
+                        }
+                    } else if (slot.isSimilar(eBlock)){
+                        if ((slot.getAmount()*9) >= cost) {
+                            //If they have enough in THAT STACK, buys the item
+                            int remainingBlocks = slot.getAmount();
+                            while (cost > 0){
+                                remainingBlocks--;
+                                cost = cost - 9;
+                            }
+                            slot.setAmount(remainingBlocks);
+                            player.getInventory().addItem(Essence.getEssence(-cost));
+                            if (giveItem){inventory.addItem(item);}
+                            player.sendMessage("You bought " + item.getItemMeta().getDisplayName() + " for " + initCost + "essence!");
+                            return true;
+                        } else {
+                            cost = cost - (slot.getAmount()*9);
                             slot.setAmount(0);
                         }
                     }
@@ -277,6 +296,7 @@ public class QueenManager implements Listener {
                         if (removeMoneys(e.getCurrentItem(),healthCost,player,false)){
                             teamsDB.set("team" + i + ".upgrades.health-bonus",currentHBonus + 5);
                             player.sendMessage("Health bonus increased by 5 hp!");
+                            PlayerManager.onPlayerEntry(player);
                         }
                         break;
                     }
@@ -429,6 +449,7 @@ public class QueenManager implements Listener {
                                         Location spawn = plugin.wm.getMVWorld(teamsDB.getString("team" + team + ".WorldName")).getSpawnLocation();
                                         dedboi.teleport(spawn);
                                         dedboi.setHealth(20);
+                                        PlayerManager.onPlayerEntry(dedboi);
                                         dedboi.setGameMode(GameMode.SURVIVAL);
                                         dedboi.setBedSpawnLocation(spawn, true);
                                         dedboi.sendMessage("Your essence was consumed to bring you back to your Throne World.");

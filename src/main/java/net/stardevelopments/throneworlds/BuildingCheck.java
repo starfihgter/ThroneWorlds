@@ -94,7 +94,13 @@ public class BuildingCheck implements Listener {
                 player.sendMessage("You are not in a building zone!");
             }
         }
-        if (event.getBlock().getType().equals(Material.BARRIER)){event.setCancelled(true);}
+        if (event.getBlock().getType().equals(Material.BARRIER) ||
+                event.getBlock().getType().equals(Material.BLUE_GLAZED_TERRACOTTA)||
+                event.getBlock().getType().equals(Material.RED_GLAZED_TERRACOTTA)||
+                event.getBlock().getType().equals(Material.GREEN_GLAZED_TERRACOTTA)||
+                event.getBlock().getType().equals(Material.WHITE_GLAZED_TERRACOTTA)||
+                event.getBlock().getType().equals(Material.PURPLE_GLAZED_TERRACOTTA))
+        {event.setCancelled(true);}
     }
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event){

@@ -2,6 +2,7 @@ package net.stardevelopments.throneworlds.weapons;
 
 import net.stardevelopments.throneworlds.GameThread;
 import net.stardevelopments.throneworlds.Main;
+import net.stardevelopments.throneworlds.PlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -31,6 +32,7 @@ public class RevivalTotem extends TWAbility implements Listener {
         //Check if player said the phrase, and has the Revive totem in their inventory.
             if(player.getInventory().contains(getItem())){
                 if(e.getMessage().equals("Light the path home")){
+                    player.getInventory().remove(getItem());
                     int team = GameThread.getPlayerTeam(player);
                     //For each player in the game, check if they're in spectator (or in the inbetween after update), and on the team.
                     //if so, respawn them with a different message.
@@ -40,6 +42,7 @@ public class RevivalTotem extends TWAbility implements Listener {
                             player.teleport(spawn);
                             player.setHealth(20);
                             player.setGameMode(GameMode.SURVIVAL);
+                            PlayerManager.onPlayerEntry(player);
                             player.setBedSpawnLocation(spawn, true);
                             Bukkit.getServer().broadcastMessage("[TEAM]'s radiance has brought them back to this realm!");
                         }
