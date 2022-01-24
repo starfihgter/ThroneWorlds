@@ -245,6 +245,21 @@ public class GameThread implements CommandExecutor {
                 Vector topRight = new Vector(26, 57, 2);
                 pl.setLocation(bottomLeft, topRight, world);
                 pm.addPortal(world, "team" + i + "home", "starfihgter", pl);
+                //Filling home portals
+                World twWorld = Bukkit.getWorld("throne" + i);
+                Material fillMaterial = Material.END_GATEWAY;
+                twWorld.getBlockAt(26,53,-1).setType(fillMaterial);
+                twWorld.getBlockAt(26,54,-1).setType(fillMaterial);
+                twWorld.getBlockAt(26,55,-1).setType(fillMaterial);
+                twWorld.getBlockAt(26,56,-1).setType(fillMaterial);
+                twWorld.getBlockAt(26,53,0).setType(fillMaterial);
+                twWorld.getBlockAt(26,54,0).setType(fillMaterial);
+                twWorld.getBlockAt(26,55,0).setType(fillMaterial);
+                twWorld.getBlockAt(26,56,0).setType(fillMaterial);
+                twWorld.getBlockAt(26,53,1).setType(fillMaterial);
+                twWorld.getBlockAt(26,54,1).setType(fillMaterial);
+                twWorld.getBlockAt(26,55,1).setType(fillMaterial);
+                twWorld.getBlockAt(26,56,1).setType(fillMaterial);
                 //Kill players and send to throne world
                 for (String playerName : teamPlayers){
                     Player player = Bukkit.getPlayer(playerName);

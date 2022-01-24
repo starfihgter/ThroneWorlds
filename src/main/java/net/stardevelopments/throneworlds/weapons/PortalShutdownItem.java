@@ -55,9 +55,23 @@ public class PortalShutdownItem extends TWAbility implements Listener {
             overWorld.getBlockAt(x+2, y + 1, z).setType(fillMaterial);
             overWorld.getBlockAt(x+2, y + 2, z).setType(fillMaterial);
             overWorld.getBlockAt(x+2, y + 3, z).setType(fillMaterial);
+
+            World twWorld = Bukkit.getWorld("throne" + team);
+            twWorld.getBlockAt(26,53,-1).setType(fillMaterial);
+            twWorld.getBlockAt(26,54,-1).setType(fillMaterial);
+            twWorld.getBlockAt(26,55,-1).setType(fillMaterial);
+            twWorld.getBlockAt(26,56,-1).setType(fillMaterial);
+            twWorld.getBlockAt(26,53,0).setType(fillMaterial);
+            twWorld.getBlockAt(26,54,0).setType(fillMaterial);
+            twWorld.getBlockAt(26,55,0).setType(fillMaterial);
+            twWorld.getBlockAt(26,56,0).setType(fillMaterial);
+            twWorld.getBlockAt(26,53,1).setType(fillMaterial);
+            twWorld.getBlockAt(26,54,1).setType(fillMaterial);
+            twWorld.getBlockAt(26,55,1).setType(fillMaterial);
+            twWorld.getBlockAt(26,56,1).setType(fillMaterial);
             //Announce
             String teamName = teamsDB.getString("team" + team + ".name");
-            Bukkit.getServer().broadcastMessage(teamName + " have sealed their portal for 1 minute!");
+            Bukkit.getServer().broadcastMessage(teamName + " have sealed their portal for 2 minutes!");
             player.getInventory().remove(getItem());
 
             new BukkitRunnable() {
@@ -73,9 +87,21 @@ public class PortalShutdownItem extends TWAbility implements Listener {
                     overWorld.getBlockAt(x+2, y + 1, z).setType(fillMaterial);
                     overWorld.getBlockAt(x+2, y + 2, z).setType(fillMaterial);
                     overWorld.getBlockAt(x+2, y + 3, z).setType(fillMaterial);
+                    twWorld.getBlockAt(26,53,-1).setType(fillMaterial);
+                    twWorld.getBlockAt(26,54,-1).setType(fillMaterial);
+                    twWorld.getBlockAt(26,55,-1).setType(fillMaterial);
+                    twWorld.getBlockAt(26,56,-1).setType(fillMaterial);
+                    twWorld.getBlockAt(26,53,0).setType(fillMaterial);
+                    twWorld.getBlockAt(26,54,0).setType(fillMaterial);
+                    twWorld.getBlockAt(26,55,0).setType(fillMaterial);
+                    twWorld.getBlockAt(26,56,0).setType(fillMaterial);
+                    twWorld.getBlockAt(26,53,1).setType(fillMaterial);
+                    twWorld.getBlockAt(26,54,1).setType(fillMaterial);
+                    twWorld.getBlockAt(26,55,1).setType(fillMaterial);
+                    twWorld.getBlockAt(26,56,1).setType(fillMaterial);
                     Bukkit.getServer().broadcastMessage(teamName + "'s portal is now active again!");
                 }
-            }.runTaskLater(Main.plugin, 400);//change time later
+            }.runTaskLater(Main.plugin, 2400);
         }
     }
 }
