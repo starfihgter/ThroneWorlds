@@ -218,6 +218,7 @@ public class GameThread implements CommandExecutor {
             World overWorld = Bukkit.getWorld("Overworld");
             overWorld.getWorldBorder().setCenter(0,0);
             overWorld.getWorldBorder().setSize((plugin.getConfig().getInt("border-radius", 2000))*2);
+            wm.getMVWorld(overWorld).setHunger(false);
             out("Overworld created", sender);
 
             //Create Throne Worlds
@@ -233,6 +234,7 @@ public class GameThread implements CommandExecutor {
                 World cbWorld = world.getCBWorld();
                 cbWorld.getWorldBorder().setCenter(14 ,-4);
                 cbWorld.getWorldBorder().setSize(300);
+                world.setHunger(false);
             }
             // Send players to thrones (set spawn points and kill all players). Setup portals
             for (int i = 0; i < totalTeams; i++){

@@ -21,7 +21,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class PortalShutdownItem extends TWAbility implements Listener {
     Main mainPlugin;
     public PortalShutdownItem(Main passedPM) {
-        super("Ascendant Disruptor", Material.IRON_BARS, 1, "Seals your portal for 1 minute!");
+        super("Ascendant Disruptor", Material.IRON_BARS, 1, "Seals your portal for 2 minutes!");
         this.mainPlugin = passedPM;
     }
 

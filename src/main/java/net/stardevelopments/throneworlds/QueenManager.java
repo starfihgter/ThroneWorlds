@@ -51,7 +51,7 @@ public class QueenManager implements Listener {
                             //If they have enough in THAT STACK, buys the item
                             slot.setAmount(slot.getAmount() - cost);
                             if (giveItem){inventory.addItem(item);}
-                            player.sendMessage("You bought " + item.getItemMeta().getDisplayName() + " for " + initCost + "essence!");
+                            player.sendMessage("You bought " + item.getItemMeta().getDisplayName() + " for " + initCost + " essence!");
                             return true;
                         } else {
                             cost = cost - slot.getAmount();
@@ -68,7 +68,7 @@ public class QueenManager implements Listener {
                             slot.setAmount(remainingBlocks);
                             player.getInventory().addItem(Essence.getEssence(-cost));
                             if (giveItem){inventory.addItem(item);}
-                            player.sendMessage("You bought " + item.getItemMeta().getDisplayName() + " for " + initCost + "essence!");
+                            player.sendMessage("You bought " + item.getItemMeta().getDisplayName() + " for " + initCost + " essence!");
                             return true;
                         } else {
                             cost = cost - (slot.getAmount()*9);
@@ -296,7 +296,8 @@ public class QueenManager implements Listener {
                         if (removeMoneys(e.getCurrentItem(),healthCost,player,false)){
                             teamsDB.set("team" + i + ".upgrades.health-bonus",currentHBonus + 5);
                             player.sendMessage("Health bonus increased by 5 hp!");
-                            PlayerManager.onPlayerEntry(player);
+                            for (Player onTheIslandPlayer : player.getWorld().getPlayers()){
+                            PlayerManager.onPlayerEntry(onTheIslandPlayer);}
                         }
                         break;
                     }

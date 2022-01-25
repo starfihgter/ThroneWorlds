@@ -39,14 +39,16 @@ public class RevivalTotem extends TWAbility implements Listener {
                     for (Player targetedPlayer : Bukkit.getServer().getOnlinePlayers()){
                         if (GameThread.getPlayerTeam(targetedPlayer) == team && targetedPlayer.getGameMode().equals(GameMode.SPECTATOR)) {
                             Location spawn = plugin.wm.getMVWorld(teamsDB.getString("team" + team + ".WorldName")).getSpawnLocation();
-                            player.teleport(spawn);
-                            player.setHealth(20);
-                            player.setGameMode(GameMode.SURVIVAL);
-                            PlayerManager.onPlayerEntry(player);
-                            player.setBedSpawnLocation(spawn, true);
-                            Bukkit.getServer().broadcastMessage("[TEAM]'s radiance has brought them back to this realm!");
+                            targetedPlayer.teleport(spawn);
+                            targetedPlayer.setHealth(20);
+                            targetedPlayer.setGameMode(GameMode.SURVIVAL);
+                            PlayerManager.onPlayerEntry(targetedPlayer);
+                            targetedPlayer.setBedSpawnLocation(spawn, true);
+
                         }
                     }
+                    String teamName = teamsDB.getString("team" + GameThread.getPlayerTeam(player) + ".name");
+                    Bukkit.getServer().broadcastMessage(teamName + "'s radiance has brought them back to this realm!");
                 }
             }
     }

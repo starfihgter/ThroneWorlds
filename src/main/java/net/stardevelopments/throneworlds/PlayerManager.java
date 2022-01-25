@@ -78,13 +78,15 @@ public class PlayerManager implements Listener{
             if(numEssence>0){Essence.doEssenceForgeDrop(player.getLocation(),numEssence);}
             //get player team. are they out? If so, set them to spectator and state that they've been eliminated.
                         int i = GameThread.getPlayerTeam(player);
+            String teamName = teamsDB.getString("team" + i + ".name");
+                        Bukkit.getServer().broadcastMessage(player.getDisplayName() + " of the " +teamName+" has been defeated!");
                         //Eliminated
                         if (teamsDB.getInt("team" + i + ".State") == 4){
                             //player.teleport(inBetweenTeamSpawn);
                             player.sendTitle("ELIMINATED", "You have suffered your final death.");
                             player.sendMessage("You have been eliminated! Thanks for playing Starfihgter's Throne Worlds!");
                             //player.sendMessage("If an ally survived the collapse... maybe they can bring you back somehow..."); //Omitted from this playtest
-                            Bukkit.getServer().broadcastMessage(player.getDisplayName() + " has been eliminated!");
+                            Bukkit.getServer().broadcastMessage(player.getDisplayName() + " of the " +teamName+" has been §4§leliminated!");
                         }
                         //If respawn is blocked
                         else if (teamsDB.getBoolean("team" + i + ".RespawnBlocked")){
@@ -108,7 +110,7 @@ public class PlayerManager implements Listener{
                                         player.sendMessage("Your essence was consumed to bring you back to your Throne World.");
                                     }
                                 }
-                            }.runTaskLater(plugin, 150);
+                            }.runTaskLater(plugin, 300);
                         }
                     }
                 }
