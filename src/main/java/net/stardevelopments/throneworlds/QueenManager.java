@@ -364,12 +364,11 @@ public class QueenManager implements Listener {
                         //For each player still in the throne world, teleport them to 0 , 0 , 0 in the overworld to move them
                         //out of the TW, as worlds cannot be deleted if players are in them.
                         for (Player player : cbWorld.getPlayers()){
-                            Location tpDest = new Location(Bukkit.getWorld("Overworld"), 0, 0, 0);
+                            Location tpDest = new Location(Bukkit.getWorld("Overworld"), 0, 200, 0);
                             player.teleport(tpDest);
+                            player.setHealth(1);
                             //If the player was on the eliminated team, set their new spawn point to the overworld, as they can
                             //No longer respawn in their TW.
-                            if (GameThread.getPlayerTeam(player) == (int) team - '0') { player.setGameMode(GameMode.SPECTATOR);player.sendMessage("You have been Eliminated! Thanks for playing Starfihgter's Throne Worlds! You can still spectate.");}
-                            else {player.setHealth(0);}
                         }
                         plugin.wm.deleteWorld(world.getName(), true);
                         Bukkit.getServer().broadcastMessage("The Throne World of the " + teamName + " has collapsed.");

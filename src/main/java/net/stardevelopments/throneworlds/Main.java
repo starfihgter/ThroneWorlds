@@ -81,6 +81,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(playerManager, this);
         getServer().getPluginManager().registerEvents(new RevivalTotem(this),this);
         getServer().getPluginManager().registerEvents(new PortalShutdownItem(this),this);
+        getServer().getPluginManager().registerEvents(new SlowingBomb(),this);
 
     }
 
