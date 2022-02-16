@@ -186,6 +186,7 @@ public class GameThread implements CommandExecutor {
         Main.sb.onPortalScatter();
     }
 
+
     //Game Start
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -235,6 +236,7 @@ public class GameThread implements CommandExecutor {
                 cbWorld.getWorldBorder().setCenter(14 ,-4);
                 cbWorld.getWorldBorder().setSize(300);
                 world.setHunger(false);
+
             }
             // Send players to thrones (set spawn points and kill all players). Setup portals
             for (int i = 0; i < totalTeams; i++){
@@ -269,7 +271,9 @@ public class GameThread implements CommandExecutor {
                         Location spawn = wm.getMVWorld(teamsDB.getString("team" + i + ".WorldName")).getSpawnLocation();
                         player.setBedSpawnLocation(spawn, true);
                         player.setHealth(0);
+                        plugin.playerManager.runIntroduction(player);
                     }
+                    plugin.playerManager.playersCanMove = false;
                 }
             }
             //Start Forges

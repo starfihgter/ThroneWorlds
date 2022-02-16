@@ -4,6 +4,7 @@ import net.stardevelopments.throneworlds.weapons.PoisonShank;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
@@ -14,6 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -25,7 +27,48 @@ public class PlayerManager implements Listener{
     public PlayerManager(Main pp){this.plugin=pp;}
     FileConfiguration teamsDB = Main.teamsDB.getUserRecord();
     FileConfiguration worldState = Main.worldState.getUserRecord();
+    public boolean playersCanMove = true;
+    //Introduction Titles
+    public void runIntroduction(Player player){
+        //Defining messages upfront
+        String opening = "THRONE WORLDS";
+        String openingSub = "Destroy enemy worlds and protect your own to win!";
+        String firstMessage = "SEEK OUT ENEMY THRONE WORLDS";
+        String firstSub = "Locate their portals in the Overworld and kill their queens";
+        String secondMessage = "HOARD ESSENCE";
+        String secondSub = "Gain essence from the generator, killing mobs or vanquishing enemies";
+        String thirdMessage = "INCREASE YOUR POWER";
+        String thirdSub = "Craft and place Condensed Essence or purchase items and upgrades from your queen";
+        String finaleMessage = "BE THE LAST THRONE WORLD STANDING";
+        String finaleSub = "Game starts now.";
+        String[] messagesArray = {opening,firstMessage,secondMessage,thirdMessage,finaleMessage};
+        String[] subtitlesArray = {openingSub,firstSub,secondSub,thirdSub,finaleSub};
+        //Loop through each message, with a two second delay
+        int delayTime = 60;
+        int i =0;
+        for(String title : messagesArray) {
+            int iPassed = i;
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    player.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT, 1f, 1f);
+                    player.sendTitle(title, subtitlesArray[iPassed]);
+                }
+            }.runTaskLater(plugin, delayTime);
+            i++;
+            delayTime = delayTime + 40;
+        }
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                playersCanMove = true;
+            }
+        }.runTaskLater(plugin, delayTime);
 
+        //Allow players to move
+
+
+    }
     //Called when a player enters their throne world
     public static void onPlayerEntry(Player player){
         //Set upgraded health, and if player is close enough to full health, give them the bonus hearts.
@@ -39,6 +82,11 @@ public class PlayerManager implements Listener{
     public static void onPlayerExit(Player player){
         player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
         //Reset ANY AND ALL possible modified attributes.
+    }
+    //Check if move allowed
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent e){
+        if (!playersCanMove){e.setCancelled(true);}
     }
 
     //check for and override player deaths
