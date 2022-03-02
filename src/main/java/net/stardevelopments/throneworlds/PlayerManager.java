@@ -105,6 +105,7 @@ public class PlayerManager implements Listener{
         if (player.getHealth() - e.getFinalDamage() <= 0){
             //Stop event, set to spectator, drop essence
             e.setCancelled(true);
+            Location deathLocation = player.getLocation();
             player.setGameMode(GameMode.SPECTATOR);
 
             ItemStack essence = Essence.getEssence(1);
@@ -125,11 +126,12 @@ public class PlayerManager implements Listener{
             }
             if(numEssence>0){Essence.doEssenceForgeDrop(player.getLocation(),numEssence);}
             //get player team. are they out? If so, set them to spectator and state that they've been eliminated.
-                        int i = GameThread.getPlayerTeam(player);
+            int i = GameThread.getPlayerTeam(player);
             String teamName = teamsDB.getString("team" + i + ".name");
-                        Bukkit.getServer().broadcastMessage(player.getDisplayName() + " of the " +teamName+" has been defeated!");
+            Bukkit.getServer().broadcastMessage(player.getDisplayName() + " of the " +teamName+" has been defeated!");
+            plugin.qm.bandaidSolutionToBeFixedOops.onPlayerDeath(player, deathLocation);
                         //Eliminated
-                        if (teamsDB.getInt("team" + i + ".State") == 4){
+            if (teamsDB.getInt("team" + i + ".State") == 4){
                             //player.teleport(inBetweenTeamSpawn);
                             player.sendTitle("ELIMINATED", "You have suffered your final death.");
                             player.sendMessage("You have been eliminated! Thanks for playing Starfihgter's Throne Worlds!");
