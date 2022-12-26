@@ -4,18 +4,19 @@ import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import com.onarandombox.MultiversePortals.PortalLocation;
 import com.onarandombox.MultiversePortals.utils.PortalManager;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -27,11 +28,10 @@ public class GameThread implements CommandExecutor {
         this.plugin = mPlugin;
         this.qm = qmp;
     }
-
+// 26 53 -1
     //Dual Output
     public void out(String message, CommandSender sender){
-        System.out.println(message);
-        sender.sendMessage(message);
+        Bukkit.getServer().broadcastMessage(message);
     }
 
     //Get Player Team
@@ -89,6 +89,13 @@ public class GameThread implements CommandExecutor {
                         block = overWorld.getCBWorld().getBlockAt(x + 3, y + b, z);
                         block.setType(obsidian);
                     }
+                    //Setting portal fill
+                    overWorld.getCBWorld().getBlockAt(x+1, y + 1, z).setType(obsidian);
+                    overWorld.getCBWorld().getBlockAt(x+1, y + 2, z).setType(obsidian);
+                    overWorld.getCBWorld().getBlockAt(x+1, y + 3, z).setType(obsidian);
+                    overWorld.getCBWorld().getBlockAt(x+2, y + 1, z).setType(obsidian);
+                    overWorld.getCBWorld().getBlockAt(x+2, y + 2, z).setType(obsidian);
+                    overWorld.getCBWorld().getBlockAt(x+2, y + 3, z).setType(obsidian);
                     //*cries*
                 }
             if (teamsDB.getInt("team" + i + ".State") != 4){
@@ -151,6 +158,14 @@ public class GameThread implements CommandExecutor {
                 block = overWorld.getCBWorld().getBlockAt(x + 3, y + b, z);
                 block.setType(obsidian);
             }
+            //Filling portals
+                Material fillMaterial = Material.END_GATEWAY;
+                overWorld.getCBWorld().getBlockAt(x+1, y + 1, z).setType(fillMaterial);
+                overWorld.getCBWorld().getBlockAt(x+1, y + 2, z).setType(fillMaterial);
+                overWorld.getCBWorld().getBlockAt(x+1, y + 3, z).setType(fillMaterial);
+                overWorld.getCBWorld().getBlockAt(x+2, y + 1, z).setType(fillMaterial);
+                overWorld.getCBWorld().getBlockAt(x+2, y + 2, z).setType(fillMaterial);
+                overWorld.getCBWorld().getBlockAt(x+2, y + 3, z).setType(fillMaterial);
             //*cries*
             //MVC portal linking
             PortalManager pm = plugin.pm.getPortalManager();
@@ -161,7 +176,7 @@ public class GameThread implements CommandExecutor {
             Vector bottomLeft = new Vector(x, y, z);
             Vector topRight = new Vector(x + 3, y + 4, z);
             pl.setLocation(bottomLeft, topRight, overWorld);
-            pm.addPortal(overWorld, "team" + i + "out", "starfihgter", pl);
+            pm.addPortal(overWorld, "team" + i + "out", "", pl);
             pm.getPortal("team" + i + "out").setDestination("p:team" + i + "home");
             pm.getPortal("team" + i + "home").setDestination("p:team" + i + "out");
             Bukkit.getServer().broadcastMessage("The " + teamName + "' portal has relocated!");
@@ -170,6 +185,7 @@ public class GameThread implements CommandExecutor {
     }
         Main.sb.onPortalScatter();
     }
+
 
     //Game Start
     @Override
@@ -184,11 +200,26 @@ public class GameThread implements CommandExecutor {
             out("Unable to start game, game state currently " + worldState.getInt("GameState", 0), sender);
             return false;
         }
+
+        //Recipe Alterations
+        Bukkit.getServer().removeRecipe(NamespacedKey.minecraft("emerald"));
+        Bukkit.getServer().removeRecipe(NamespacedKey.minecraft("emerald_block"));
+        //Adding both essence recipes
+        ShapedRecipe condensedEssence = new ShapedRecipe(new NamespacedKey(plugin,"condensed_essence"),Essence.getEssenceBlock(1));
+        condensedEssence.shape("EEE","EEE","EEE");
+        condensedEssence.setIngredient('E',Material.EMERALD);
+        plugin.getServer().addRecipe(condensedEssence);
+
+        ShapedRecipe essenceReturn = new ShapedRecipe(new NamespacedKey(plugin,"essence"),Essence.getEssence(9));
+        essenceReturn.shape("E");
+        essenceReturn.setIngredient('E',Material.EMERALD_BLOCK);
+        plugin.getServer().addRecipe(essenceReturn);
         //Create overworld
         if(wm.cloneWorld("OverworldTemplate", "Overworld")){
             World overWorld = Bukkit.getWorld("Overworld");
             overWorld.getWorldBorder().setCenter(0,0);
             overWorld.getWorldBorder().setSize((plugin.getConfig().getInt("border-radius", 2000))*2);
+            wm.getMVWorld(overWorld).setHunger(false);
             out("Overworld created", sender);
 
             //Create Throne Worlds
@@ -204,6 +235,8 @@ public class GameThread implements CommandExecutor {
                 World cbWorld = world.getCBWorld();
                 cbWorld.getWorldBorder().setCenter(14 ,-4);
                 cbWorld.getWorldBorder().setSize(300);
+                world.setHunger(false);
+
             }
             // Send players to thrones (set spawn points and kill all players). Setup portals
             for (int i = 0; i < totalTeams; i++){
@@ -216,6 +249,21 @@ public class GameThread implements CommandExecutor {
                 Vector topRight = new Vector(26, 57, 2);
                 pl.setLocation(bottomLeft, topRight, world);
                 pm.addPortal(world, "team" + i + "home", "starfihgter", pl);
+                //Filling home portals
+                World twWorld = Bukkit.getWorld("throne" + i);
+                Material fillMaterial = Material.END_GATEWAY;
+                twWorld.getBlockAt(26,53,-1).setType(fillMaterial);
+                twWorld.getBlockAt(26,54,-1).setType(fillMaterial);
+                twWorld.getBlockAt(26,55,-1).setType(fillMaterial);
+                twWorld.getBlockAt(26,56,-1).setType(fillMaterial);
+                twWorld.getBlockAt(26,53,0).setType(fillMaterial);
+                twWorld.getBlockAt(26,54,0).setType(fillMaterial);
+                twWorld.getBlockAt(26,55,0).setType(fillMaterial);
+                twWorld.getBlockAt(26,56,0).setType(fillMaterial);
+                twWorld.getBlockAt(26,53,1).setType(fillMaterial);
+                twWorld.getBlockAt(26,54,1).setType(fillMaterial);
+                twWorld.getBlockAt(26,55,1).setType(fillMaterial);
+                twWorld.getBlockAt(26,56,1).setType(fillMaterial);
                 //Kill players and send to throne world
                 for (String playerName : teamPlayers){
                     Player player = Bukkit.getPlayer(playerName);
@@ -223,7 +271,9 @@ public class GameThread implements CommandExecutor {
                         Location spawn = wm.getMVWorld(teamsDB.getString("team" + i + ".WorldName")).getSpawnLocation();
                         player.setBedSpawnLocation(spawn, true);
                         player.setHealth(0);
+                        plugin.playerManager.runIntroduction(player);
                     }
+                    plugin.playerManager.playersCanMove = false;
                 }
             }
             //Start Forges
@@ -236,9 +286,9 @@ public class GameThread implements CommandExecutor {
             Main.sb.generateScoreboard();
             Bukkit.getServer().broadcastMessage("Throne Worlds created!");
             qm.CreateQueens();
-            portalScatter();
             worldState.set("GameState", 2);
-            Main.sb.onPortalScatter();
+            onBorderUpdate();
+            portalScatter();
             return true;
         }else{
         out("Unable to find Overworld Template!", sender);
@@ -249,20 +299,28 @@ public class GameThread implements CommandExecutor {
     //Manage incoming border change
     public void onBorderUpdate(){
         //Calculate ticks until the border changes
-        long changeTime = plugin.getConfig().getLong("next-change");
-        long millisecondsUntilChange = changeTime - System.currentTimeMillis();
-        int ticksUntilChange = (int) (millisecondsUntilChange / 50L);
+        long changeTime = plugin.getConfig().getLong("next-change",0);
+        int radius = plugin.getConfig().getInt("border-radius",1000);
 
+        //Create random new time between 3 and 20 minutes, half radius for subsequent shrink.
+        int newRadius = radius/2;
+
+        int newSecondsToChange = ThreadLocalRandom.current().nextInt(180, 1200);
+        long newMilSecsUntilChange = newSecondsToChange*1000L;
+        plugin.getConfig().set("next-change", (newMilSecsUntilChange + System.currentTimeMillis()));
         //Set task to execute border change and scatter
         new BukkitRunnable() {
             @Override
             public void run() {
+                //
                 World world = plugin.wm.getMVWorld("Overworld").getCBWorld();
-                world.getWorldBorder().setSize(((plugin.getConfig().getInt("border-radius"))*2), 60);
+                world.getWorldBorder().setSize((radius*2), 60);
+                plugin.getConfig().set("border-radius", newRadius);
                 portalScatter();
-                Bukkit.getServer().broadcastMessage("§l§cPlay area now shrinking to a radius of " + plugin.getConfig().getInt("border-radius"));
-                plugin.getConfig().set("next-change", 0);
+                Bukkit.getServer().broadcastMessage("§l§cPlay area now shrinking to a radius of " + radius);
+                Bukkit.getServer().broadcastMessage("§l§cThe play area will shrink to a radius of "+ newRadius + " in " + newSecondsToChange/60 + " minutes");
+                onBorderUpdate();
             }
-        }.runTaskLater(plugin, ticksUntilChange);
+        }.runTaskLater(plugin, newMilSecsUntilChange/50L);
     }
 }

@@ -39,6 +39,15 @@ public class Essence implements Listener {
 
         return essence;
     }
+    public static ItemStack getEssenceBlock(int amount){
+
+        ItemStack essence = new ItemStack(Material.EMERALD_BLOCK, amount);
+        ItemMeta essenceMeta = essence.getItemMeta();
+        essenceMeta.setDisplayName("Condensed Essence");
+        essence.setItemMeta(essenceMeta);
+
+        return essence;
+    }
 
     //Add to drops
     @EventHandler
@@ -69,13 +78,15 @@ public class Essence implements Listener {
         Block block = event.getBlock();
         String worldName = wm.getMVWorld(block.getWorld()).getName();
         if (block.getType().equals(Material.EMERALD_BLOCK) && worldName.contains("Throne")){
+            event.setDropItems(false);
+            event.getPlayer().getInventory().addItem(Essence.getEssenceBlock(1));
             char team = worldName.charAt(6);
             int power = teamsDB.getInt("team" + team + ".power", 0);
             teamsDB.set("team" + team + ".power", power - 1);
         }
     }
 
-    public void doEssenceForgeDrop(Location location, int num){
+    public static void doEssenceForgeDrop(Location location, int num){
         //Drop a single essence at location.
         ItemStack item = getEssence(num);
         location.getWorld().dropItem(location, item);

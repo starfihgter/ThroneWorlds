@@ -14,34 +14,8 @@ import java.util.ArrayList;
 
 public class TntBow extends TWAbility implements Listener {
 
-    String name = "TNT Bow";
-    int cost = Main.plugin.getConfig().getInt("TNTBow", 4);
-    @Override
-    public ItemStack getItem(){
-        ItemStack tntBow = new ItemStack(Material.BOW);
-        tntBow.addUnsafeEnchantment(Enchantment.ARROW_INFINITE, 999);
-
-        ItemMeta tntBowMeta = tntBow.getItemMeta();
-        tntBowMeta.setDisplayName(name);
-
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add("§fArrows detonate on impact");
-        lore.add("§eThis item costs " + cost + " essence!");
-        tntBowMeta.setLore(lore);
-
-        tntBow.setItemMeta(tntBowMeta);
-
-        return tntBow;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public int getCost() {
-        return cost;
+    public TntBow() {
+        super("TNT Bow",Material.BOW,1,"Arrows detonate on impact.");
     }
 
     @EventHandler

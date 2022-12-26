@@ -88,8 +88,9 @@ public class ScoreBoardManager implements Listener {
                 List<String> teamPlayers = teamsDB.getStringList("team" + i + ".members");
                 for (String playerName : teamPlayers) {
                     Player player = Bukkit.getPlayer(playerName);
-                    player.setScoreboard(boardList[i]);
-
+                    if (player != null) {
+                        player.setScoreboard(boardList[i]);
+                    }
                 }
             }
             return;
@@ -119,8 +120,9 @@ public class ScoreBoardManager implements Listener {
                 List<String> teamPlayers = teamsDB.getStringList("team" + i + ".members");
                 for (String playerName : teamPlayers) {
                     Player player = Bukkit.getPlayer(playerName);
-                    player.setScoreboard(boardList[i]);
-
+                    if (player != null) {
+                        player.setScoreboard(boardList[i]);
+                    }
                 }
             }
         }
@@ -142,11 +144,13 @@ public class ScoreBoardManager implements Listener {
                     boardList[i].resetScores(entry);
                 }
             }
-
+            //Called when a queen is destroyed
             if (status == 0){
                 Score team = objective.getScore(teamsDB.getString("team" + Team + ".name") + ChatColor.GOLD + " - Queen Eliminated");
                 team.setScore(7-Character.getNumericValue(Team));
             }
+            //[CURRENTLY UNUSED - FIGURE OUT PLACE WITH NEW ELIMINATED PLAYERS MECHANICS]
+            //Called when a team is completely eliminated.
             if (status == 1){
                 Score team = objective.getScore(teamsDB.getString("team" + Team + ".name") + ChatColor.RED + " - Team Eliminated");
                 team.setScore(7-Character.getNumericValue(Team));

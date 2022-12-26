@@ -26,6 +26,7 @@ public final class Main extends JavaPlugin {
     GameThread gt;
     QueenManager qm;
     static ScoreBoardManager sb;
+    PlayerManager playerManager;
 
     @Override
     public void onEnable() {
@@ -55,10 +56,11 @@ public final class Main extends JavaPlugin {
         qm = new QueenManager(this);
         gt = new GameThread(this, qm);
         sb = new ScoreBoardManager(this);
+        playerManager = new PlayerManager(this);
 
         //Command Registration
         getCommand("startgame").setExecutor(gt);
-        getCommand("teams").setExecutor(new TeamsCommand());
+        getCommand("setteam").setExecutor(new TeamsCommand());
         getCommand("scatter").setExecutor(new ScatterCommand(gt));
         getCommand("border").setExecutor(new BorderCommand(this, gt));
 
@@ -67,15 +69,19 @@ public final class Main extends JavaPlugin {
 
         //Class Listener Registration
         getServer().getPluginManager().registerEvents(new TntBow(), this);
-        getServer().getPluginManager().registerEvents(new LifeSword(), this);
-        getServer().getPluginManager().registerEvents(new PoisonShank(), this);
-        getServer().getPluginManager().registerEvents(new KnockbackShield(), this);
-        getServer().getPluginManager().registerEvents(new FireBallWand(), this);
+        //getServer().getPluginManager().registerEvents(new LifeSword(), this); // These classes are bugged, throw exceptions on entity hit.
+        //getServer().getPluginManager().registerEvents(new PoisonShank(), this);
+        //getServer().getPluginManager().registerEvents(new KnockbackShield(), this);
+        //getServer().getPluginManager().registerEvents(new FireBallWand(), this);
         getServer().getPluginManager().registerEvents(new WitherBow(), this);
         getServer().getPluginManager().registerEvents(new Essence(this), this);
         getServer().getPluginManager().registerEvents(qm, this);
         getServer().getPluginManager().registerEvents(new BuildingCheck(this), this);
         getServer().getPluginManager().registerEvents(new MagicMirror(), this);
+        getServer().getPluginManager().registerEvents(playerManager, this);
+        getServer().getPluginManager().registerEvents(new RevivalTotem(this),this);
+        getServer().getPluginManager().registerEvents(new PortalShutdownItem(this),this);
+        getServer().getPluginManager().registerEvents(new SlowingBomb(),this);
 
     }
 

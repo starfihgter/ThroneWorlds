@@ -15,26 +15,8 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
 
 public class PoisonShank extends TWAbility implements Listener {
-
-    String name = "Poison Shank";
-    int cost = Main.plugin.getConfig().getInt("PoisonShank", 4);
-
-    @Override
-    public ItemStack getItem(){
-
-        ItemStack poisonShank = new ItemStack(Material.STICK);
-
-        ItemMeta poisonShankMeta = poisonShank.getItemMeta();
-        poisonShankMeta.setDisplayName(name);
-
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add("§fPoisons your opponent");
-        lore.add("§eThis item costs " + cost + " essence!");
-        poisonShankMeta.setLore(lore);
-
-        poisonShank.setItemMeta(poisonShankMeta);
-
-        return poisonShank;
+    public PoisonShank() {
+        super("Poison Shank",Material.STICK,1,"Inflict poison upon thy enemies.");
     }
 
     @EventHandler
@@ -46,22 +28,11 @@ public class PoisonShank extends TWAbility implements Listener {
             if (e.getDamager() instanceof Player) {
 
                 if (player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("Poison Shank")) {
-
                     hit.addPotionEffect(new PotionEffect(PotionEffectType.POISON,10,1));
                     player.getInventory().remove(player.getInventory().getItemInMainHand());
 
                 }
             }
         }
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public int getCost() {
-        return cost;
     }
 }

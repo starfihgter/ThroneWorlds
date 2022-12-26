@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
+//DEPRECATED
 public class ScatterCommand implements CommandExecutor {
     GameThread gt;
 

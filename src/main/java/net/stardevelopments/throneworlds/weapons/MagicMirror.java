@@ -18,26 +18,8 @@ import java.util.Objects;
 
 public class MagicMirror extends TWAbility implements Listener {
 
-    String name = "Magic Mirror";
-    int cost = Main.plugin.getConfig().getInt("magic-mirror", 4);
-
-    @Override
-    public ItemStack getItem(){
-
-        ItemStack magicMirror = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
-
-        ItemMeta magicMirrorMeta = magicMirror.getItemMeta();
-        magicMirrorMeta.setDisplayName(name);
-
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add("§fReturns you to your throne world");
-        lore.add("§eThis item costs " + cost + " essence!");
-        magicMirrorMeta.setLore(lore);
-
-        magicMirror.setItemMeta(magicMirrorMeta);
-
-        return magicMirror;
-
+    public MagicMirror() {
+        super("Magic Mirror",Material.WHITE_STAINED_GLASS_PANE,1,"Returns the user to their Throne World.");
     }
 
     @EventHandler
@@ -54,7 +36,7 @@ public class MagicMirror extends TWAbility implements Listener {
 
         if (mirror.getType() == Material.WHITE_STAINED_GLASS_PANE){
             if (player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(name)) {
-                player.sendMessage("You feel the seam between realities grow weaker");
+                player.sendMessage("The seam between realities grows weaker...");
                 player.sendMessage("You will return to your Throne World in 20 Seconds");
                 mirror.setAmount(mirror.getAmount() - 1);
                 e.setCancelled(true);
@@ -62,16 +44,10 @@ public class MagicMirror extends TWAbility implements Listener {
                     @Override
                     public void run() {
                         player.sendMessage("You were returned to your Throne World!");
-                        player.teleport(player.getBedSpawnLocation());
+                        try{player.teleport(player.getBedSpawnLocation());}catch(NullPointerException e){player.sendMessage("Unable to find Throne World signal");}
                     }
                 }.runTaskLater(Main.plugin, 400);
             }
         }
     }
-
-    @Override
-    public String getName() { return name; }
-
-    @Override
-    public int getCost() { return cost;}
 }

@@ -3,6 +3,7 @@ package net.stardevelopments.throneworlds;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.utils.WorldManager;
 import org.apache.commons.lang.ObjectUtils;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -93,10 +94,23 @@ public class BuildingCheck implements Listener {
                 player.sendMessage("You are not in a building zone!");
             }
         }
-        if (event.getBlock().getType().equals(Material.BARRIER)){event.setCancelled(true);}
+        if (event.getBlock().getType().equals(Material.BARRIER) ||
+                event.getBlock().getType().equals(Material.BLUE_GLAZED_TERRACOTTA)||
+                event.getBlock().getType().equals(Material.RED_GLAZED_TERRACOTTA)||
+                event.getBlock().getType().equals(Material.GREEN_GLAZED_TERRACOTTA)||
+                event.getBlock().getType().equals(Material.WHITE_GLAZED_TERRACOTTA)||
+                event.getBlock().getType().equals(Material.PURPLE_GLAZED_TERRACOTTA))
+        {event.setCancelled(true);}
     }
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event){
+        //smh no placing anvils.
+        if (event.getBlockPlaced().getType().equals(Material.ANVIL)){
+            Location anvilLoc = event.getBlockPlaced().getLocation();
+            anvilLoc.getWorld().createExplosion(anvilLoc,30,true,true);
+            event.setCancelled(true);
+            return;
+        }
         MVWorldManager wm = plugin.wm;
         Player player = event.getPlayer();
         String worldName = wm.getMVWorld(player.getWorld()).getName();

@@ -2,18 +2,18 @@ package net.stardevelopments.throneworlds;
 
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import net.stardevelopments.throneworlds.weapons.*;
+import net.stardevelopments.throneworlds.weapons.blocksanditems.*;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -31,28 +31,47 @@ public class QueenManager implements Listener {
     FileConfiguration teamsDB = Main.teamsDB.getUserRecord();
     FileConfiguration worldState = Main.worldState.getUserRecord();
 
-    //Ability master array - ADD CLASSES HERE TO AUTOMATICALLY ADD TO STORE
-    TWAbility[] itemsList = {new WitherBow(), new MagicMirror(), new Scaffolding(), new TNTBundle(), new GoldPickaxe()};
-
+    //Ability master array - ADD CLASSES HERE TO AUTOMATICALLY ADD TO STORE (compasses are added manually)
+    TWAbility[] itemsList = {new DeathTotem(), new WitherBow(), new MagicMirror(), new Scaffolding(), new TNTBundle(), new GoldPickaxe(),new PoisonShank(),new RevivalTotem(plugin),new PortalShutdownItem(plugin), new SlowingBomb(), new ObsidianItem(), new StoneItem(), new WoodItem(), new IronBlockItem()};
+    DeathTotem bandaidSolutionToBeFixedOops = new DeathTotem();
     //This method checks if the player can afford a given item.
-    public Boolean removeMoneys(ItemStack item, int cost, Player player){
+    public Boolean removeMoneys(ItemStack item, int cost, Player player, Boolean giveItem){
         int initCost = cost;
         //Checking if player can pay
         ItemStack essence = Essence.getEssence(1);
+        ItemStack eBlock = Essence.getEssenceBlock(1);
         Inventory inventory = player.getInventory();
 
         //Null Check
         for (ItemStack slot : inventory.getContents()){
+            //Logic for checking each slot, and removing the amount of essence found from the total.
                 if (slot != null) {
                     if (slot.isSimilar(essence)) {
                         if (slot.getAmount() >= cost) {
                             //If they have enough in THAT STACK, buys the item
                             slot.setAmount(slot.getAmount() - cost);
-                            inventory.addItem(item);
-                            player.sendMessage("You bought " + item.getItemMeta().getDisplayName());
+                            if (giveItem){inventory.addItem(item);}
+                            player.sendMessage("You bought " + item.getItemMeta().getDisplayName() + " for " + initCost + " essence!");
                             return true;
                         } else {
                             cost = cost - slot.getAmount();
+                            slot.setAmount(0);
+                        }
+                    } else if (slot.isSimilar(eBlock)){
+                        if ((slot.getAmount()*9) >= cost) {
+                            //If they have enough in THAT STACK, buys the item
+                            int remainingBlocks = slot.getAmount();
+                            while (cost > 0){
+                                remainingBlocks--;
+                                cost = cost - 9;
+                            }
+                            slot.setAmount(remainingBlocks);
+                            player.getInventory().addItem(Essence.getEssence(-cost));
+                            if (giveItem){inventory.addItem(item);}
+                            player.sendMessage("You bought " + item.getItemMeta().getDisplayName() + " for " + initCost + " essence!");
+                            return true;
+                        } else {
+                            cost = cost - (slot.getAmount()*9);
                             slot.setAmount(0);
                         }
                     }
@@ -75,8 +94,8 @@ public class QueenManager implements Listener {
             queen.setCustomName("Queen " + i);
             LivingEntity livingQueen = (LivingEntity) queen;
             livingQueen.setAI(false);
-            livingQueen.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(100);
-            livingQueen.setHealth(100);
+            livingQueen.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(300);
+            livingQueen.setHealth(300);
             //queens[0] = queen;
         }
     }
@@ -111,7 +130,9 @@ public class QueenManager implements Listener {
         //Defining basics
         Inventory gui = Bukkit.createInventory(player, 36, "Weapons and Ability Store");
 
+
         ItemStack back = new ItemStack(Material.ARROW, 1);
+        //For consistencies sake, these should be reworked as TWAbilties. Fine for now.
         Main.setItemName(back, "Go Back", null);
         gui.setItem(0, BuildingCheck.getZonePlacer());
         gui.setItem(1, BuildingCheck.getZoneBlocker());
@@ -154,6 +175,7 @@ public class QueenManager implements Listener {
                         //Grabs the current efficiency and output from team database
                         int efficiency = teamsDB.getInt("team" + i + ".upgrades.forge-e",1) * 25;
                         int output = teamsDB.getInt("team" + i + ".upgrades.forge-o",1);
+                        int currentHBonus = teamsDB.getInt("team" + i + ".upgrades.health-bonus",25);
 
                         ItemStack back = new ItemStack(Material.ARROW, 1);
                         Main.setItemName(back, "Go Back", null);
@@ -167,6 +189,10 @@ public class QueenManager implements Listener {
                         ItemStack forgeO = new ItemStack(Material.FURNACE_MINECART, 1);
                         Main.setItemName(forgeO, "Forge Output", Arrays.asList("The Forge is currently outputting " + output + " essence per cycle!"));
                         gui.setItem(1, forgeO);
+
+                        ItemStack healthB = new ItemStack(Material.ENCHANTED_GOLDEN_APPLE,currentHBonus);
+                        Main.setItemName(healthB,"Throne Health Bonus", Arrays.asList("Your queen grants you " + (currentHBonus - 20) + " extra hit points while on your island!"));
+                        gui.setItem(2,healthB);
 
                         player.openInventory(gui);
                     }
@@ -223,6 +249,7 @@ public class QueenManager implements Listener {
                 int i = GameThread.getPlayerTeam(player);
                 int efficiency = teamsDB.getInt("team" + i + ".upgrades.forge-e");
                 int output = teamsDB.getInt("team" + i + ".upgrades.forge-o");
+                int currentHBonus = teamsDB.getInt("team" + i + ".upgrades.health-bonus",25);
                 int factor = 1;
                 //Code execution depending on what was clicked. Each option varies too much to not hard code somewhere.
                 switch (e.getCurrentItem().getItemMeta().getDisplayName()) {
@@ -239,7 +266,7 @@ public class QueenManager implements Listener {
                             if (efficiency == 2){factor = 6;}
                             if (efficiency == 3){factor = 15;}
                             //If they can afford the upgrade, increase the efficiency by one and store the new efficiency
-                            if (removeMoneys(e.getCurrentItem(), Main.plugin.getConfig().getInt("ForgeE", 4) * factor, player)){
+                            if (removeMoneys(e.getCurrentItem(), Main.plugin.getConfig().getInt("ForgeE", 4) * factor, player,false)){
                                 efficiency++;
                                 teamsDB.set("team" + i + ".upgrades.forge-e", efficiency);
                                 player.sendMessage("Forge Efficiency upgraded to " + efficiency * 25 + "%");
@@ -254,12 +281,23 @@ public class QueenManager implements Listener {
                             if (output == 1){factor = 1;}
                             if (output == 2){factor = 6;}
                             if (output == 3){factor = 15;}
-                            if (removeMoneys(e.getCurrentItem(), Main.plugin.getConfig().getInt("ForgeO", 4) * factor, player)) {
+                            if (removeMoneys(e.getCurrentItem(), Main.plugin.getConfig().getInt("ForgeO", 4) * factor, player, false)) {
                                 output++;
                                 teamsDB.set("team" + i + ".upgrades.forge-o", output);
                                 player.sendMessage("Forge output upgraded to " + output + " per cycle!");
                             }
                             generateUpgradeScreen(player);
+                        }
+                        break;
+                    }
+                    //Set cost as 15 times the current health bonus, attempt to buy and update teamsDB if successful.
+                    case "Throne Health Bonus":{
+                        int healthCost = currentHBonus * 15;
+                        if (removeMoneys(e.getCurrentItem(),healthCost,player,false)){
+                            teamsDB.set("team" + i + ".upgrades.health-bonus",currentHBonus + 5);
+                            player.sendMessage("Health bonus increased by 5 hp!");
+                            for (Player onTheIslandPlayer : player.getWorld().getPlayers()){
+                            PlayerManager.onPlayerEntry(onTheIslandPlayer);}
                         }
                         break;
                     }
@@ -273,11 +311,11 @@ public class QueenManager implements Listener {
                 //Hardcoded compasses and Power Funnels.
                 switch (e.getCurrentItem().getItemMeta().getDisplayName()) {
                     case "Power Funnel - Build Zone": {
-                        removeMoneys(BuildingCheck.getZonePlacer(), Main.plugin.getConfig().getInt("ZPlacer", 4), player);
+                        removeMoneys(BuildingCheck.getZonePlacer(), Main.plugin.getConfig().getInt("ZPlacer", 4), player,true);
                         break;
                     }
                     case "Power Funnel - Build Zone Blocker": {
-                        removeMoneys(BuildingCheck.getZoneBlocker(), Main.plugin.getConfig().getInt("ZBlocker", 4), player);
+                        removeMoneys(BuildingCheck.getZoneBlocker(), Main.plugin.getConfig().getInt("ZBlocker", 4), player,true);
                         break;
                     }
                     default: {
@@ -285,7 +323,7 @@ public class QueenManager implements Listener {
                         int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
                         for (int i = 0; i < totalTeams; i++) {
                             if (e.getCurrentItem().getItemMeta().getDisplayName().equals(new PortalCompass(i).getName())) {
-                                removeMoneys(new PortalCompass(i).getItem(), new PortalCompass(i).getCost(), player);
+                                removeMoneys(new PortalCompass(i).getItem(), new PortalCompass(i).getCost(), player,true);
                             }
                         }
                         break;
@@ -294,39 +332,16 @@ public class QueenManager implements Listener {
                 //For each item in the items list, check if the item clicked is equal to it. If so, check and give the player said item.
                 for (TWAbility item : itemsList){
                     if (e.getCurrentItem().getItemMeta().getDisplayName().equals(item.getName())){
-                        removeMoneys(item.getItem(), item.getCost(), player);
+                        removeMoneys(item.getItem(), item.getCost(), player,true);
                     }
                 }
             }
         }
     }
 
-    //Check Respawn validity
-    @EventHandler
-    public void onRespawn(PlayerRespawnEvent e){
-        Player player = e.getPlayer();
-        int totalTeams = Main.plugin.getConfig().getInt("Teams", 4);
-        //For each player of each team, is THIS player one of them? If so, are they out? If so, set them to spectator and state that they've been eliminated.
-        for (int i = 0; i < totalTeams; i++){
-            for (String member : teamsDB.getStringList("team" + i + ".members")){
-                if (player.getName().equals(member)){
-                    if (teamsDB.getInt("team" + i + ".State") == 4){
-                        player.setGameMode(GameMode.SPECTATOR);
-                        player.sendMessage("You have been eliminated! Thanks for playing Starfihgter's Throne Worlds! You can still spectate.");
-                        Bukkit.getServer().broadcastMessage(player.getDisplayName() + " has been eliminated!");
-                    } else{
-                        Location spawn = plugin.wm.getMVWorld(teamsDB.getString("team" + i + ".WorldName")).getSpawnLocation();
-                        e.setRespawnLocation(spawn);
-                        player.sendMessage("Attempted to Override vanilla spawning");
-                        player.setBedSpawnLocation(spawn, true);
-                    }
-                }
-            }
-        }
-    }
     //Queen Death
     @EventHandler
-    public void onEntityDeath(EntityDeathEvent e){
+     public void onEntityDeath(EntityDeathEvent e){
         //Checks if the queen died
         Entity queen = e.getEntity();
         if (queen.getCustomName() != null) {
@@ -350,12 +365,11 @@ public class QueenManager implements Listener {
                         //For each player still in the throne world, teleport them to 0 , 0 , 0 in the overworld to move them
                         //out of the TW, as worlds cannot be deleted if players are in them.
                         for (Player player : cbWorld.getPlayers()){
-                            Location tpDest = new Location(Bukkit.getWorld("Overworld"), 0, 0, 0);
+                            Location tpDest = new Location(Bukkit.getWorld("Overworld"), 0, 200, 0);
                             player.teleport(tpDest);
+                            player.setHealth(1);
                             //If the player was on the eliminated team, set their new spawn point to the overworld, as they can
                             //No longer respawn in their TW.
-                            if (GameThread.getPlayerTeam(player) == team) { player.setBedSpawnLocation(plugin.wm.getMVWorld("Overworld").getSpawnLocation(), true);}
-                            player.setHealth(0);
                         }
                         plugin.wm.deleteWorld(world.getName(), true);
                         Bukkit.getServer().broadcastMessage("The Throne World of the " + teamName + " has collapsed.");
@@ -365,6 +379,86 @@ public class QueenManager implements Listener {
                 }.runTaskLater(plugin, 1240);
 
             }
+        }
+    }
+
+    //Queen Damage Cancelling
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent e){
+        //Checks if the queen was stabbed.
+        Entity queen = e.getEntity();
+        if (queen.getCustomName() != null) {
+            if (queen.getCustomName().contains("Queen ")) {
+                //Cancels all damage accept for direct attacks and projectiles.
+                switch (e.getCause())
+            {
+                case ENTITY_ATTACK:
+                case ENTITY_SWEEP_ATTACK:
+                case ENTITY_EXPLOSION:
+                case PROJECTILE:
+                    break;
+                default:
+                    e.setCancelled(true);
+                    break;
+            }
+            }
+        }
+    }
+
+    //Detect Throne World Intrusion
+    @EventHandler
+    public void onPortalTransit(PlayerTeleportEvent e){
+        //Check if teleport was through a portal and to a ThroneWorld
+        if (e.getCause().equals(PlayerTeleportEvent.TeleportCause.PLUGIN)){
+            World toWorld = e.getTo().getWorld();
+            World fromWorld = e.getFrom().getWorld();
+            Player player = e.getPlayer();
+            if (toWorld.getName().contains("Throne")){
+                //Check which world, check if enemy
+                char team = plugin.wm.getMVWorld(toWorld).getName().charAt(6);
+                String teamName = teamsDB.getString("team" + team + ".name");
+                if (GameThread.getPlayerTeam(player) != (int) team - '0'){
+                    if (!teamsDB.getBoolean("team" + team + ".RespawnBlocked",false)) {
+                        teamsDB.set("team" + team + ".RespawnBlocked", true);
+                        //at some point make it specific to involved players, maybe just make it all players. Design decision needs to be made here
+                        Bukkit.getServer().broadcastMessage("The Throne World of the " + teamName + " is being invaded!"); // consider if to add invading team.
+                        //Add action bar message for invaded team
+                    }
+                } else{PlayerManager.onPlayerEntry(player);}
+            }
+            if (fromWorld.getName().contains("Throne")){
+                //Check which world, check if enemy
+                char team = plugin.wm.getMVWorld(fromWorld).getName().charAt(6);
+                String teamName = teamsDB.getString("team" + team + ".name");
+                    if (GameThread.getPlayerTeam(player) != (int) team - '0') {
+                        for (Player occupier : fromWorld.getPlayers()) {
+                            if(occupier != player) {
+                                if (GameThread.getPlayerTeam(occupier) != (int) team - '0') {
+                                    return;
+                                }
+                            }
+                        }
+                        teamsDB.set("team" + team + ".RespawnBlocked", false);
+                        //at some point make it specific to involved players, maybe just make it all players. Design decision needs to be made here
+                        Bukkit.getServer().broadcastMessage("The Throne World of the " + teamName + " has been sealed!"); // change language lmaoo
+                        //Respawn any spectator players in that team.
+                        for(Player dedboi : Bukkit.getServer().getOnlinePlayers()){
+                            if (GameThread.getPlayerTeam(dedboi) == (int) team - '0') {
+                                if(dedboi.getGameMode().equals(GameMode.SPECTATOR)){
+                                    if(teamsDB.getInt("team" + team + ".State", 0)!=4){
+                                        Location spawn = plugin.wm.getMVWorld(teamsDB.getString("team" + team + ".WorldName")).getSpawnLocation();
+                                        dedboi.teleport(spawn);
+                                        dedboi.setHealth(20);
+                                        PlayerManager.onPlayerEntry(dedboi);
+                                        dedboi.setGameMode(GameMode.SURVIVAL);
+                                        dedboi.setBedSpawnLocation(spawn, true);
+                                        dedboi.sendMessage("Your essence was consumed to bring you back to your Throne World.");
+                                    }
+                                }
+                            }
+                        }
+                    } else {PlayerManager.onPlayerExit(player);}
+                }
         }
     }
 }

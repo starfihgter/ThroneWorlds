@@ -2,6 +2,7 @@ package net.stardevelopments.throneworlds.commands;
 
 import net.stardevelopments.throneworlds.GameThread;
 import net.stardevelopments.throneworlds.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -27,8 +28,22 @@ public class TeamsCommand implements CommandExecutor {
         if (args.length < 1) {
             return false;
         }
-            if (sender instanceof Player) {
-                if (args.length == 2) {
+                if (args.length == 2 || args.length == 3) {
+                    boolean specificPlayer;
+                    String playerName;
+                    Player player;
+                    String teamName = teamsDB.getString("team" + args[1] + ".name");
+                    if (args.length == 3) {
+                        playerName = args[2];
+                        player = Bukkit.getPlayer(playerName);
+                        if (player == null){
+                            sender.sendMessage("Unable to find that player!");
+                            return false;
+                        }
+                    }else {
+                        playerName = sender.getName();
+                        player = ((Player) sender).getPlayer();}
+
                     switch (args[0]) {
                         case "list": {
                             String team = args[1];
@@ -39,22 +54,25 @@ public class TeamsCommand implements CommandExecutor {
                         case "join": {
                             String team = args[1];
                             //Check that player is not already assigned to a team.
-                            if (GameThread.getPlayerTeam(((Player) sender).getPlayer()) == -1) {
+                            if (GameThread.getPlayerTeam(player) == -1) {
                                 List<String> teamList = teamsDB.getStringList("team" + team + ".members");
-                                teamList.add(sender.getName());
+                                teamList.add(playerName);
                                 teamsDB.set("team" + team + ".members", teamList);
-                                sender.sendMessage("You have joined team " + team + "!");
+                                sender.sendMessage(playerName + " has joined the " + teamName + "!");
+                                player.sendMessage("You have joined the "+ teamName);
                             } else{
-                                sender.sendMessage("You are already on a team!");
+                                sender.sendMessage("That player is already on a team!");
+                                player.sendMessage("You are already on a team!");
                             }
                             break;
                         }
                         case "leave": {
                             String team = args[1];
                             List<String> teamList = teamsDB.getStringList("team" + team + ".members");
-                            teamList.remove(sender.getName());
+                            teamList.remove(playerName);
                             teamsDB.set("team" + team + ".members", teamList);
-                            sender.sendMessage("You have left team " + team + "!");
+                            sender.sendMessage("That player has left team " + team + "!");
+                            player.sendMessage("You have left the "+ teamName);
                             break;
                         }
                         default:
@@ -66,9 +84,5 @@ public class TeamsCommand implements CommandExecutor {
                     sender.sendMessage("Please choose a subcommand!");
                     return false;
                 }
-            } else {
-                sender.sendMessage("This command can only be used by players!");
-                return false;
-            }
     }
 }
