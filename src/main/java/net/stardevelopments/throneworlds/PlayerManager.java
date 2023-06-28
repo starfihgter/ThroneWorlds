@@ -31,20 +31,20 @@ public class PlayerManager implements Listener{
     //Introduction Titles
     public void runIntroduction(Player player){
         //Defining messages upfront
-        String opening = "THRONE WORLDS";
-        String openingSub = "Destroy enemy worlds and protect your own to win!";
-        String firstMessage = "SEEK OUT ENEMY THRONE WORLDS";
-        String firstSub = "Locate their portals in the Overworld and kill their queens";
-        String secondMessage = "HOARD ESSENCE";
-        String secondSub = "Gain essence from the generator, killing mobs or vanquishing enemies";
-        String thirdMessage = "INCREASE YOUR POWER";
-        String thirdSub = "Craft and place Condensed Essence or purchase items and upgrades from your queen";
-        String finaleMessage = "BE THE LAST THRONE WORLD STANDING";
-        String finaleSub = "Game starts now.";
+        String opening = "§bTHRONE WORLDS";
+        String openingSub = "§cDestroy enemy worlds and protect your own to win!";
+        String firstMessage = "§bSEEK OUT ENEMY THRONE WORLDS";
+        String firstSub = "§cLocate their portals in the Overworld and kill their queens";
+        String secondMessage = "§bHOARD ESSENCE";
+        String secondSub = "§cGain essence from the generator, killing mobs or vanquishing enemies";
+        String thirdMessage = "§bINCREASE YOUR POWER";
+        String thirdSub = "§cCraft and place Condensed Essence or purchase items and upgrades from your queen";
+        String finaleMessage = "§bBE THE LAST THRONE WORLD STANDING";
+        String finaleSub = "§cGame starts now.";
         String[] messagesArray = {opening,firstMessage,secondMessage,thirdMessage,finaleMessage};
         String[] subtitlesArray = {openingSub,firstSub,secondSub,thirdSub,finaleSub};
         //Loop through each message, with a two second delay
-        int delayTime = 60;
+        int delayTime = 180;
         int i =0;
         for(String title : messagesArray) {
             int iPassed = i;
@@ -56,7 +56,7 @@ public class PlayerManager implements Listener{
                 }
             }.runTaskLater(plugin, delayTime);
             i++;
-            delayTime = delayTime + 40;
+            delayTime = delayTime + 120;
         }
         new BukkitRunnable() {
             @Override

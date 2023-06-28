@@ -25,8 +25,8 @@ public class RevivalTotem extends TWAbility implements Listener {
         this.plugin = passPlug;
     }
 
-    @EventHandler
-    //Get for chat message to revive players
+    @EventHandler//
+    //    Get for chat message to revive players
     public void onChatEvent(PlayerChatEvent e){
         Player player = e.getPlayer();
         //Check if player said the phrase, and has the Revive totem in their inventory.

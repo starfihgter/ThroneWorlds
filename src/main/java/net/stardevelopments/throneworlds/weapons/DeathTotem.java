@@ -36,7 +36,7 @@ public class DeathTotem extends TWAbility implements Listener {
         if (inventory.contains(Material.WITHER_SKELETON_SKULL)){
             inventory.remove(Material.WITHER_SKELETON_SKULL);
             ItemStack newTotem = new ItemStack(material, num);
-            Main.setItemName(newTotem, getName(), Arrays.asList("§f" + lore,"§d x:" + deathLoc.getX() + ", y:" + deathLoc.getY() + ", z:" + deathLoc.getZ(),"§d" + deathLoc.getWorld().getName()));
+            Main.setItemName(newTotem, getName(), Arrays.asList("§f" + lore,"§d x:" + Math.round(deathLoc.getX()) + ", y:" + Math.round(deathLoc.getY()) + ", z:" + Math.round(deathLoc.getZ()),"§d" + deathLoc.getWorld().getName()));
             inventory.addItem(newTotem);
             player.sendMessage("§dYour " + name + " has been updated!");
         }
@@ -63,17 +63,17 @@ public class DeathTotem extends TWAbility implements Listener {
                         .getWorld(e.getItem().getItemMeta().getLore().get(2))
                         .getBlockAt(coordInts[0],coordInts[1],coordInts[2]+1)
                         .getLocation();
-                //Add some sort of time delay
+                //Start time for teleport.
                 //Start particle effects
                 Player player = e.getPlayer();
-                player.sendMessage("Memory link established. 8 seconds to clip.");
+                player.sendMessage("Memory verified. You will return in 8 seconds.");
                 new BukkitRunnable() {
                     @Override
                     public void run() {
                         player.teleport(destination);
-                        player.sendMessage("Trans-planar clip successful");
+                        player.sendMessage("Memory Transition successful");
                     }
-                }.runTaskLater(Main.plugin, 2400);
+                }.runTaskLater(Main.plugin, 2400); //ADJUST THE TIMING
             }else {
                 //If no memory is stored
                 e.getPlayer().sendMessage("Your " + name + " has a blank memory! It will capture a memory upon death.");

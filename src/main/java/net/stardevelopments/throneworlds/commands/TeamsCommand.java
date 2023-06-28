@@ -29,7 +29,7 @@ public class TeamsCommand implements CommandExecutor {
             return false;
         }
                 if (args.length == 2 || args.length == 3) {
-                    boolean specificPlayer;
+                    boolean specificPlayer; //use this to add functionality for command blocks to assign teams
                     String playerName;
                     Player player;
                     String teamName = teamsDB.getString("team" + args[1] + ".name");

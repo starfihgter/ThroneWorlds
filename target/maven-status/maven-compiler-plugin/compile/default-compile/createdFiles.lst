@@ -5,6 +5,7 @@ net\stardevelopments\throneworlds\QueenManager$2.class
 net\stardevelopments\throneworlds\weapons\blocksanditems\GoldPickaxe.class
 net\stardevelopments\throneworlds\Main.class
 net\stardevelopments\throneworlds\PlayerManager$1.class
+net\stardevelopments\throneworlds\weapons\DeathTotem.class
 net\stardevelopments\throneworlds\Essence.class
 net\stardevelopments\throneworlds\PlayerManager.class
 net\stardevelopments\throneworlds\weapons\TntBow.class
@@ -14,6 +15,7 @@ net\stardevelopments\throneworlds\QueenManager.class
 net\stardevelopments\throneworlds\GameThread$1.class
 net\stardevelopments\throneworlds\ScoreBoardManager.class
 net\stardevelopments\throneworlds\BuildingCheck.class
+net\stardevelopments\throneworlds\PlayerManager$3.class
 net\stardevelopments\throneworlds\weapons\MagicMirror.class
 net\stardevelopments\throneworlds\FileLoader.class
 net\stardevelopments\throneworlds\weapons\blocksanditems\StoneItem.class
@@ -22,12 +24,14 @@ net\stardevelopments\throneworlds\GameThread.class
 net\stardevelopments\throneworlds\weapons\blocksanditems\Scaffolding.class
 net\stardevelopments\throneworlds\commands\BorderCommand.class
 net\stardevelopments\throneworlds\weapons\PortalCompass.class
+net\stardevelopments\throneworlds\weapons\DeathTotem$1.class
 net\stardevelopments\throneworlds\weapons\blocksanditems\IronBlockItem.class
 net\stardevelopments\throneworlds\weapons\blocksanditems\ObsidianItem.class
 net\stardevelopments\throneworlds\QueenManager$1.class
 net\stardevelopments\throneworlds\weapons\RevivalTotem.class
 net\stardevelopments\throneworlds\ScoreBoardManager$1.class
 net\stardevelopments\throneworlds\weapons\PoisonShank.class
+net\stardevelopments\throneworlds\PlayerManager$2.class
 net\stardevelopments\throneworlds\commands\TeamsCommand.class
 net\stardevelopments\throneworlds\weapons\WitherBow.class
 net\stardevelopments\throneworlds\weapons\blocksanditems\TNTBundle.class
