@@ -6,7 +6,7 @@
 
     <groupId>net.stardevelopments</groupId>
     <artifactId>ThroneWorlds</artifactId>
-    <version>1.0-SNAPSHOT-28.6.2023.2</version>
+    <version>1.0-SNAPSHOT-13.7.2023.1</version>
     <packaging>jar</packaging>
 
     <name>ThroneWorlds</name>

@@ -1,9 +1,7 @@
 package net.stardevelopments.throneworlds.weapons;
 
 import net.stardevelopments.throneworlds.Main;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -56,24 +54,25 @@ public class DeathTotem extends TWAbility implements Listener {
                 String[] coords = memory.split(",");
                 int[] coordInts = new int[]{Integer.parseInt(coords[0]),Integer.parseInt(coords[1]),Integer.parseInt(coords[2])};
                 Location destination = Bukkit.getServer()
-                        .getWorld(e.getItem().getItemMeta().getLore().get(2))
+                        .getWorld(e.getItem().getItemMeta().getLore().get(2).replace("§d",""))
                         .getBlockAt(coordInts[0],coordInts[1],coordInts[2])
                         .getLocation();
-                Location destinationButHigher = Bukkit.getServer()
-                        .getWorld(e.getItem().getItemMeta().getLore().get(2))
-                        .getBlockAt(coordInts[0],coordInts[1],coordInts[2]+1)
-                        .getLocation();
-                //Start time for teleport.
                 //Start particle effects
+                World targetWorld = destination.getWorld();
+                Particle.DustOptions dustColour = new Particle.DustOptions(Color.fromRGB(0, 127, 255), 1.0F);
+                targetWorld.spawnParticle(Particle.REDSTONE,destination,30,0,1,0,dustColour);
+
+                //teleport logic
                 Player player = e.getPlayer();
                 player.sendMessage("Memory verified. You will return in 8 seconds.");
+                player.getInventory().remove(player.getInventory().getItemInMainHand());
                 new BukkitRunnable() {
                     @Override
                     public void run() {
                         player.teleport(destination);
                         player.sendMessage("Memory Transition successful");
                     }
-                }.runTaskLater(Main.plugin, 2400); //ADJUST THE TIMING
+                }.runTaskLater(Main.plugin, 160); //ADJUST THE TIMING
             }else {
                 //If no memory is stored
                 e.getPlayer().sendMessage("Your " + name + " has a blank memory! It will capture a memory upon death.");

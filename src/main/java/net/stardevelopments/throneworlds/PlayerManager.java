@@ -31,15 +31,15 @@ public class PlayerManager implements Listener{
     //Introduction Titles
     public void runIntroduction(Player player){
         //Defining messages upfront
-        String opening = "§bTHRONE WORLDS";
+        String opening = "§b§lTHRONE WORLDS";
         String openingSub = "§cDestroy enemy worlds and protect your own to win!";
-        String firstMessage = "§bSEEK OUT ENEMY THRONE WORLDS";
+        String firstMessage = "§b§lSEEK OUT ENEMY THRONE WORLDS";
         String firstSub = "§cLocate their portals in the Overworld and kill their queens";
-        String secondMessage = "§bHOARD ESSENCE";
+        String secondMessage = "§b§lHOARD ESSENCE";
         String secondSub = "§cGain essence from the generator, killing mobs or vanquishing enemies";
-        String thirdMessage = "§bINCREASE YOUR POWER";
+        String thirdMessage = "§b§lINCREASE YOUR POWER";
         String thirdSub = "§cCraft and place Condensed Essence or purchase items and upgrades from your queen";
-        String finaleMessage = "§bBE THE LAST THRONE WORLD STANDING";
+        String finaleMessage = "§b§lBE THE LAST THRONE WORLD STANDING";
         String finaleSub = "§cGame starts now.";
         String[] messagesArray = {opening,firstMessage,secondMessage,thirdMessage,finaleMessage};
         String[] subtitlesArray = {openingSub,firstSub,secondSub,thirdSub,finaleSub};
@@ -53,6 +53,8 @@ public class PlayerManager implements Listener{
                 public void run() {
                     player.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT, 1f, 1f);
                     player.sendTitle(title, subtitlesArray[iPassed]);
+                    Bukkit.getServer().broadcastMessage(title);
+                    Bukkit.getServer().broadcastMessage(subtitlesArray[iPassed]);
                 }
             }.runTaskLater(plugin, delayTime);
             i++;
